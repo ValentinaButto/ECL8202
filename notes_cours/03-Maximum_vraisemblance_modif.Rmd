@@ -9,7 +9,6 @@ output:
     theme: spacelab
     toc: yes
     toc_float: yes
-
 ---
     
 ```{r setup, include=FALSE}
@@ -18,6 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(cowplot)
 theme_set(theme_cowplot())
+require(bbmle)
 set.seed(8202)
 ```
 
@@ -193,14 +193,17 @@ $$l(\beta_0, \beta_1, \sigma) = n \log \left( \frac{1}{\sigma \sqrt{2 \pi}} \rig
 
 
 
-si on veut voir comment le tout pourrait marcher sur R on peut commencer par génèrer un échantillon de 100 données à partir d'une distribution normale avec une moyenne de 3 et un écart-type de 2.
+Si on veut voir comment le tout pourrait marcher sur R on peut commencer par générer un échantillon de 100 données à partir d'une distribution normale avec une moyenne de 3 et un écart-type de 2.
 
 
 ```{r, ECHO=FALSE}
 
-set.seed(123)
-x <- rnorm(100, mean = 5, sd = 2)
-y <- 2 * x + rnorm(100, mean = 0, sd = 1)
+set.seed(42)
+x <- rnorm(100)
+y <- 3 + 2 * x + rnorm(100, mean = 0, sd = 1)
+
+datareg<-data.frame(x,y)
+plot(x,y)
 
 
 ```
@@ -211,46 +214,20 @@ Définition de la fonction de log-vraisemblance :
 
 ```{r, ECHO=FALSE}
 
-log_likelihood_linear <- function(parameters, x, y) {
-  beta_0 <- parameters[1]
-  beta_1 <- parameters[2]
-  sigma <- parameters[3]
-  
-  residuals <- y - (beta_0 + beta_1 * x)
-  log_likelihood <- -sum(dnorm(residuals / sigma, mean = 0, sd = 1, log = TRUE)) - length(y) * log(sigma)
-  
-  # Vérification des valeurs finies
-  if (!is.finite(log_likelihood)) {
-    cat("Paramètres :", parameters, "\n")
-    cat("Résidus :", residuals, "\n")
-    cat("Log-vraisemblance :", log_likelihood, "\n")
-    return(Inf)
-  }
-  
-  return(log_likelihood)
+x <- rnorm(100)
+y <- 3 + 2 * x + rnorm(100, mean = 0, sd = 1)
+
+datareg<-data.frame(x,y)
+
+norm_nll <- function(y_o, x_c, sigma) {
+  mu <- y_o + x_c * datareg$x
+  -sum(dnorm(datareg$y, mu, sigma, log = TRUE))
 }
-```
 
-# Estimation des paramètres par maximum de vraisemblance (MLE) :
+# Estimer les paramètres par maximisation de la moins log-vraisemblance avec mle2 du package bbmle
 
-On utilise la fonction optim pour trouver les paramètres qui maximisent la log-vraisemblance négative. On part des valeurs moyennes et écart-type des données comme valeurs initiales.L'utilisation de la log-vraisemblance négative est courante dans le contexte de l'optimisation statistique et de l'estimation par maximum de vraisemblance (MLE).
+mle_norm <- mle(norm_nll, start = list(y_o = 1, x_c = 0, sigma = 1))
 
-La fonction optim est utilisée pour estimer les paramètres ($/mi $)
-
-
-```{r, ECHO=FALSE}
-
-results_mle_linear <- optim(c(mean(y), 1, sd(y)), log_likelihood_linear, x = x, y = y, method = "L-BFGS-B")
-
-# Résultats
-intercept_estimate <- results_mle_linear$par[1]
-slope_estimate <- results_mle_linear$par[2]
-sigma_estimate <- results_mle_linear$par[3]
-
-# Affichage des résultats
-cat("Estimation de l'intercept (beta_0) :", intercept_estimate, "\n")
-cat("Estimation du coefficient de pente (beta_1) :", slope_estimate, "\n")
-cat("Estimation de l'écart-type des résidus (sigma) :", sigma_estimate, "\n")
 
 ```
 

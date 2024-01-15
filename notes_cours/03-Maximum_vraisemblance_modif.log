@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2024.1.9)  9 JAN 2024 14:54
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2024.1.9)  15 JAN 2024 17:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -538,7 +538,7 @@ LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line
 (C:\Program Files\MiKTeX\tex/latex/lm\ts1lmtt.fd
 File: ts1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-<03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-1-1.pdf, id=73
+<03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-1-1.pdf, id=71
 , 469.755pt x 325.215pt>
 File: 03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-1-1.pdf G
 raphic file (type pdf)
@@ -547,7 +547,7 @@ Package pdftex.def Info: 03-Maximum_vraisemblance_modif_files/figure-latex/unna
 med-chunk-1-1.pdf  used on input line 249.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 [3 <./03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-1-1.pdf>]
-<03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-2-1.pdf, id=84
+<03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-2-1.pdf, id=82
 , 469.755pt x 325.215pt>
 File: 03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-2-1.pdf G
 raphic file (type pdf)
@@ -558,7 +558,7 @@ med-chunk-2-1.pdf  used on input line 277.
 [4 <./03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-2-1.pdf>]
 [5]
 <03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-4-1.pdf, id=10
-2, 469.755pt x 325.215pt>
+0, 469.755pt x 325.215pt>
 File: 03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-4-1.pdf G
 raphic file (type pdf)
 <use 03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-4-1.pdf>
@@ -566,70 +566,83 @@ Package pdftex.def Info: 03-Maximum_vraisemblance_modif_files/figure-latex/unna
 med-chunk-4-1.pdf  used on input line 392.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 [6 <./03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-4-1.pdf>]
-[7] [8] [9] [10] [11] [12]
-<03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-13-1.pdf, id=1
+<03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-5-1.pdf, id=11
+5, 469.755pt x 325.215pt>
+File: 03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-5-1.pdf G
+raphic file (type pdf)
+<use 03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-5-1.pdf>
+Package pdftex.def Info: 03-Maximum_vraisemblance_modif_files/figure-latex/unna
+med-chunk-5-1.pdf  used on input line 466.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[7] [8 <./03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-5-1.p
+df>] [9] [10]
+Overfull \vbox (0.53792pt too high) detected at line 751
+ []
+
+[11] [12]
+<03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-12-1.pdf, id=1
 54, 469.755pt x 325.215pt>
-File: 03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-13-1.pdf 
+File: 03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-12-1.pdf 
 Graphic file (type pdf)
-<use 03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-13-1.pdf>
+<use 03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-12-1.pdf>
 Package pdftex.def Info: 03-Maximum_vraisemblance_modif_files/figure-latex/unna
-med-chunk-13-1.pdf  used on input line 912.
+med-chunk-12-1.pdf  used on input line 885.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[13 <./03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-13-1.pdf
->] [14]
-<03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-19-1.pdf, id=1
-71, 469.755pt x 325.215pt>
-File: 03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-19-1.pdf 
+[13] [14 <./03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-12-
+1.pdf>] [15]
+<03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-18-1.pdf, id=1
+78, 469.755pt x 325.215pt>
+File: 03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-18-1.pdf 
 Graphic file (type pdf)
-<use 03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-19-1.pdf>
+<use 03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-18-1.pdf>
 Package pdftex.def Info: 03-Maximum_vraisemblance_modif_files/figure-latex/unna
-med-chunk-19-1.pdf  used on input line 1117.
+med-chunk-18-1.pdf  used on input line 1090.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[15]
+[16]
+<03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-20-1.pdf, id=1
+84, 469.755pt x 325.215pt>
+File: 03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-20-1.pdf 
+Graphic file (type pdf)
+<use 03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-20-1.pdf>
+Package pdftex.def Info: 03-Maximum_vraisemblance_modif_files/figure-latex/unna
+med-chunk-20-1.pdf  used on input line 1125.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[17 <./03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-18-1.pdf
+>]
 <03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-21-1.pdf, id=1
-77, 469.755pt x 325.215pt>
+94, 469.755pt x 325.215pt>
 File: 03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-21-1.pdf 
 Graphic file (type pdf)
 <use 03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-21-1.pdf>
 Package pdftex.def Info: 03-Maximum_vraisemblance_modif_files/figure-latex/unna
-med-chunk-21-1.pdf  used on input line 1152.
+med-chunk-21-1.pdf  used on input line 1149.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[16 <./03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-19-1.pdf
+[18 <./03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-20-1.pdf
 >]
-<03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-22-1.pdf, id=1
-87, 469.755pt x 325.215pt>
+<03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-22-1.pdf, id=2
+05, 469.755pt x 325.215pt>
 File: 03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-22-1.pdf 
 Graphic file (type pdf)
 <use 03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-22-1.pdf>
 Package pdftex.def Info: 03-Maximum_vraisemblance_modif_files/figure-latex/unna
-med-chunk-22-1.pdf  used on input line 1176.
+med-chunk-22-1.pdf  used on input line 1170.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[17 <./03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-21-1.pdf
->]
-<03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-23-1.pdf, id=1
-98, 469.755pt x 325.215pt>
-File: 03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-23-1.pdf 
-Graphic file (type pdf)
-<use 03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-23-1.pdf>
-Package pdftex.def Info: 03-Maximum_vraisemblance_modif_files/figure-latex/unna
-med-chunk-23-1.pdf  used on input line 1197.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[18 <./03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-22-1.pdf
->] [19 <./03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-23-1.
-pdf>] [20] [21] (03-Maximum_vraisemblance_modif.aux)
+[19 <./03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-21-1.pdf
+>] [20 <./03-Maximum_vraisemblance_modif_files/figure-latex/unnamed-chunk-22-1.
+pdf>] [21] [22] (03-Maximum_vraisemblance_modif.aux)
  ***********
 LaTeX2e <2023-11-01>
 L3 programming layer <2023-11-09>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 14178 strings out of 474548
- 224626 string characters out of 5754111
- 1941558 words of memory out of 5000000
- 35900 multiletter control sequences out of 15000+600000
- 628347 words of font info for 175 fonts, out of 8000000 for 9000
+ 14180 strings out of 474548
+ 225037 string characters out of 5754111
+ 1940558 words of memory out of 5000000
+ 35905 multiletter control sequences out of 15000+600000
+ 628250 words of font info for 174 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 77i,6n,81p,1029b,523s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 77i,6n,81p,1029b,632s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Program Files/MiKTeX/fonts/type1/public/lm/lmbx10.pfb><C:/Program Files/M
 iKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Program Files/MiKTeX/fonts/type1/pub
 lic/lm/lmbxi10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/lm/lmex10.pfb><C
@@ -644,9 +657,9 @@ ic/lm/lmsy5.pfb><C:/Program Files/MiKTeX/fonts/type1/public/lm/lmsy7.pfb><C:/Pr
 ogram Files/MiKTeX/fonts/type1/public/lm/lmtk10.pfb><C:/Program Files/MiKTeX/fo
 nts/type1/public/lm/lmtt10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/lm/l
 mtti10.pfb>
-Output written on 03-Maximum_vraisemblance_modif.pdf (21 pages, 468832 bytes).
+Output written on 03-Maximum_vraisemblance_modif.pdf (22 pages, 476485 bytes).
 PDF statistics:
- 397 PDF objects out of 1000 (max. 8388607)
- 69 named destinations out of 1000 (max. 500000)
- 37073 words of extra memory for PDF output out of 42996 (max. 10000000)
+ 401 PDF objects out of 1000 (max. 8388607)
+ 68 named destinations out of 1000 (max. 500000)
+ 37070 words of extra memory for PDF output out of 42996 (max. 10000000)
 

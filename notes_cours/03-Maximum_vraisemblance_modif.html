@@ -429,23 +429,28 @@ class="math inline">\(L(\theta)\)</span>.</p>
 Binomial(n,p)\]</span> Il s’agit d’une distribution définie par deux
 paramètres, n, les nombre d’essais et p, la probabilité de succès. La
 méthode de maximum de vraisemblance nous aide à calculer la proposition
-de succès dans la population , basée sur les données observées ou
-disponibles, qui représentent notre échantillon.</p>
-<p>l’estimé de selon le maximum de vraisemblance est donné par:</p>
+de succès dans la population <span
+class="math inline">\(\hat{p}\)</span>, basée sur les données observées
+ou disponibles, qui représentent notre échantillon.</p>
+<p>l’estimé de <span class="math inline">\(\hat{p}\)</span> selon le
+maximum de vraisemblance est donné par:</p>
 <p><span class="math display">\[\hat{p} = \frac{y}{n}\]</span>
 <strong>Note</strong>: La démonstration du calcul est presenté dans le
 chapitre du livre de Bolker en référence.</p>
-<p>La proportion de succès dans l’échantillon est le meilleur estimé de
-la probabilité de succès <span class="math inline">\(p\)</span> dans la
+<p>La proportion de succès dans l’échantillon <span
+class="math inline">\(\hat{p}\)</span> est le meilleur estimé de la
+probabilité de succès <span class="math inline">\(p\)</span> dans la
 population.</p>
-<p>Si répresente une estimation ponctuelle de la proportion de succès
-dans la population, il est possible de consturir un interval de
-confiance auteur de , dans le quel on peut être confiant que la vraie
-valeur de p se trouve. L’ intervalle de confiance est donnée par la
-fonction <span class="math inline">\(L(p)\)</span>. Cette fonction
-dépende de , de la valeur critiqué associé au niveau de confiance choisi
-<span class="math inline">\(z\)</span> et de la taille de l’échantillon
-<span class="math inline">\(n\)</span></p>
+<p>Si <span class="math inline">\(\hat{p}\)</span> répresente une
+estimation ponctuelle de la proportion de succès dans la population, il
+est possible de consturir un interval de confiance auteur de <span
+class="math inline">\(\hat{p}\)</span>, dans le quel on peut être
+confiant que la vraie valeur de p se trouve. L’ intervalle de confiance
+est donnée par la fonction <span class="math inline">\(L(p)\)</span>.
+Cette fonction dépende de <span class="math inline">\(\hat{p}\)</span>,
+de la valeur critiqué associé au niveau de confiance choisi <span
+class="math inline">\(z\)</span> et de la taille de l’échantillon <span
+class="math inline">\(n\)</span></p>
 <p>La valeur de p qui maximise directement la fonction de vraisemblance
 est obtenue à travers des algorithmes d’ optimisations, cependant, si
 vous simulez un échantillon à partir des données suivantes une
@@ -506,9 +511,10 @@ variables indépendantes.</p>
 densité de probabilité d’une observation de <span
 class="math inline">\(y\)</span> avec une formule adaptée. En effet,
 contrairement au cas précédent, ici nous n’estimons pas la proportion de
-succès dans l’échantillon (), mais la densité de probabilité de la
-variable aléatoire <span class="math inline">\(y\)</span> qui est donnée
-par la formule:</p>
+succès dans l’échantillon (<span
+class="math inline">\(\hat{p}\)</span>), mais la densité de probabilité
+de la variable aléatoire <span class="math inline">\(y\)</span> qui est
+donnée par la formule:</p>
 <p><span class="math display">\[f(y \vert \beta_0, \beta_1, \sigma) =
 \frac{1}{\sigma \sqrt{2 \pi}} e^{-\frac{1}{2} \left( \frac{y - \beta_0 -
 \beta_1 x}{\sigma} \right)^2}\]</span></p>
@@ -592,8 +598,8 @@ et écart-type des données comme valeurs initiales.L’utilisation de la
 log-vraisemblance négative est courante dans le contexte de
 l’optimisation statistique et de l’estimation par maximum de
 vraisemblance (MLE).</p>
-<p>La fonction optim est utilisée pour estimer les paramètres ($/mi
-$)</p>
+<p>La fonction optim est utilisée pour estimer les paramètres (<span
+class="math inline">\(/mi\)</span>)</p>
 <pre class="r"><code>results_mle_linear &lt;- optim(c(mean(y), 1, sd(y)), log_likelihood_linear, x = x, y = y, method = &quot;L-BFGS-B&quot;)
 
 # Résultats
@@ -1215,6 +1221,13 @@ l’approximation quadratique.</p></li>
 </div>
 <div id="références" class="section level1">
 <h1>Références</h1>
+<p>-Le contenu du cours est adapté à partir du cours ECL8202 - Analyses
+des données complexes donné en 2020 par Philippe Marchand, formellement
+professeur IRF-UQAT. vous pouvez ajouter cette information dans la
+référence. Marchand,Philippe (2020). ECL8202 - Analyses des données
+complexes disponible à la page GitHub <a
+href="https://github.com/pmarchand1/ECL8202"
+class="uri">https://github.com/pmarchand1/ECL8202</a></p>
 <ul>
 <li><p>Bolker, B.M. (2008) Ecological models and data in R. Princeton
 University Press, Princeton, New Jersey. (Chapitre 6 sur le maximum de
