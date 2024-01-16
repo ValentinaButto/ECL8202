@@ -205,7 +205,6 @@ x <- rnorm(100)
 y <- 3 + 2 * x + rnorm(100, mean = 0, sd = 1) #intercept =3 ; pente = 2; erreur = distribution normale
 
 datareg<-data.frame(x,y)
-
 plot(x,y)
 
 
