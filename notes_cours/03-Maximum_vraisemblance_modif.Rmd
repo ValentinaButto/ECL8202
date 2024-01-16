@@ -193,16 +193,19 @@ $$l(\beta_0, \beta_1, \sigma) = n \log \left( \frac{1}{\sigma \sqrt{2 \pi}} \rig
 
 
 
-Si on veut voir comment le tout pourrait marcher sur R on peut commencer par générer un échantillon de 100 données à partir d'une distribution normale avec une moyenne de 3 et un écart-type de 2.
+Si on veut voir comment le tout pourrait marcher sur R on peut commencer par générer une variable indépendente $x$, à partir d'une distribution normale, puis une variable dépendant $y$ qui utilise un modèle linéaire pour simuler une relation linéare entre $y$ et $x$. Pour ce faire $y$ est donnée par deux coefficients (intercepte et  pente) plus le terme d'erreur, qui suit une distribution normale.
 
 
 ```{r, ECHO=FALSE}
 
 set.seed(42)
+
 x <- rnorm(100)
-y <- 3 + 2 * x + rnorm(100, mean = 0, sd = 1)
+
+y <- 3 + 2 * x + rnorm(100, mean = 0, sd = 1) #intercept =3 ; pente = 2; erreur = distribution normale
 
 datareg<-data.frame(x,y)
+
 plot(x,y)
 
 
@@ -228,6 +231,7 @@ norm_nll <- function(y_o, x_c, sigma) {
 
 mle_norm <- mle(norm_nll, start = list(y_o = 1, x_c = 0, sigma = 1))
 
+lm(y~x, datareg)
 
 ```
 
