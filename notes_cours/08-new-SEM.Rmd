@@ -1,0 +1,48 @@
+---
+title: "Modèles d'équations structuraux"
+output:
+  pdf_document:
+    toc: yes
+  html_document:
+    self_contained: no
+    lib_dir: libs
+    theme: spacelab
+    toc: yes
+    toc_float: yes
+---
+
+# Introduction
+
+Les modèles d'équations structurelles appartiennent à une famille de modèles qui consistent en un ensemble d'équations mathématiques et d'hypothèses sur un système étudié. Ces hypothèses découlent de nos connaissances préalables ou de nos suppositions sur le fonctionnement du système. En statistique, un système est un ensemble de variables ou de phénomènes qui sont étudiés dans le cadre d'une analyse ou d'une étude. Ces variables peuvent être liées par des relations complexes. Notre objectif avec l'analyse est de comprendre comment ces variables interagissent les unes avec les autres ou comment elles influencent un résultat ou un phénomène en particulier.
+
+
+# Contenu du cours
+
+# Type des variables et lien dans un modèle d'équation structurel:
+
+La structure théorique d'un modèle d'équations structurelles englobe plusieurs types de variables, définissant leurs caractéristiques et leurs rôles dans le modèle.
+
+Selon leur **nature**, les variables peuvent être classées en 1) **variables latentes** et 2) **variables observées**. Une **variable latente** est une variable qui n'est pas mesurée directement, mais qui représente des concepts ou des traits qui n'ont pas vraiment d'unité de mesure. Il s'agit d'un type de variable plus souvent utilisé en psychologie (l'intelligence, la satisfaction, etc.). Les **variables observées** sont des variables mesurées ou collectées avec des méthodes établies par la discipline. En écologie, nous travaillons souvent avec des variables observées.
+
+Selon le **rôle** des variables dans le modèle théorique, les variables peuvent être **exogènes** ou **endogènes**. Les **variables exogènes** sont des variables indépendantes qui influencent les autres variables dans les modèles, mais qui ne sont pas influencées par aucune autre variable en retour. Elles représentent les moteurs des changements dans notre système. Les **variables endogènes**, vice-versa, sont des variables qui sont influencées par les variables exogènes ou d'autres variables du modèle, et représentent normalement le noyau de notre système et les résultats des processus que nous sommes en train de décrire avec notre modèle.
+
+Selon la façon dont les variables sont conceptualisées dans le modèles, les variables peuvent avoir un statut de modérateur et de médiateur. Un **modérateur** est une variable qui influence la force et la direction du lien entre deux variables. Une variable modératrice n'explique pas les "causes" du lien, mais elle intervient seulement dans les aspects quantitatives de la relation étudiée entre deux variables. Un **médiateur** est une variable qui explique le lien entre une variable indépendante et une variable dépendante. Une variable agit comme variable médiatrice lorsque elle représente la cause du lien entre deux variables.
+
+
+Un **chemin** dans un modèle d'équations structurelles est une relation qui relie deux variables, pouvant être directe ou indirecte, et pouvant inclure des effets médiatisés. Les effets médiatisés se réfèrent à une situation où l'impact d'une variable indépendante sur une variable dépendante passe par une autre variable. Autrement dit, la variable médiatrice transmet ou médie l'effet de la variable indépendante sur la variable dépendante.
+
+Dans un modèle d'équations structurelles, l'analyse de médiation et e modération sont intégrées pour obtenir une compréhension plus profonde des relations entre nos variables, en tenant compte à la fois de processus médiatiques et des effets des modérateurs.
+
+
+## Un exemple de modèle théorique:
+
+Lorsqu'on décide de réaliser une SEM, une hypothèse bien définie représente le meilleur investissement pour valoriser cette analyse. Nous allons donc classer nos variables selon la typologie définie dans le paragraphe précédent, puis construire notre modèle **a priori**. Ce modèle représente notre compréhension du système basée sur les preuves scientifiques que nous avons recueillies dans notre étude, et contient nos hypothèses sous forme de liens entre les variables.
+
+le modèle **a priori** peut être dessiné. Les diagrammes qu'on utilise on souvent une façon de représenter les liens et les variables qui est assez standardisée:
+
+![Symboles pour les diagrammes](C:/Users/buttoval/Documents/ECL8202/notes_cours/sem.png)
+
+
+
+
+

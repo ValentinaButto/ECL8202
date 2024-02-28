@@ -2,14 +2,7 @@
 title: "Régression robuste aux valeurs extrêmes"
 date: "ECL8202 - Hiver 2020"
 output: 
-  xaringan::moon_reader:
-    css: ["default", "metropolis", "metropolis-fonts", "styles-xar8202.css"]
-    lib_dir: libs
-    nature:
-      ratio: "16:9"
-      highlightStyle: github
-      highlightLines: true
-      countIncrementalSlides: false
+  powerpoint_presentation:
 ---
 
 ```{r setup, include=FALSE}
@@ -104,9 +97,15 @@ Combien de valeurs extrêmes, si elles sont assez extrêmes, peuvent affecter sa
 .pull-left[
 
 ```{r, echo = FALSE}
-p1 <- ggplot(NULL, aes(x = c(-4, 4))) +
-    stat_function(fun = dnorm, geom = "line", color = "#1b9e77", size = 1) +
-    stat_function(fun = function(x) 0.95*dnorm(x, 0 ,1) + 0.05*dnorm(x, 0, 5), geom = "line", color = "#d95f02", size = 1)
+
+series <- data.frame(x = seq(-4, 4, length.out = 100))
+
+# Plot using ggplot and stat_function
+p1 <-ggplot(series, aes(x = x)) +
+  stat_function(fun = dnorm, geom = "line", color = "#1b9e77", size = 1)+
+   stat_function(fun = function(x) 0.95*dnorm(x, 0 ,1) + 0.05*dnorm(x, 0, 5), geom = "line", color = "#d95f02", size = 1)
+
+
     
 
 plot_grid(p1 + scale_y_continuous(expand = c(0, 0), limits = c(0, 0.4)) +
@@ -381,7 +380,10 @@ $$\sum_{i=1}^n w_i^2 \hat{\epsilon_i}^2$$
 # Poids en fonction des résidus
 
 ```{r, echo = FALSE}
-ggplot(data = NULL, aes(x = c(-6, 6))) +
+series2 <- data.frame(x = seq(-6, 6, length.out = 100))
+
+
+ggplot(data = series2, aes(x )) +
     labs(x = expression(epsilon[i]/sigma), y = expression(w[i])) +
     stat_function(fun = function(x) ifelse(x >= -1.345 & x <= 1.345, 1, 1.345/abs(x)), geom = "line", aes(color = "Huber"), size = 1) +
     stat_function(fun = function(x) ifelse(x>= -4.685 & x <= 4.685, (1 - (x/4.685)^2)^2, 0), geom = "line", aes(color = "Tukey"), size = 1) +
@@ -511,7 +513,7 @@ $$t = \frac{\bar{x} - \mu}{s/\sqrt{n}}$$
 # Distribution $t$
 
 ```{r, echo = FALSE, fig.dim = c(10, 6)}
-p_t_norm <- ggplot(data = NULL, aes(x = c(-4, 4))) +
+p_t_norm <- ggplot(data = series, aes(x = x)) +
     labs(x = "y", y = "f(y)") +
     stat_function(fun = dnorm, geom = "line", aes(color = "Normale"), size = 1) +
     stat_function(fun = dt, args = list(df = 3), geom = "line", aes(color = "t(df=3)"), size = 1) +

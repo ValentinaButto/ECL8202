@@ -9,6 +9,8 @@ output:
     theme: spacelab
     toc: yes
     toc_float: yes
+  word_document:
+    toc: yes
 ---
     
 ```{r setup, include=FALSE}

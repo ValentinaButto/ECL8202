@@ -1,12 +1,14 @@
 ---
 title: "Régression robuste aux valeurs extrêmes"
 output:
-    html_document:
-        self_contained: false
-        lib_dir: libs
-        theme: spacelab
-        toc: true
-        toc_float: true
+  pdf_document:
+    toc: yes
+  html_document:
+    self_contained: no
+    lib_dir: libs
+    theme: spacelab
+    toc: yes
+    toc_float: yes
 ---
     
 ```{r setup, include=FALSE}
@@ -59,6 +61,7 @@ Dans le cas de la médiane, elle réagirait de la même façon à toute valeur e
 Nous avons vu que la valeur de la moyenne est sensible à l'ajout de valeurs extrêmes d'un côté de la distribution (cas asymétrique). Si les valeurs extrêmes apparaissent de façon symétrique de part et d'autre de la moyenne, sa valeur reste inchangée. Cependant, puisque l'écart-type de la distribution est aussi sensible aux valeurs extrêmes, la précision avec laquelle on peut estimer de la moyenne est affectée.
 
 Dans le graphique ci-dessous, la courbe verte représente une distribution normale centrée réduite, $y \sim N(0, 1)$. La courbe orange représente le mélange de deux distributions: 95% des observations proviennent de la distribution $N(0, 1)$ et 5% proviennent d'une distribution avec un écart-type plus grand: $N(0, 5)$. Ce mélange représente le cas où la plupart des observations suivent une distribution normale, sauf une petite fraction dont les valeurs sont plus extrêmes qu'attendu. Sur une échelle linéaire de la densité de probabilité $f(y)$ (à gauche), les deux distributions apparaissent très semblables. Sur une échelle logarithmique (à droite), on voit clairement que les valeurs extrêmes sont beaucoup plus probables pour la distribution de mélange (ex.: environ 30 fois plus probable d'obtenir $y = -4$ ou $y = 4$).
+Chaque division de l'axe vertical représente un multiple de la densité de probabilité plutôt qu'une unité fixe. Cela signifie que les différences dans les valeurs de densité de probabilité entre les valeurs extrêmes et les valeurs plus centrales sont amplifiées sur l'échelle logarithmique.
 
 ```{r, echo = FALSE}
 p1 <- ggplot(NULL) + xlim(-4, 4) +
@@ -84,6 +87,13 @@ Pour la distribution normale, l'erreur-type de la moyenne obtenue par simulation
 ```{r}
 sd(apply(norm_samp, 2, mean))
 sd(apply(mix_samp, 2, mean))
+
+percentage_sup <- round(((sd(apply(mix_samp, 2, mean)) - sd(apply(norm_samp, 2, mean))
+) / sd(apply(norm_samp, 2, mean))
+) * 100)
+
+
+percentage_sup
 ```
 
 Quant à la médiane, son erreur-type est supérieure à celle de la moyenne pour la distribution normale, mais étant moins sensible (plus robuste) aux valeurs extrêmes, elle est estimée plus précisément pour la distribution de mélange.
@@ -91,6 +101,13 @@ Quant à la médiane, son erreur-type est supérieure à celle de la moyenne pou
 ```{r}
 sd(apply(norm_samp, 2, median))
 sd(apply(mix_samp, 2, median))
+
+percentage_sup <- round(((sd(apply(mix_samp, 2, median)) - sd(apply(norm_samp, 2, median))
+) / sd(apply(norm_samp, 2, median))
+) * 100)
+
+percentage_sup
+
 ```
 
 Qu'est-ce que ces résultats signifient? Supposons que nous comparons deux groupes entre lesquels la moyenne et la médiane d'une variable réponse diffèrent; si la distribution de la variable est symétrique, alors la moyenne est identique à la médiane pour chaque groupe. Si la variable suit une distribution normale, il est plus facile de détecter une différence entre les moyennes qu'entre les médianes; un test basé sur les moyennes, comme le test $t$, a une plus grande puissance. En présence de valeurs extrêmes, l'erreur-type de la moyenne augmente et un test basé sur la différence entre médianes pourrait être plus puissant.
@@ -366,6 +383,8 @@ library(quantreg)
 data(Mammals)
 ggplot(Mammals, aes(x = log(weight), y = speed)) +
     geom_point()
+
+
 ```
 
 D'après ce graphique, il semble que le poids pourrait agir comme facteur limitant pour la vitesse des mammifères, donc son effet devrait être davantage ressenti sur les quantiles élevés de la distribution.

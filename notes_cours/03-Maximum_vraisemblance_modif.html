@@ -251,12 +251,12 @@ modèle.</p>
 <p>La structure du modèle est la forme fonctionnelle spécifique supposée
 pour la distribution de données. La forme fonctionnelle d’un modèle est
 l’expression mathématique représentant la manière dont les variables
-sont combinées pour décrire la relation sous-jacente entre elles. La
-forme fonctionnelle dépend donc de la nature des variables impliquées
-(comptage, données continues, catégories etc.) et leurs relations.Le but
-d’un modèle paramétrique est donc d’ajuster une distribution à vos
-données qui puisse généraliser la relation entre vos variables à tous
-les cas similaires à votre étude de cas.</p>
+sont combinées pour décrire leur relation. La forme fonctionnelle dépend
+donc de la nature des variables impliquées (comptage, données continues,
+catégories etc.) et des patrons qui ont été prévus. Le but d’un modèle
+paramétrique est donc d’ajuster une distribution à vos données qui
+puisse généraliser la relation entre vos variables à tous les cas
+similaires à votre étude de cas.</p>
 <p>Supposons que nous avons une série d’observations d’une variable
 aléatoire <span class="math inline">\(y\)</span> et un modèle
 statistique potentiel pour cette variable. Ce modèle peut inclure la
@@ -272,7 +272,7 @@ valeurs observées de la variable. Cette méthode peut être appliquée peu
 importe la forme mathématique du modèle, ce qui permet de choisir les
 modèles les plus compatibles avec notre compréhension des processus
 naturels, sans être limités par les modèles déjà implémentés dans des
-logiciels statistiques. (Les méthodes bayésiennes que nous verrons plus
+logiciels statistiques (Les méthodes bayésiennes que nous verrons plus
 tard dans le cours ont aussi cette versatilité.)</p>
 <p>Si la méthode générale du maximum de vraisemblance n’a pas été
 présenté dans le cours préalable à celui-ci (ECL7102), certaines des
@@ -320,7 +320,10 @@ class="math inline">\(y\)</span> suit une distribution binomiale:</p>
 pour la population et <span class="math inline">\({n \choose y}\)</span>
 représente le nombre de façons de choisir <span
 class="math inline">\(y\)</span> individus parmi <span
-class="math inline">\(n\)</span>. Nous écrivons <span
+class="math inline">\(n\)</span>, autrément dit combien de combinaisons
+différentes de <span class="math inline">\(y\)</span> éléments peuvent
+être choisies parmi un ensemble de <span
+class="math inline">\(n\)</span> éléments. Nous écrivons <span
 class="math inline">\(f(y \vert p)\)</span> pour préciser que cette
 distribution de <span class="math inline">\(y\)</span> est
 <em>conditionnelle</em> à une certaine valeur de <span
@@ -435,15 +438,15 @@ ou disponibles, qui représentent notre échantillon.</p>
 <p>l’estimé de <span class="math inline">\(\hat{p}\)</span> selon le
 maximum de vraisemblance est donné par:</p>
 <p><span class="math display">\[\hat{p} = \frac{y}{n}\]</span>
-<strong>Note</strong>: La démonstration du calcul est presenté dans le
+<strong>Note</strong>: La démonstration du calcul est présentée dans le
 chapitre du livre de Bolker en référence.</p>
 <p>La proportion de succès dans l’échantillon <span
 class="math inline">\(\hat{p}\)</span> est le meilleur estimé de la
 probabilité de succès <span class="math inline">\(p\)</span> dans la
 population.</p>
-<p>Si <span class="math inline">\(\hat{p}\)</span> répresente une
+<p>Si <span class="math inline">\(\hat{p}\)</span> représente une
 estimation ponctuelle de la proportion de succès dans la population, il
-est possible de consturir un interval de confiance auteur de <span
+est possible de calculer un intervalle de confiance auteur de <span
 class="math inline">\(\hat{p}\)</span>, dans le quel on peut être
 confiant que la vraie valeur de p se trouve. L’ intervalle de confiance
 est donnée par la fonction <span class="math inline">\(L(p)\)</span>.
@@ -558,62 +561,72 @@ des paramètres. La vérification de la concavité garantit que ces
 estimations sont des maxima globaux. Enfin, l’estimation de
 l’incertitude se fait en calculant la variance des estimations, offrant
 une évaluation de la précision de ces dernières.</p>
-<p>si on veut voir comment le tout pourrait marcher sur R on peut
-commencer par génèrer un échantillon de 100 données à partir d’une
-distribution normale avec une moyenne de 3 et un écart-type de 2.</p>
-<pre class="r"><code>set.seed(123)
-x &lt;- rnorm(100, mean = 5, sd = 2)
-y &lt;- 2 * x + rnorm(100, mean = 0, sd = 1)</code></pre>
+<p>Si on veut voir comment le tout pourrait marcher sur R on peut
+commencer par générer une variable indépendante <span
+class="math inline">\(x\)</span>, à partir d’une distribution normale,
+puis une variable dépendant <span class="math inline">\(y\)</span> qui
+utilise un modèle linéaire pour simuler une relation linéaire entre
+<span class="math inline">\(y\)</span> et <span
+class="math inline">\(x\)</span>. Pour ce faire <span
+class="math inline">\(y\)</span> est donnée par deux coefficients
+(intercepte et pente) plus le terme d’erreur, qui suit une distribution
+normale.</p>
+<pre class="r"><code>set.seed(42)
+
+x &lt;- rnorm(100)
+
+y &lt;- 3 + 2 * x + rnorm(100, mean = 0, sd = 1) #intercept =3 ; pente = 2; erreur = distribution normale
+
+datareg&lt;-data.frame(x,y)
+plot(x,y)</code></pre>
+<p><img src="03-Maximum_vraisemblance_modif_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p>Ensuite, on crée une fonction log_likelihood prend deux arguments :
 paramétrés (un vecteur contenant les paramètres du modèle) et données
 (les données observées).</p>
 <p>Définition de la fonction de log-vraisemblance :</p>
-<pre class="r"><code>log_likelihood_linear &lt;- function(parameters, x, y) {
-  beta_0 &lt;- parameters[1]
-  beta_1 &lt;- parameters[2]
-  sigma &lt;- parameters[3]
-  
-  residuals &lt;- y - (beta_0 + beta_1 * x)
-  log_likelihood &lt;- -sum(dnorm(residuals / sigma, mean = 0, sd = 1, log = TRUE)) - length(y) * log(sigma)
-  
-  # Vérification des valeurs finies
-  if (!is.finite(log_likelihood)) {
-    cat(&quot;Paramètres :&quot;, parameters, &quot;\n&quot;)
-    cat(&quot;Résidus :&quot;, residuals, &quot;\n&quot;)
-    cat(&quot;Log-vraisemblance :&quot;, log_likelihood, &quot;\n&quot;)
-    return(Inf)
-  }
-  
-  return(log_likelihood)
-}</code></pre>
-</div>
-</div>
-</div>
-<div id="estimation-des-paramètres-par-maximum-de-vraisemblance-mle"
-class="section level1">
-<h1>Estimation des paramètres par maximum de vraisemblance (MLE) :</h1>
-<p>On utilise la fonction optim pour trouver les paramètres qui
-maximisent la log-vraisemblance négative. On part des valeurs moyennes
-et écart-type des données comme valeurs initiales.L’utilisation de la
-log-vraisemblance négative est courante dans le contexte de
-l’optimisation statistique et de l’estimation par maximum de
-vraisemblance (MLE).</p>
-<p>La fonction optim est utilisée pour estimer les paramètres (<span
-class="math inline">\(/mi\)</span>)</p>
-<pre class="r"><code>results_mle_linear &lt;- optim(c(mean(y), 1, sd(y)), log_likelihood_linear, x = x, y = y, method = &quot;L-BFGS-B&quot;)
+<pre class="r"><code>x &lt;- rnorm(100)
+y &lt;- 3 + 2 * x + rnorm(100, mean = 0, sd = 1)
 
-# Résultats
-intercept_estimate &lt;- results_mle_linear$par[1]
-slope_estimate &lt;- results_mle_linear$par[2]
-sigma_estimate &lt;- results_mle_linear$par[3]
+datareg&lt;-data.frame(x,y)
 
-# Affichage des résultats
-cat(&quot;Estimation de l&#39;intercept (beta_0) :&quot;, intercept_estimate, &quot;\n&quot;)</code></pre>
-<pre><code>## Estimation de l&#39;intercept (beta_0) : -27590874416</code></pre>
-<pre class="r"><code>cat(&quot;Estimation du coefficient de pente (beta_1) :&quot;, slope_estimate, &quot;\n&quot;)</code></pre>
-<pre><code>## Estimation du coefficient de pente (beta_1) : 8823672846</code></pre>
-<pre class="r"><code>cat(&quot;Estimation de l&#39;écart-type des résidus (sigma) :&quot;, sigma_estimate, &quot;\n&quot;)</code></pre>
-<pre><code>## Estimation de l&#39;écart-type des résidus (sigma) : 488745366616</code></pre>
+norm_nll &lt;- function(y_o, x_c, sigma) {
+  mu &lt;- y_o + x_c * datareg$x
+  -sum(dnorm(datareg$y, mu, sigma, log = TRUE))
+}
+
+
+
+
+# Estimer les paramètres par maximisation de la moins log-vraisemblance avec mle2 du package bbmle
+
+mle_norm &lt;- mle(norm_nll, start = list(y_o = 1, x_c = 0, sigma = 1))
+mle_norm</code></pre>
+<pre><code>## 
+## Call:
+## mle(minuslogl = norm_nll, start = list(y_o = 1, x_c = 0, sigma = 1))
+## 
+## Coefficients:
+##       y_o       x_c     sigma 
+## 3.0324929 1.9604096 0.8708721</code></pre>
+<p>Si l’on compare ces estimations des paramètres avec celles obtenues à
+partir d’un modèle linéaire où ils sont estimés par la Méthode des
+Moindres Carrés Ordinaires (OLS), on observe des valeurs extrêmement
+similaires, voire identiques.</p>
+<pre class="r"><code>lm(y~x, datareg)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = y ~ x, data = datareg)
+## 
+## Coefficients:
+## (Intercept)            x  
+##       3.033        1.960</code></pre>
+<p>Ici, le fait d’avoir des estimations des paramètres équivalentes dans
+le cas des méthodes des moindres carrés ordinaires (OLS) et de la
+maximisation de la vraisemblance (MLE) dépend du postulat dans une
+régression linéaire selon lequel les erreurs du modèle sont supposées
+suivre une distribution normale.</p>
+</div>
+</div>
 </div>
 <div id="application-du-maximum-de-vraisemblance-dans-r"
 class="section level1">

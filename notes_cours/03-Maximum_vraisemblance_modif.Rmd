@@ -25,11 +25,11 @@ set.seed(8202)
 
 Le maximum de vraisemblance est une méthode générale pour estimer les paramètres d'un modèle statistique. Les paramètres d'un modèle statistique définissent la structure du modèle et sont estimées à partir des données observées (ou disponibles) lors du processus d'ajustement du modèle. 
 
-La structure du modèle est la forme fonctionnelle spécifique supposée pour la distribution de données. La forme fonctionnelle d'un modèle est l'expression mathématique représentant la manière dont les variables sont combinées pour décrire la relation sous-jacente entre elles. La forme fonctionnelle dépend donc de la nature des variables impliquées (comptage, données continues, catégories etc.) et leurs relations.Le but d'un modèle paramétrique est donc d'ajuster une distribution à vos données qui puisse généraliser la relation entre vos variables à tous les cas similaires à votre étude de cas.
+La structure du modèle est la forme fonctionnelle spécifique supposée pour la distribution de données. La forme fonctionnelle d'un modèle est l'expression mathématique représentant la manière dont les variables sont combinées pour décrire leur relation. La forme fonctionnelle dépend donc de la nature des variables impliquées (comptage, données continues, catégories etc.) et des patrons qui ont été prévus. Le but d'un modèle paramétrique est donc d'ajuster une distribution à vos données qui puisse généraliser la relation entre vos variables à tous les cas similaires à votre étude de cas.
 
 Supposons que nous avons une série d'observations d'une variable aléatoire $y$ et un modèle statistique potentiel pour cette variable. Ce modèle peut inclure la dépendance de $y$ sur d'autres variables prédictrices, ainsi qu'une distribution statistique pour la portion non-expliquée de la variation de $y$. En général, un tel modèle contient différents paramètres inconnus qui doivent être ajustés aux données observées.
 
-Selon le maximum de vraisemblance, les meilleurs estimés des paramètres d'un modèle sont ceux qui maximisent la probabilité des valeurs observées de la variable. Cette méthode peut être appliquée peu importe la forme mathématique du modèle, ce qui permet de choisir les modèles les plus compatibles avec notre compréhension des processus naturels, sans être limités par les modèles déjà implémentés dans des logiciels statistiques. (Les méthodes bayésiennes que nous verrons plus tard dans le cours ont aussi cette versatilité.)
+Selon le maximum de vraisemblance, les meilleurs estimés des paramètres d'un modèle sont ceux qui maximisent la probabilité des valeurs observées de la variable. Cette méthode peut être appliquée peu importe la forme mathématique du modèle, ce qui permet de choisir les modèles les plus compatibles avec notre compréhension des processus naturels, sans être limités par les modèles déjà implémentés dans des logiciels statistiques (Les méthodes bayésiennes que nous verrons plus tard dans le cours ont aussi cette versatilité.)
 
 Si la méthode générale du maximum de vraisemblance n'a pas été présenté dans le cours préalable à celui-ci (ECL7102), certaines des méthodes vues dans ce cours étaient basées sur ce principe:
 
@@ -66,7 +66,7 @@ Supposons que nous souhaitons estimer le taux de germination d'un lot de semence
 
 $$f(y \vert p) = {n \choose y} p^y (1-p)^{n-y} $$
 
-où le nombre d'essais $n = 20$, $p$ est la probabilité de germination pour la population et ${n \choose y}$ représente le nombre de façons de choisir $y$ individus parmi $n$. Nous écrivons $f(y \vert p)$ pour préciser que cette distribution de $y$ est *conditionnelle* à une certaine valeur de $p$. 
+où le nombre d'essais $n = 20$, $p$ est la probabilité de germination pour la population et ${n \choose y}$ représente le nombre de façons de choisir $y$ individus parmi $n$, autrément dit combien de combinaisons différentes de $y$ éléments peuvent être choisies parmi un ensemble de $n$ éléments. Nous écrivons $f(y \vert p)$ pour préciser que cette distribution de $y$ est *conditionnelle* à une certaine valeur de $p$. 
 
 *Note*: dans la distribution binomiale, Y représente le nombre de succès dans un nombre fixe d'essais indépendants, chacun ayant une probabilité de succès P. Si on souhaite examiner la distribution de Y sous l'hypothèse que P a une valeur spécifique, on peut exprimer cela comme une distribution conditionnelle à la valeur de P que nous avons établi.
 
@@ -129,12 +129,12 @@ Il s'agit d'une distribution définie par deux paramètres, n, les nombre d'essa
 l'estimé de $\hat{p}$ selon le maximum de vraisemblance est donné par:
 
 $$\hat{p} = \frac{y}{n}$$
-**Note**: La démonstration du calcul est presenté dans le chapitre du livre de Bolker en référence.
+**Note**: La démonstration du calcul est présentée dans le chapitre du livre de Bolker en référence.
 
 
 La proportion de succès dans l'échantillon  $\hat{p}$   est le meilleur estimé de la probabilité de succès $p$ dans la population. 
 
-Si $\hat{p}$ répresente une estimation ponctuelle de la proportion de succès dans la population, il est possible de consturir un interval de confiance auteur de $\hat{p}$, dans le quel on peut être confiant que la vraie valeur de p se trouve. L’ intervalle de confiance est donnée par la fonction $L(p)$. Cette fonction dépende de $\hat{p}$, de la valeur critiqué associé au niveau de confiance choisi $z$ et de la taille de l'échantillon $n$
+Si $\hat{p}$ représente une estimation ponctuelle de la proportion de succès dans la population, il est possible de calculer un intervalle de confiance auteur de $\hat{p}$, dans le quel on peut être confiant que la vraie valeur de p se trouve. L’ intervalle de confiance est donnée par la fonction $L(p)$. Cette fonction dépende de $\hat{p}$, de la valeur critiqué associé au niveau de confiance choisi $z$ et de la taille de l'échantillon $n$
 
 La valeur de p qui maximise directement la fonction de vraisemblance est obtenue à travers des algorithmes d' optimisations, cependant, si vous simulez un échantillon à partir des données suivantes une distributions binomiales, vous pouvez détecter cette valeur dans le graphique. 
 
@@ -177,7 +177,7 @@ $$y \sim N(\beta_0 + \beta_1 x, \sigma)$$
 
 Ce modèle comporte trois paramètres à estimer: 1) l'intercepte $\beta_0$, 2)la pente $\beta_1$ et 3) le terme d'erreur $\sigma$. Ce dernier terme est la différence entre la valeur observé de $y$ et la valeur prédite par le modèle. En d'autres termes, il s'agit de la variance qui n'est pas expliqué par les variables indépendantes. 
 
-Comme pour la distribution binomiale, il est possible de calculer la densité de probabilité d'une observation de $y$ avec une formule adaptée.  En effet, contrairement au cas précédent, ici nous n'estimons pas la proportion de succès dans l'échantillon  ($\hat{p}$), mais la densité de probabilité de la variable aléatoire $y$ qui est donnée par la formule:
+Comme pour la distribution binomiale, il est possible de calculer la densité de probabilité d'une observation de $y$ avec une formule adaptée. En effet, contrairement au cas précédent, ici nous n'estimons pas la proportion de succès dans l'échantillon  ($\hat{p}$), mais la densité de probabilité de la variable aléatoire $y$ qui est donnée par la formule:
 
 $$f(y \vert \beta_0, \beta_1, \sigma) = \frac{1}{\sigma \sqrt{2 \pi}} e^{-\frac{1}{2} \left( \frac{y - \beta_0 - \beta_1 x}{\sigma} \right)^2}$$
 
@@ -193,7 +193,7 @@ $$l(\beta_0, \beta_1, \sigma) = n \log \left( \frac{1}{\sigma \sqrt{2 \pi}} \rig
 
 
 
-Si on veut voir comment le tout pourrait marcher sur R on peut commencer par générer une variable indépendente $x$, à partir d'une distribution normale, puis une variable dépendant $y$ qui utilise un modèle linéaire pour simuler une relation linéare entre $y$ et $x$. Pour ce faire $y$ est donnée par deux coefficients (intercepte et  pente) plus le terme d'erreur, qui suit une distribution normale.
+Si on veut voir comment le tout pourrait marcher sur R on peut commencer par générer une variable indépendante $x$, à partir d'une distribution normale, puis une variable dépendant $y$ qui utilise un modèle linéaire pour simuler une relation linéaire entre $y$ et $x$. Pour ce faire $y$ est donnée par deux coefficients (intercepte et  pente) plus le terme d'erreur, qui suit une distribution normale.
 
 
 ```{r, ECHO=FALSE}
@@ -214,7 +214,7 @@ Ensuite, on crée une fonction log_likelihood prend deux arguments : paramétré
 
 Définition de la fonction de log-vraisemblance :
 
-```{r, ECHO=FALSE}
+```{r, ECHO=FALSE,warning=FALSE}
 
 x <- rnorm(100)
 y <- 3 + 2 * x + rnorm(100, mean = 0, sd = 1)
@@ -226,14 +226,24 @@ norm_nll <- function(y_o, x_c, sigma) {
   -sum(dnorm(datareg$y, mu, sigma, log = TRUE))
 }
 
+
+
+
 # Estimer les paramètres par maximisation de la moins log-vraisemblance avec mle2 du package bbmle
 
 mle_norm <- mle(norm_nll, start = list(y_o = 1, x_c = 0, sigma = 1))
+mle_norm
+```
+
+Si l'on compare ces estimations des paramètres avec celles obtenues à partir d'un modèle linéaire où ils sont estimés par la Méthode des Moindres Carrés Ordinaires (OLS), on observe des valeurs extrêmement similaires, voire identiques.
+
+```{r, ECHO=FALSE,warning=FALSE}
 
 lm(y~x, datareg)
 
 ```
 
+Ici, le fait d'avoir des estimations des paramètres équivalentes dans le cas des méthodes des moindres carrés ordinaires (OLS) et de la maximisation de la vraisemblance (MLE) dépend du postulat dans une régression linéaire selon lequel les erreurs du modèle sont supposées suivre une distribution normale.
 
 # Application du maximum de vraisemblance dans R
 

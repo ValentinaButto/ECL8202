@@ -1,20 +1,20 @@
 ---
 title: "Régression robuste aux valeurs extrêmes"
 output:
-    pdf_document:
     html_document:
         self_contained: false
         lib_dir: libs
         theme: spacelab
         toc: true
         toc_float: true
+    pdf_document:
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Ce travail doit être remis avant le **18 février à 17h** sur Moodle.
+Ce travail doit être remis avant le **23 février avant 22h** sur Moodle.
 
 ## Données
 

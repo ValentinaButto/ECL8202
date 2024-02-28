@@ -17,44 +17,56 @@ theme_set(theme_cowplot())
 set.seed(8202)
 ```
 
+
+
 # Introduction
 
-Maximum likelihood is a general method for estimating the parameters of a statistical model. For example, suppose we have a series of observations of a random variable $y$ and a potential statistical model for that variable. This model can include the dependence of $y$ on other predictor variables, as well as a statistical distribution for the unexplained portion of the variation in $y$. In general, such a model contains various unknown parameters that must be fitted to the observed data.
+Maximum Likelihood is a general method for estimating the parameters of a statistical model. The parameters of a statistical model define the structure of the model and are estimated from the observed (or available) data during the model fitting process.
 
-In the maximum likelihood method, the best estimates of the parameters of a model are those that maximize the probability of the observed values of the variable. This method can be applied regardless of the mathematical form of the model, allowing us to choose models that are most compatible with our understanding of natural processes, without being limited by models already implemented in statistical software. (The Bayesian methods we will see later in the course also have this versatility).
+The model's structure is the specific functional form assumed for the data distribution. The functional form of a model is the mathematical expression representing how variables are combined to describe the underlying relationship between them. Thus, the functional form depends on the nature of the involved variables (count, continuous data, categories, etc.) and their relationships. The goal of a parametric model is to fit a distribution to your data that can generalize the relationship between your variables to all cases similar to your case study.
 
-While the general maximum likelihood method was not presented in the course prior to this one (ECL7102), some of the methods seen in that course were based on this principle:
+Suppose we have a series of observations of a random variable $y$ and a potential statistical model for this variable. This model may include the dependence of $y$ on other predictor variables, as well as a statistical distribution for the unexplained portion of the variation in $y$. In general, such a model contains various unknown parameters that need to be adjusted to the observed data.
+
+According to Maximum Likelihood, the best estimates of a model's parameters are those that maximize the probability of the observed values of the variable. This method can be applied regardless of the mathematical form of the model, allowing us to choose models most compatible with our understanding of natural processes, without being limited by models already implemented in statistical software. (Bayesian methods, which we will see later in the course, also have this versatility.)
+
+If the general Maximum Likelihood method has not been presented in the preceding course (ECL7102), some of the methods covered in this course were based on this principle:
 
 - Model selection using AIC is based on the likelihood function.
-
-- Parameter estimation in generalized linear models is performed by maximizing the likelihood.
-
-- Parameter estimation in mixed linear models uses a modified version of the maximum likelihood (the restricted maximum likelihood or REML).
-
-## Contents
-
-- Principle of maximum likelihood
-
-- Application of the maximum likelihood in R
-
-- Likelihood-ratio test
-
-- Calculation of confidence intervals
-
-- Estimation of several parameters: profiled likelihood and linear approximation
+  
+- Parameter estimation for generalized linear models is done by maximizing likelihood.
+  
+- Parameter estimation for mixed-effects linear models uses a modified version of Maximum Likelihood (Restricted Maximum Likelihood or REML).
 
 
-# Principle of maximum likelihood
+## Course Content
 
-## Likelihood function
+- Principle of Maximum Likelihood
 
-Suppose we want to estimate the germination rate of a seed lot by germinating 20 of those seeds under the same conditions. If the variable $y$ represents the number of successfully germinated seeds for one run of the experiment, then $y$ follows a binomial distribution:
+- Application of Maximum Likelihood in R
+
+- Likelihood Ratio Test
+
+- Confidence Interval Calculations
+
+- Estimation of Multiple Parameters: Profile Likelihood and Linear Approximation
+
+
+# Principle of Maximum Likelihood
+
+## Likelihood Function
+
+Likelihood is a measure of the consistency between the observed data and the possible values of a model's parameters. Likelihood is thus a measure of the probability that the observed data will occur given the estimated parameters.
+
+Suppose we want to estimate the germination rate of a batch of seeds by germinating 20 of these seeds under the same conditions. If the variable $y$ represents the number of seeds that successfully germinated for one realization of the experiment, then $y$ follows a binomial distribution:
+
 
 $$f(y \vert p) = {n \choose y} p^y (1-p)^{n-y} $$
 
 where $n = 20$ is the number of attempts (number of seeds, in this case), $p$ is the germination probability for the population and ${n \choose y}$ represents the number of ways to choose $y$ individuals among $n$. We write $f(y \vert p)$ to specify that this distribution of $y$ is *conditional* on a specific value of the parameter $p$.
 
-For example, here is the distribution of $y$ if $p = 0.2$. The probability to get $y = 6$ in this case is approximately 0.11 (dotted line on the graph).
+*Note*: In the binomial distribution, Y represents the number of successes in a fixed number of independent trials, each with a probability of success P. If we want to examine the distribution of Y under the assumption that P has a specific value, we can express this as a distribution conditional on the value of P that we have established.
+
+For example, here is the distribution of $y$ if $p = 0.2$. The probability of obtaining $y = 6$ in this case is approximately 0.11 (dotted line on the graph).
 
 ```{r}
 ggplot(data.frame(x = 0:20), aes(x)) +
@@ -88,9 +100,9 @@ ggplot(NULL) +
     scale_y_continuous(limits = c(0, 0.2), expand = c(0, 0))
 ```
 
-The likelihood of $p = 0.2$ for this observation of $y$ is therefore also 0.11. Note that while $f(y \vert p)$ was a discrete distribution, since $p$ is a continuous parameter, the likelihood $L(p)$ is defined for all real values between 0 and 1.
+The likelihood of $p = 0.2$ for this observation of $y$ is also 0.11. Note that $f(y \vert p)$ was a discrete distribution, but since $p$ is a continuous parameter, the likelihood $L(p)$ is defined for all real values between 0 and 1.
 
-More generally, suppose that $y = (y_1, y_2, ..., y_n)$ is a vector of observations and $\theta = (\theta_1, ..., \theta_m)$ is a vector of the adjustable parameters of the model proposed to explain these observations. In this case, the likelihood of a specific vector of values for $\theta$ corresponds to the joint probability of the observations of $y$, conditional on those values of $\theta$. We will see a specific example of the calculation of $L$ for a multi-parameter model (normal distribution) in the next section.
+In a more general sense, suppose $y = (y_1, y_2, ..., y_n)$ is a vector of observations, and $\theta = (\theta_1, ..., \theta_m)$ is a vector of adjustable parameters of the proposed model to explain these observations. In this case, the likelihood of a specific vector of values for $\theta$ corresponds to the joint probability of the observations of $y$, conditioned on these values of $\theta$. We will see a specific example of calculating $L$ for a multi-parameter model (normal distribution) in the next section.
 
 $$L(\theta) = p(y | \theta)$$
 
@@ -98,106 +110,178 @@ $$L(\theta) = p(y | \theta)$$
 
 ## Maximum likelihood
 
-According to the principle of maximum likelihood, the best estimate of the model's parameters according to our observations $y$ is the vector of $\theta$ values that maximizes the value of $L(\theta)$.
+The maximum likelihood method is an approach to parameter estimation aiming to find values that maximize the likelihood of the observed data, given the specific parameters of a statistical model. In other words, it seeks to minimize the differences between the observed or available data and the modeled data using a certain combination of parameters.
+
+According to the principle of maximum likelihood, the best estimate of the model parameters based on our observations $y$ is the vector of values $\theta$ that maximizes the value of $L(\theta)$.
 
 ### Example: Binomial distribution
 
-For the binomial model presented above, it is possible to demonstrate (see the calculation in Bolker's textbook chapter cited in the references) that the maximum likelihood estimate of $p$ is given by:
+### Exemple: Distribution binomiale
+
+Voici une distribution binomiale: 
+$$y \sim Binomial(n,p)$$
+Il s'agit d'une distribution définie par deux paramètres, n, les nombre d'essais et p, la probabilité de succès. La méthode de maximum de vraisemblance nous aide à calculer la proposition de succès dans la population $\hat{p}$, basée sur les données observées ou disponibles, qui représentent notre échantillon.  
+
+l'estimé de $\hat{p}$ selon le maximum de vraisemblance est donné par:
 
 $$\hat{p} = \frac{y}{n}$$
+**Note**: La démonstration du calcul est presenté dans le chapitre du livre de Bolker en référence.
 
-In other words, the proportion of successes in the sample is the best estimate of the probability of success in the population. With $y = 6$ and $n = 20$, we see that the maximum of $L(p)$ is obtained for $p = 0.3$.
+
+La proportion de succès dans l'échantillon  $\hat{p}$   est le meilleur estimé de la probabilité de succès $p$ dans la population. 
+
+Si $\hat{p}$ répresente une estimation ponctuelle de la proportion de succès dans la population, il est possible de consturir un interval de confiance auteur de $\hat{p}$, dans le quel on peut être confiant que la vraie valeur de p se trouve. L’ intervalle de confiance est donnée par la fonction $L(p)$. Cette fonction dépende de $\hat{p}$, de la valeur critiqué associé au niveau de confiance choisi $z$ et de la taille de l'échantillon $n$
+
+La valeur de p qui maximise directement la fonction de vraisemblance est obtenue à travers des algorithmes d' optimisations, cependant, si vous simulez un échantillon à partir des données suivantes une distributions binomiales, vous pouvez détecter cette valeur dans le graphique. 
+
+On commence donc par simuler une distribution binomiale: il nous faut deux paramétrés pour ce faire 1) $y$ : le nombre de succès qu'on souhaite évaluer. 2) $n$ : la taille de l'échantillon pour différentes valeurs de probabilités de succès.
+
+Avec la fonction stat_function du package ggplot2 il est possible de tracer une fonction de densité de probabilité pour la distribution binomiale avec les paramétrés choisi. La densité de probabilité est la fonction qui attribue une probabilité relative à chaque valeur possible d'une variable aléatoire continue.
+
+Notre fonction binomiale peut être définie au préalable. Si $y = 6$ et $n = 20$, alors: 
 
 ```{r}
+binom_density <- function(x) dbinom(6, size = 20, prob = x)
+```
+
+L'argument prob = x spécifie que nous voulons évaluer la probabilité pour différentes valeurs de probabilité de succès représentées par la variable x.
+
+En visualisant le graphique obtenu avec ggplot, nous pouvons observer que le maximum de $L(p)$ est obtenu pour $p = 0.3$.
+
+```{r, ECHO=FALSE}
 ggplot(NULL) +
     labs(x = "p", y = "L(p)") +
-    stat_function(fun = function(x) dbinom(6, 20, prob = x),
+    stat_function(fun = binom_density,
                   geom = "density") +
     geom_segment(aes(x = 0, xend = 0.3, y = dbinom(6, 20, 0.3),
                      yend = dbinom(6, 20, 0.3)), 
-                 color = "#b3452c", linetype = "dashed", size = 1) +
-    geom_segment(aes(x = 0.3, xend = 0.3, y = 0, yend = dbinom(6, 20, 0.3)), 
+                color = "#b3452c", linetype = "dashed", size = 1) +
+   geom_segment(aes(x = 0.3, xend = 0.3, y = 0, yend = dbinom(6, 20, 0.3)), 
                  color = "#b3452c", linetype = "dashed", size = 1) +
     scale_x_continuous(limits = c(0, 1), expand = c(0, 0)) +
     scale_y_continuous(limits = c(0, 0.2), expand = c(0, 0))
 ```
+ 
+ 
 
-### Example: Linear model
 
-In the simple linear regression model, the response variable $y$ follows a normal distribution, with the mean linearly dependent on the predictor $x$, and with a constant standard deviation $\sigma$:
+### Exemple: Modèle linéaire et Log-vraisemblance
+
+Dans le modèle de régression linéaire simple, la variable réponse $y$ suit une distribution normale, avec une moyenne dépendant linéairement du prédicteur $x$ et un écart-type constant $\sigma$:
 
 $$y \sim N(\beta_0 + \beta_1 x, \sigma)$$
 
-This model includes three parameters to estimate: $\beta_0$, $\beta_1$ and $\sigma$. The probability density for an observation $y$ is thus given by:
+Ce modèle comporte trois paramètres à estimer: 1) l'intercepte $\beta_0$, 2)la pente $\beta_1$ et 3) le terme d'erreur $\sigma$. Ce dernier terme est la différence entre la valeur observé de $y$ et la valeur prédite par le modèle. En d'autres termes, il s'agit de la variance qui n'est pas expliqué par les variables indépendantes. 
+
+Comme pour la distribution binomiale, il est possible de calculer la densité de probabilité d'une observation de $y$ avec une formule adaptée.  En effet, contrairement au cas précédent, ici nous n'estimons pas la proportion de succès dans l'échantillon  ($\hat{p}$), mais la densité de probabilité de la variable aléatoire $y$ qui est donnée par la formule:
 
 $$f(y \vert \beta_0, \beta_1, \sigma) = \frac{1}{\sigma \sqrt{2 \pi}} e^{-\frac{1}{2} \left( \frac{y - \beta_0 - \beta_1 x}{\sigma} \right)^2}$$
 
-If we perform $n$ independent observations of $y$ (each with a predictor value $x$), their joint probability density is given by the product (noted $\Pi$) of the individual probability densities. Viewed as a function of the parameters, the following equation thus gives the joint likelihood of $\beta_0$, $\beta_1$ and $\sigma$:
+La fonction de vraisemblance pour l'ensemble des données est le produit des densités de probabilités pour toutes les observations. Si nous réalisons $n$ observations indépendantes de $y$ (chacune avec la valeur du prédicteur $x$), leur densité de probabilité conjointe est donnée par le produit (noté $\Pi$) des densités de probabilité individuelles. Vue comme une fonction des paramètres, l'équation suivante donne donc la vraisemblance conjointe de $\beta_0$, $\beta_1$ et $\sigma$:
 
 $$L(\beta_0, \beta_1, \sigma) = f(y_1, ..., y_n \vert \beta_0, \beta_1, \sigma) = \prod_{i=1}^n \frac{1}{\sigma \sqrt{2 \pi}} e^{-\frac{1}{2} \left( \frac{y_i - \beta_0 - \beta_1 x_i}{\sigma} \right)^2}$$
+L'objectif est donc de trouver les valeurs de $\beta_0$,  $\beta_1$, $\sigma$ qui maximisent cette fonction de vraisemblance. Cépendant, il est souvent plus facile de calculer la log-vraisemblance, soit $l = \log L$. Puisque le logarithme est une fonction *monotone* -- c'est-à-dire que si $L$ augmente, $\log L$ augmente aussi -- alors la valeur des paramètres qui maximise $l$ maximisera aussi $L$. 
 
-### Log-likelihood
-
-In practice, it is often easier to calculate the log-likelihood, i.e. $l = \log L$. Since the log is a *monotonic* function -- that is, if $L$ increases, $\log L$ increases too -- then the value of the parameters that maximizes $l$ will also maximize $L$.
-
-Since a logarithm transforms a product into a sum:
-
-$$ \log(xy) = \log(x) + \log(y)$$
-
-the log-likelihood for the linear regression problem above is given by:
-
-$$l(\beta_0, \beta_1, \sigma) = \sum_{i=1}^n \left( \log \left( \frac{1}{\sigma \sqrt{2 \pi}} \right) - \frac{1}{2} \left( \frac{y_i - \beta_0 - \beta_1 x_i}{\sigma} \right)^2 \right)$$
-
-or by simplifying further:
+Puisqu'un logarithme transforme un produit en somme, après avoir regroupé les termes constantes, la log-vraisemblance pour le problème de régression linéaire ci-dessus correspond à:
 
 $$l(\beta_0, \beta_1, \sigma) = n \log \left( \frac{1}{\sigma \sqrt{2 \pi}} \right) - \frac{1}{2 \sigma^2}  \sum_{i=1}^n \left( y_i - \beta_0 - \beta_1 x_i \right)^2$$
-
-Note that the $\beta$ coefficients appear only in the second term of the equation, which contains the sum of the squared model residuals. The more this term decreases, the more $l$ increases, which explains why the estimates of the $\beta$ coefficients by the method of least squares are the same as those obtained by the minimum likelihood method.
-
-For relatively simple functions, the position of the maximum can be determined by finding the value of each parameter where the derivative of $l$ according to this parameter is 0. In particular, for the variance of the residuals $\sigma^2$, the following estimate is obtained:
-
-$$\hat{\sigma^2} = \frac{1}{n} \sum_{i=1}^n \left( y_i - \beta_0 - \beta_1 x_i \right)^2$$
-
-We know that this variance estimator is biased (an unbiased estimate would require $n - $1 in the denominator). The maximum likelihood does not guarantee an unbiased estimate, but the theory indicates that the bias becomes negligible for a large enough sample; in this example, the difference between $n-1$ and $n$ becomes less significant as $n$ increases.
+à partir de ce point, le processus pour estimer les paramètres au maximum de vraisemblance implique le calcul des dérivées partielles de la log-vraisemblance par rapport à chaque paramètre. En égalant ces dérivées à zéro et en résolvant, on trouve les estimations des paramètres. La vérification de la concavité garantit que ces estimations sont des maxima globaux. Enfin, l'estimation de l'incertitude se fait en calculant la variance des estimations, offrant une évaluation de la précision de ces dernières.
 
 
-# Application of the maximum likelihood in R
 
-## Example: Plants of the Galapagos Islands
+Si on veut voir comment le tout pourrait marcher sur R on peut commencer par générer une variable indépendente $x$, à partir d'une distribution normale, puis une variable dépendant $y$ qui utilise un modèle linéaire pour simuler une relation linéare entre $y$ et $x$. Pour ce faire $y$ est donnée par deux coefficients (intercepte et  pente) plus le terme d'erreur, qui suit une distribution normale.
 
-The file [galapagos.csv](../donnees/galapagos.csv) contains a dataset on the plant species richness for 30 islands of the Galapagos Archipelago. (*Source*: Johnson, M.P. and Raven, P.H. 1973. Species number and endemism: The Galapagos Archipelago revisited. *Science* 179: 893--895.)
+
+```{r, ECHO=FALSE}
+
+set.seed(42)
+
+x <- rnorm(100)
+
+y <- 3 + 2 * x + rnorm(100, mean = 0, sd = 1) #intercept =3 ; pente = 2; erreur = distribution normale
+
+datareg<-data.frame(x,y)
+plot(x,y)
+
+
+`
+
+
+Ensuite, on crée une fonction log_likelihood prend deux arguments : paramétrés (un vecteur contenant les paramètres du modèle) et données (les données observées).
+
+Définition de la fonction de log-vraisemblance :
+
+```{r, ECHO=FALSE}
+
+x <- rnorm(100)
+y <- 3 + 2 * x + rnorm(100, mean = 0, sd = 1)
+
+datareg<-data.frame(x,y)
+
+norm_nll <- function(y_o, x_c, sigma) {
+  mu <- y_o + x_c * datareg$x
+  -sum(dnorm(datareg$y, mu, sigma, log = TRUE))
+}
+
+# Estimer les paramètres par maximisation de la moins log-vraisemblance avec mle2 du package bbmle
+
+mle_norm <- mle(norm_nll, start = list(y_o = 1, x_c = 0, sigma = 1))
+
+lm(y~x, datareg)
+
+```
+
+
+# Application du maximum de vraisemblance dans R
+
+## Exemple: Plantes des îles Galapagos
+
+Le fichier [galapagos.csv](../donnees/galapagos.csv) contient un jeu de données sur la richesse spécifique des plantes de 30 îles de l'archipel des Galapagos. (*Source*: Johnson, M.P. et Raven, P.H. 1973. Species number and endemism: The Galapagos Archipelago revisited. *Science* 179: 893--895.)
 
 ```{r}
 galap <- read.csv("../donnees/galapagos.csv")
 str(galap)
 ```
 
-We will model these data with a negative binomial distribution. This distribution is appropriate to represent count data with a variance greater than that predicted by the Poisson distribution.
+Nous modéliserons ces données avec une distribution binomiale négative. Cette distribution est appropriée pour représenter les données de comptage dont la variance est supérieure à celle prévue par la distribution de Poisson. 
 
-If a variable $y$ follows a Poisson distribution, then its mean and variance are both given by the same parameter $\lambda$ .
+Si une variable $y$ suit une distribution de Poisson, alors sa moyenne et sa variance sont toutes deux données par un même paramètre $\lambda$.
 
 $$y \sim \textrm{Pois}(\lambda)$$
 
-The negative binomial distribution has two parameters, $\mu$ et $\theta$.
+La distribution binomiale négative comprend deux paramètres, ce qui accorde à cette distribution une plus grande flexibilité par rapport à celle de poisson, car elle permet une variation dans le nombre d'essais nécessaires pour atteindre un nombre spécifié de succès. 
+
+Dans une distribution binomiale négative, la variance est généralement plus grande que la moyenne, permettant une plus grande dispersion.
 
 $$y \sim \textrm{NB}(\mu, \theta)$$
 
-In this model, $y$ has a mean of $\mu$ and a variance of $\mu + \frac{\mu^2}{\theta}$. The parameter $\theta$ is always positive. A small value of $\theta$ represents a more variable distribution, while if $\theta$ is very high, the second term is negligible and the distribution approaches the Poisson distribution. 
+Dans ce modèle, $y$ a une moyenne de $\mu$ et une variance de $\theta$. 
 
-As in Poisson regression, the negative binomial model uses a logarithmic link to relate $\mu$ to a linear function of the predictors.
+$\mu$ représente la moyenne de la distribution, c'est-à-dire le nombre moyen d'essais nécessaires pour atteindre le nombre spécifié de succès.
+
+$\theta$ est le paramètre de dispersion qui influence la variabilité de la distribution est qui détermine,avec la moyenne, la probabilité de succès $p$, selon la formule: 
+
+$$p= \frac{\theta}{\mu +\theta}$$
+
+
+Son ajustement permet de mieux modéliser des situations où la variabilité des données est importante, ce qui peut être le cas dans des domaines tels que la modélisation des données de comptage
+
+Le paramètre $\theta$ est toujours positif. Une petite valeur de $\theta$ représente une distribution plus variable, tandis que si $\theta$ est très élevé, le deuxième terme est négligeable et la distribution tend vers celle de Poisson. 
+
+Comme pour la régression de Poisson, le modèle binomial négatif utilise un lien logarithmique pour relier $\mu$ à une fonction linéaire des prédicteurs.
 
 $$\log\mu = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...$$
 
-For this example, we will fit the model for the number of species (*Species*) according to the area of the island (*Area*, in km$^2$) and the distance to the nearest island (*Nearest*, in km). We also take the logarithm of each predictor. 
+Pour cet exemple, nous ajusterons le modèle du nombre d'espèces (*Species*) en fonction de la superficie de l'île (*Area*, en km$^2$) et de la distance jusqu'à l'île la plus proche (*Nearest*, en km). Nous prenons aussi le logarithme de chaque prédicteur. 
 
 
-## Using the *bbmle* package
+## Utilisation du package *bbmle*
 
-Most models do not allow the location of the maximum likelihood to be derived analytically. In this case, we use optimization algorithms that numerically estimate the maximum value of the (log-)likelihood function and the value of each parameter corresponding to this maximum.
+La plupart des modèles ne permettent pas de dériver analytiquement la position du maximum de vraisemblance. Dans ce cas, nous avons recours à des algorithmes d'optimisation qui estiment numériquement la valeur maximale de la fonction de (log-)vraisemblance et la valeur de chaque paramètre correspondant à ce maximum.
 
-In R, the `optim` function is a general tool for determining the minimum or maximum of a given function. However, there are also specialized functions for the maximum likelihood estimation problem: in this course, we will use the `mle2` function from the *bbmle* package.
+Dans R, la fonction `optim` est un outil général pour déterminer le minimum ou maximum d'une fonction donnée. Toutefois, il existe aussi des fonctions spécialisées au problème d'estimation par le maximum de vraisemblance: dans ce cours, nous utiliserons la fonction `mle2` du package *bbmle*.
 
-First, we need to write a function that calculates the negative log-likelihood for our problem. By convention, optimization algorithms require a function to be minimized, so instead of maximizing the log-likelihood, we minimize its opposite.
+Tout d'abord, nous devons écrire une fonction qui calcule l'opposé de la log-vraisemblance (*negative log-likelihood*) pour notre problème. Par convention, les algorithmes d'optimisation demandent une fonction à minimiser, donc au lieu de maximiser la log-vraisemblance, on minimise son opposé.
 
 ```{r}
 nll_galap <- function(b_0, b_area, b_near, theta) {
@@ -206,17 +290,17 @@ nll_galap <- function(b_0, b_area, b_near, theta) {
 }
 ```
 
-The function `nll_galap` above accepts four parameters that correspond to the three coefficients of the linear predictor and the $\theta$ parameter of the negative binomial distribution. 
+La fonction `nll_galap` ci-dessus accepte quatre paramètres qui correspondent aux trois coefficients du prédicteur linéaire dont on a besoin pour calculer $\mu$ et au paramètre $\theta$ de la distribution binomiale négative. 
 
-- The first line of the function calculates the linear predictor and takes its exponential to obtain the mean number of species `mu_sp`. *Reminder*: In R, most mathematical operations are performed in parallel on vectors. Thus, `mu_sp` contains 30 values, the first one calculated from the predictor values for island 1, the second one for island 2, and so on.
+- La première ligne de la fonction calcule le prédicteur linéaire et prend son exponentielle pour obtenir le nombre d'espèces moyen `mu_sp`. *Rappel*: Dans R, la plupart des opérations mathématiques sont effectuées en parallèle sur les vecteurs. Ainsi, `mu_sp` contient 30 valeurs, la première calculée à partir des valeurs des prédicteurs pour l'île 1, la deuxième pour les valeurs de l'île 2, etc.  
 
-- The second line calculates the log-likelihood of each observation according to the binomial model with `dnbinom` (also in parallel), calculates their sum then takes the negative. 
+- La deuxième ligne calcule la log-vraisemblance de chaque observation selon le modèle binomial avec `dnbinom` (aussi en parallèle), puis fait leur somme et prend l'opposé. 
 
-Note that we specify `log = TRUE` in `dnbinom` to compute the log-likelihood. As seen previously, the log-likelihood of a set of observations is equal to the sum of their individual log-likelihoods, as long as the observations are independent.
+Notez que nous spécifions `log = TRUE` dans `dnbinom` pour calculer le logarithme de la vraisemblance. Tel que vu précédemment, la log-vraisemblance d'un ensemble d'observations est égale à la somme de leurs log-vraisemblances individuelles tant que les observations sont indépendantes.
 
-Finally, we load the *bbmle* package and call the function `mle2`. The first argument of that function is our function calculating the negative log-likelihood. We also need to specify for the `start` argument a list of the initial values of each parameter, which the algorithm will use to start the search for the maximum.
+Finalement, nous chargeons le package *bbmle* et nous appelons la fonction `mle2`. Le premier argument de cette fonction est notre fonction calculant l'opposé de la log-vraisemblance. Nous devons aussi spécifier pour l'argument `start` une liste des valeurs initiales de chaque paramètre, que l'algorithme utilisera pour commencer la recherche du maximum. 
 
-The exact choice of the initial values does not matter in most cases, but it is recommended to give plausible (not too extreme) values of the parameters. We therefore choose a null value for each coefficient, but a positive value for $\theta$ which must be greater than zero.
+Le choix exact des valeurs initiales importe peu dans la plupart des cas, mais il est recommandé de donner des valeurs plausibles (pas trop extrêmes) des paramètres. Nous choisissons donc une valeur nulle pour chaque coefficient, mais une valeur positive pour $\theta$ qui doit être supérieur à zéro.
 
 ```{r, warning = FALSE, message = FALSE}
 library(bbmle)
@@ -225,85 +309,86 @@ mle_galap <- mle2(nll_galap, start = list(b_0 = 0, b_area = 0, b_near = 0, theta
 mle_galap
 ```
 
-Executing the function produces several warnings in R, which are not shown here. These probably result from cases where the algorithm tries to assign a negative value to `theta` and produces an error. In this case, it simply tries a new value.
+L'exécution de la fonction produit plusieurs avertissements (*## Warning in dnbinom(galap$Species, mu = mu_sp, size = theta, log = TRUE):## Production de NaN*) dans R, qui ne sont pas montrés ici. Ceux-ci résultent probablement de cas où l'algorithme tente d'assigner une valeur négative à `theta` et produit une erreur. Dans ce cas il tente simplement une nouvelle valeur.
 
 
-## Interpreting the likelihood
+## Inteprétation de la vraisemblance
 
-Notice that the maximum log-likelihood in the above result is -137.98, which is a very small value of the likelihood:
+Remarquez que le maximum de la log-vraisemblance dans le résultat ci-dessus est égal à -137.98, ce qui correspond à une valeur infime de la vraisemblance: 
 
 ```{r}
 exp(-137.98)
 ```
 
-The likelihood is the probability of obtaining exactly the values appearing in the dataset, according to the model. Considering the many possible values for an observation of the variable and the fact that these possibilities multiply for each subsequent observation, it is not surprising that this probability is very low and even lower for a large sample. 
+La vraisemblance correspond à la probabilité d'obtenir exactement les valeurs apparaissant dans le jeu de données, selon le modèle. Considérant les nombreuses valeurs possibles pour une observation de la variable et le fait que ces possibilités se multiplient pour chaque observation subséquente, il n'est pas suprenant que cette probabilité soit très faible et d'autant plus faible pour un grand échantillon. 
 
-The absolute value of the likelihood is not really interpretable. Rather, it is its relative value that makes it possible to compare the fit of different values of the parameters based on the same observed data. 
+La valeur absolue de la vraisemblance n'est pas vraiment interprétable. C'est plutôt sa valeur relative qui permet de comparer l'ajustement de plusieurs valeurs des paramètres appliqués en fonction des mêmes données observées. 
 
-Nevertheless, it is difficult to work with numbers that are extremely close to zero; this is one of the reasons why the log-likelihood is used in practice.
+Néanmoins, il est difficile de travailler avec des nombres extrêmement proches de zéro; c'est une des raisons pour lesquelles le logarithme de la vraisemblance est utilisé en pratique.
 
 
-## When to use the maximum likelihood method?
+## Quand utiliser le maximum de vraisemblance?
 
-For our example, we could have used the function `glm.nb` from the *MASS* package, which is specifically designed to estimate the parameters of a negative binomial regression. By fitting our model with this function, we can verify that the results match the application of `mle2`.
+Pour notre exemple, nous aurions pu utiliser la fonction `glm.nb` du package *MASS*, conçue spécialement pour estimer les paramètres d'une régression binomiale négative. En ajustant notre modèle avec cette fonction, nous pouvons vérifier que les résultats concordent avec l'application de `mle2`.
 
 ```{r, message = FALSE, warning = FALSE}
 library(MASS)
 glm.nb(Species ~ log(Area) + log(Nearest), galap)
 ```
 
-The functions available in R and various packages already cover a number of common models, including linear models, generalized linear models, mixed models and other models. Also, many models that do not appear linear can be linearized with an appropriate transformation. For example, a power law between the number of species $S$ and the habitat area $A$:
+Les fonctions disponibles dans R et différents packages couvrent déjà un bon nombre de modèles courants, incluant les modèles linéaires, linéaires généralisés, mixtes et autres. Aussi, plusieurs modèles qui n'apparaissent pas linéaires peuvent être linéarisés avec une transformation appropriée. Par exemple, une loi de puissance entre le nombre d'espèces $S$ et la surperficie d'habitat $A$:
 
 $$S = cA^z$$
 
-can be transformed into a linear relationship by taking the logarithm on each side:
+peut être transformée en relation linéaire en prenant le logarithme de chaque côté:
 
 $$\log(S) = \log(c) + z \log(A)$$
 
-When a specialized function is available to estimate the parameters of a model, it is simpler to use it rather than coding the model itself and applying the maximum likelihood method.
+Lorsqu'une fonction spécialisée est disponible pour estimer les paramètres d'un modèle, il est plus simple d'utiliser celle-ci plutôt que de coder le modèle soi-même et d'appliquer le maximum de vraisemblance.
 
-However, there are cases where the assumed model for the data does not fit into a standard format. Here are some examples from forest ecology.
+Toutefois, il existe des cas où le modèle présumé pour les données ne cadre pas dans un format standard. Voici quelques exemples en écologie forestière.
 
-**Fitting a dispersal kernel** (e.g. Clark et al. 1999)
+**Ajustement d'une courbe de dispersion** (ex.: Clark et al. 1999)
 
-One way to estimate the dispersal capacity of a plant species is to sample seeds falling into traps placed at different distances from parent plants. In particular, we are interested in estimating the dispersal kernel $f(r)$, which corresponds to the probability that a seed falls at a distance $r$ from its point of origin.
+Une façon d'estimer la capacité de dispersion d'une espèce de plantes est d'échantillonner les graines tombant dans des pièges placés à différentes distances de plantes mères. En particulier, on s'intéresse à estimer la courbe de dispersion $f(r)$ qui correspond à la probabilité qu'une graine tombe à une distance $r$ de son point d'origine. 
 
-Suppose that $y$ represents the number of seeds in one of the traps and can be represented by a negative binomial distribution.
+Supposons que $y$ représente le nombre de graines dans un des pièges et peut être représenté par une distribution binomiale négative. 
 
 $$y_i \sim \textrm{NB}(\mu_i, \theta)$$
 
-The mean number of seeds in trap $i$, $\mu_i$, corresponds to the sum of the contributions of each mother plant $j$ in the vicinity of the trap; this contribution is equal to the number of seeds produced by a mother plant ($b$, which we assume to be fixed) multiplied by the dispersal kernel evaluated for the distance $r_{ij}$ between trap $i$ and plant $j$.
+Le nombre de graines moyen dans le piège $i$, $\mu_i$, correspond à la somme des contributions de chaque plante mère $j$ située à proximité; cette contribution est égale au nombre de graines produites par une plante mère ($b$, que nous supposons fixe) multiplié par la courbe de dispersion évaluée pour la distance $r_{ij}$ entre le piège $i$ et la plante $j$.
 
 $$y_i \sim \textrm{NB}(\sum_j b\times f(r_{ij}), \theta)$$
 
-Since $f$ is a non-linear function with its own adjustable parameters, and since the mean of $y$ contains the sum of values of $f$ evaluated at different distances, it is necessary to write a custom likelihood function and maximize it with a tool like `mle2`.
+Puisque $f$ est une fonction non-linéaire avec ses propres paramètres à ajuster, puis que la moyenne de $y$ contient la somme de valeurs de $f$ évaluées à différentes distances, il est nécessaire de créer sa propre fonction de vraisemblance et la maximiser avec un outil comme `mle2`.
 
-**Estimation of the neighbourhood competition function** (e.g. Canham et al. 2004).
+**Estimation de la fonction de compétition du voisinage** (ex.: Canham et al. 2004)
 
-The growth of trees in a forest can be reduced by competition from their neighbours. If we assume that the competition exerted on a tree $i$ by a neighbour $j$ increases with the diameter $D_j$ of this neighbour and decreases with the distance $r_{ij}$ between the two trees, we can define a competition index (*CI*) summing the effects of each neighbour on $i$:
+La croissance d'arbres dans une forêt peut être réduite par la compétition provenant de leurs voisins. Si on suppose que la compétition exercée sur un arbre $i$ par un voisin $j$ augmente avec le diamètre $D_j$ de ce voisin et diminue avec la distance $r_{ij}$ entre les deux arbres, nous pouvons définir un indice de compétition (*CI*) faisant la somme des effets de chaque voisin sur $i$:
 
 $$CI_i = \sum_j \frac{D_j^{\delta}}{r_{ij}^{\gamma}}$$
 
-We wish to estimate the $\delta$ and $\gamma$ exponents appearing in the index from the data. Suppose we have a linear model of the growth $y_i$ of the tree $i$ to which we add a term dependent on this index:
+Nous souhaitons estimer les puissances $\delta$ et $\gamma$ apparaissant dans l'indice à partir des données. Supposons que nous avons un modèle linéaire de la croissance $y_i$ de l'arbre $i$ auquel nous ajoutons un terme dépendant de cet indice:
 
 $$y_i = \beta_0 + ... + \beta_{CI} \sum_j \frac{D_j^{\delta}}{r_{ij}^{\gamma}}$$
 
-There is no way to simplify this last term, so the maximum likelihood method can be useful to estimate the coefficients (all $\beta$, $\gamma$ and $\delta$) of this now non-linear model.
+Il n'y a pas moyen de simplifier ce dernier terme, donc le maximum de vraisemblance peut être utile pour estimer les coefficients (tous les $\beta$, $\gamma$ et $\delta$) de ce modèle maintenant non-linéaire.
 
-## Limitations of the maximum likelihood method
+## Limites du maximum de vraisemblance
 
-Most of the advantageous properties of maximum likelihood estimates, including the absence of bias, are valid at the limit where the sample size is large. What constitutes a large enough sample size depends on the model and in particular on the number of parameters to be estimated. 
+La plupart des propriétés avantageuses des estimés du maximum de vraisemblance, dont l'absence de biais, sont valides dans la limite où la taille de l'échantillon est grand. Ce qui constitue un échantillon assez grand dépend du modèle et en particulier du nombre de paramètres à estimer. 
 
-In practice, the maximum likelihood is obtained by a numerical algorithm seeking the maximum by an iterative process. A complex likelihood function could have several local maxima (points where the function is maximized with respect to parameter values near the point), in which case it is not guaranteed that the algorithm finds the global maximum (the one with the highest likelihood overall).
+En pratique, le maximum de vraisemblance est obtenu par un algorithme numérique recherchant le maximum par un processus itératif. Une fonction de vraisemblance complexe pourrait avoir plusieurs maximums locaux (des points où la fonction est maximisée par rapport aux valeurs proches des paramètres), dans lequel cas il n'est pas garanti que l'algorithme trouve le maximum global (celui avec la vraisemblance la plus élevée).
 
 
-# Likelihood-ratio test
 
-## Test on the value of a parameter
+# Test du rapport de vraisemblance
 
-It is possible to use the likelihood function to test a hypothesis about the value of a parameter.
+## Test sur la valeur d'un paramètre
 
-For example, consider the likelihood function calculated at the beginning of the class to estimate the probability of germination of a seed lot, if 6 seeds germinated out of 20 attempts.
+Il est possible d'utiliser la fonction de vraisemblance pour tester une hypothèse sur la valeur d'un paramètre.
+
+Par exemple, considérons la fonction de vraisemblance calculée au début du cours pour estimer la probabilité de germination d'un lot de semences, si 6 semences ont germé sur 20 essais.
 
 ```{r}
 ggplot(NULL) +
@@ -314,9 +399,9 @@ ggplot(NULL) +
     scale_y_continuous(limits = c(0, 0.2), expand = c(0, 0))
 ```
 
-In this case, the maximum likelihood estimate is $\hat{p} = 0.3$. Suppose that the seed supplier claims that the germination rate is 50%. Is the result of the experiment consistent with this value?
+Dans ce cas, l'estimé du maximum de vraisemblance est $\hat{p} = 0.3$. Supposons que le fournisseur des semences affirme que leur taux de germination est de 50%. Est-ce que le résultat de l'expérience est compatible avec cette valeur?
 
-The likelihood corresponding to the null hypothesis ($p_0 = 0.5$) is about $L(p_0) = 0.037$, compared to a maximum of $L(\hat{p}) = 0.192$.
+La vraisemblance correspondant à l'hypothèse nulle ($p_0 = 0.5$) est d'environ $L(p_0) = 0.037$, comparativement à un maximum de $L(\hat{p}) = 0.192$.
 
 ```{r}
 l_0 <- dbinom(6, 20, prob = 0.5)
@@ -324,88 +409,88 @@ l_max <- dbinom(6, 20, prob = 0.3)
 c(l_0, l_max)
 ```
 
-The ratio between these two $L$ values is used to define a statistic for the likelihood-ratio test. This statistic is -2 times the logarithm of the ratio between the likelihood of the parameter under the null hypothesis and the estimated maximum likelihood.
+Le rapport entre ces deux valeurs de $L$ sert à définir une statistique pour le test du rapport de vraisemblance (*likelihood-ratio test*). Cette statistique correspond à -2 fois le logarithme du rapport entre la vraisemblance du paramètre sous l'hypothèse nulle et le maximum de vraisemblance estimé.
 
 $$- 2 \log \left( \frac{L(\theta_0)}{L(\hat{\theta})} \right)$$
 
-Equivalently, we can replace the ratio by a difference of the log-likelihoods:
+De façon équivalente, on peut remplacer le rapport par la différence des log-vraisemblances:
 
 
 $$- 2 \left( l(\theta_0) - l(\hat{\theta}) \right)$$
 
-The factor -2 is added so that, if the null hypothesis is true and the sample is large enough, the distribution of the statistic approaches a $\chi^2$ distribution with 1 degree of freedom.
+Le facteur -2 a été choisi pour que, si l'hypothèse nulle est vraie et que l'échantillon est assez grand, la distribution de cette statistique s'approche de la distribution du $\chi^2$ avec 1 degré de liberté.
 
-In our example, the likelihood-ratio statistic is equal to 3.29.
+Dans notre exemple, la statistique du rapport de vraisemblance est égale à 3.29.
 
 ```{r}
 rv <- -2*log(l_0 / l_max)
 rv
 ```
 
-The probability of obtaining a ratio greater than or equal to this value, if the null hypothesis $p = 0.5$ is true, can be approximated with the cumulative $\chi^2$ distribution.
+La probabilité d'obtenir un rapport plus grand ou égal à celui-ci, si l'hypothèse nulle $p = 0.5$ est vraie, peut être approximée avec la distribution cumulative du $\chi^2$.
 
 ```{r}
 1 - pchisq(rv, df = 1)
 ```
 
-*Note*: The likelihood-ratio test cannot be applied if the null hypothesis is at the limit of possible values for a parameter. For example, for the parameter $p$ of a binomial distribution, we cannot use this test for the null hypothesis $p_0 = 0$ or $p_0 = 1$.
+*Note*: Le test du rapport de vraisemblance ne s'applique pas si l'hypothèse nulle se trouve à la limite des valeurs possibles pour un paramètre. Par exemple, pour le paramètre $p$ d'une distribution binomiale, nous ne pouvons pas utiliser ce test pour l'hypothèse nulle $p_0 = 0$ ou $p_0 = 1$.
 
-## Model comparison
+## Comparaison de modèles
 
-The likelihood-ratio test is also used to compare two models. In this case, the models must be nested, i.e. the simpler model must contain a subset of the parameters of the more complex model. For example, suppose a linear regression model with 1 predictor and a second model with 3 predictors.
+Le test du rapport de vraisemblance est aussi utilisé pour comparer deux modèles. Dans ce cas, il faut que les modèles soient nichés, c'est-à-dire que le modèle plus simple contienne un sous-ensemble des paramètres du modèle plus complexe. Par exemple, supposons un modèle de régression linéaire avec 1 prédicteur et un deuxième avec 3 prédicteurs.
 
 - M1: $y = \beta_0 + \beta_1 x_1 + \epsilon$
 - M2: $y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \epsilon$ 
 
-In this case, M1 can be seen as a version of M2 where $\beta_2$ and $\beta_3$ are set to 0. If M1 is the true model for the data, the likelihood ratio statistic between the two models approximately follows a $\chi^2$ distribution, with a number of degrees of freedom equal to the difference in the number of estimated parameters between the two models (here, 2).
+Dans ce cas, M1 peut être vu comme une version de M2 où $\beta_2$ et $\beta_3$ sont fixés à 0. Si M1 est le vrai modèle pour les données, la statistique du rapport de vraisemblance entre les deux modèles suit approximativement une distribution du $\chi^2$, avec un nombre de degrés de liberté égal à la différence du nombre de paramètres estimés entre les deux modèles (ici, 2).
 
 $$- 2 \left( l_{M1} - l_{M2} \right) \sim \chi^2(2)$$
 
-In the previous course ECL7102, we used the Akaike information criterion (AIC) to compare models:
+Dans le cours ECL7102, nous avons étudié la comparaison de modèles avec le critère d'information d'Akaike (AIC):
 
 $$AIC = - 2 \log L + 2K =  -2l + 2K$$
 
-In this formula, $K$ is the number of adjustable parameters in the model. We also saw a corrected version of AIC (AICc) for "small" samples (when $N/K$ < 30, where $N$ is the sample size). 
+Dans cette formule, $K$ est le nombre de paramètres ajustables du modèle. Nous avons aussi vu une correction à l'AIC (AICc) pour les "petits" échantillons (lorsque $N/K$ < 30, où $N$ est la taille de l'échantillon). 
 
-The AIC has a broader scope than the likelihood-ratio test because more than two models can be compared, whether they are nested or not. In cases where the two methods are applicable, their objectives are different:
+L'AIC a une portée plus large que le test du rapport de vraisemblance, car on peut comparer plus de deux modèles, qu'ils soient nichés ou non. Lorsque les deux méthodes s'appliquent, leurs objectifs sont différents:
 
-- AIC aims to identify the model that would best predict the response for a new sample of the same population;
+- l'AIC vise à identifier le modèle qui prédirait le mieux la réponse pour un nouvel échantillon de la même population; 
 
-- the likelihood-ratio test indicates whether the observed difference between the fit of the simpler and the more complex model is consistent with the assumption that the simpler model is correct.
+- le test du rapport de vraisemblance indique si l'écart observé entre l'ajustement du modèle le plus simple et le modèle le plus complexe est compatible avec l'hypothèse que le modèle le plus simple soit correct.
 
 
-# Calculation of confidence intervals
+# Calcul des intervalles de confiance
 
-If $\hat{\theta}$ is the maximum likelihood estimate for a parameter $\theta$, we can obtain a confidence interval for this parameter by using the relationship between hypothesis testing and confidence interval:
+Si $\hat{\theta}$ est l'estimé du maximum de vraisemblance pour un paramètre $\theta$, nous pouvons obtenir un intervalle de confiance pour ce paramètre en utilisant la relation entre test d'hypothèse et intervalle de confiance:
 
-> If we cannot reject the null hypothesis $\theta = \theta_0$ with a significance threshold $\alpha$, therefore $\theta_0$ is included in the $100(1-\alpha)\%$ confidence interval for $\theta$.
+> Si on ne peut pas rejeter l'hypothèse nulle $\theta = \theta_0$ avec un seuil de signification $\alpha$, alors $\theta_0$ fait partie de l'intervalle de confiance à $100(1-\alpha)\%$ pour $\theta$.
 
-For example, the limits of the 95% confidence interval are the values of $\theta$ where the likelihood-ratio statistic is equal to the 95th percentile of the $\chi^2$ distribution; this is the maximum value of the statistic that is not rejected at a threshold $\alpha = 0.05$.
+Par exemple, les limites de l'intervalle de confiance à 95% sont les valeurs de $\theta$ où la statistique du rapport de vraisemblance est égale au 95e centile de la distribution du $\chi^2$; il s'agit de la valeur maximale de la statistique qui n'est pas rejetée à un seuil $\alpha = 0.05$.
 
 $$- 2 \left( l(\theta_0) - l(\hat{\theta}) \right) = \chi^2_{0.95}(1)$$
 
-*Reminder*: The $\chi^2$ test is one-sided, because only high values of the statistic indicate a significant deviation from the null hypothesis. 
+*Rappel*: Le test du $\chi^2$ est unilatéral, car seules les valeurs élevées de la statistique indiquent un écart significatif avec l'hypothèse nulle. 
 
-If we isolate $\theta_0$ in the equation, we get:
+En isolant $\theta_0$ dans l'équation, on obtient:
 
 $$l(\theta_0) = l(\hat{\theta}) - \frac{\chi^2_{0.95}(1)}{2}$$
 
-We must therefore find the values of $\theta$ for which the log-likelihood is about 1.92 lower than the maximum.
+Il s'agit donc de déterminer les valeurs de $\theta$ pour lequelles la log-vraisemblance est environ 1.92 inférieure au maximum.
  
 ```{r}
 qchisq(0.95, df = 1) / 2
 ```
 
 
-## Example
+## Exemple
 
-For our seed germination example ($\hat{p} = 0.3$), the 95% interval limits correspond to $L = 0.0281$.
+Pour notre exemple de germination de semences ($\hat{p} = 0.3$), les limites de l'intervalle à 95% correspondent à $L = 0.0281$.
 
 ```{r}
 exp(dbinom(6, 20, 0.3, log = TRUE) - qchisq(0.95, df = 1)/2)
 ```
 
-This threshold is represented by the dotted line on the graph below and corresponds to an interval of (0.132, 0.516) for $p$. 
+Ce seuil est représenté par la ligne pointillée sur le graphique ci-dessous et correspond à un intervalle approximatif de (0.132, 0.516) pour $p$. 
 
 ```{r}
 ggplot(NULL) +
@@ -420,13 +505,13 @@ ggplot(NULL) +
     scale_y_continuous(limits = c(0, 0.2), expand = c(0, 0))
 ```
 
-For an experiment with the same estimate of $\hat{p}$, but a larger sample $(n = 50, y = 15)$, the limit of $L$ for the 95% interval is 0.0179.
+Pour une expérience avec le même estimé de $\hat{p}$, mais un plus grand échantillon $(n = 50, y = 15)$, la limite de $L$ pour l'intervalle à 95% est de 0.0179.
 
 ```{r}
 exp(dbinom(15, 50, 0.3, log = TRUE) - qchisq(0.95, df = 1)/2)
 ```
 
-As we can see below, the likelihood function and thus the confidence interval are narrower.
+Comme on le voit ci-dessous, la fonction de vraisemblance et donc l'intervalle de confiance sont plus étroits. 
 
 ```{r}
 ggplot(NULL) +
@@ -443,11 +528,11 @@ ggplot(NULL) +
 ```
 
 
-## Profile likelihood
+## Vraisemblance profilée
 
-If $m$ parameters are estimated at the same time, the likelihood function is not a curve, but rather a surface in $m$ dimensions. When calculating the likelihood ratio $- 2 \left( l(\theta_{0}) - l(\hat{\theta}) \right)$ for different values $\theta_{0}$ of one of the parameters, one must therefore choose which value to give to the other $m - 1$ parameters. A simple solution would be to set all the other parameters to their estimated maximum likelihood value, but this assumes that these estimates are independent. In general, if one sets $\theta_0$ to a value other than $\hat{\theta}$, the maximum likelihood estimate may change.
+Si $m$ paramètres sont estimés en même temps, la fonction de vraisemblance n'est pas une courbe, mais plutôt une surface en $m$ dimensions. Lorsqu'on calcule le rapport de vraisemblance $- 2 \left( l(\theta_{0}) - l(\hat{\theta}) \right)$ pour différentes valeurs $\theta_{0}$ d'un des paramètres, il faut donc choisir quelle valeur donner aux autres $m - 1$ paramètres. Une solution simple serait de fixer tous les autres paramètres à leur valeur estimée au maximum de vraisemblance, mais cela suppose que ces estimés sont indépendants. En général, si on fixe $\theta_0$ à une valeur autre que $\hat{\theta}$, l'estimé maximisant la vraisemblance peut changer.
 
-For example, in the linear regression model shown below, the best estimate of slope changes if the intercept is set to 0 (dotted line).
+Par exemple, dans le modèle de régression linéaire illustré ci-dessous, le meilleur estimé de la pente change si on fixe l'ordonnée à l'origine à 0 (ligne pointillée).
 
 ```{r, echo = FALSE}
 set.seed(82)
@@ -458,59 +543,62 @@ ggplot(rand_df, aes(x = x, y = y)) +
     geom_smooth(method = "lm", formula = y ~ x - 1, se = FALSE, linetype = "dashed")
 ```
 
-In order to create a curve of $l(\theta_0)$ for different values of the parameter, it is thus necessary for each fixed value of $\theta_0$ to find the maximum likelihood for the rest of the parameters. The resulting curve is called the profile likelihood. 
+Afin de construire la courbe de $l(\theta_0)$ pour différentes valeurs du paramètre, il faut donc pour chaque valeur fixe de $\theta_0$ trouver la maximum de vraisemblance pour le reste des paramètres. La courbe résultante se nomme la vraisemblance profilée (*profile likelihood*). 
 
-The `profile` function of the *bbmle* package evaluates the profiled likelihood of each parameter from the result of `mle2`. Here is the result obtained for the model fitted earlier (negative binomial regression of the number of plant species in the Galapagos Islands).
+La fonction `profile` du package *bbmle* évalue la vraisemblance profilée de chaque paramètre à partir du résultat de `mle2`. Voici le résultat obtenu pour le modèle ajusté plus tôt (régression binomiale négative du nombre d'espèces de plantes des îles Galapagos).
 
 ```{r, warning = FALSE}
 galap_pro <- profile(mle_galap)
 plot(galap_pro)
 ```
 
-For each parameter, the graph shows the square root of the likelihood-ratio statistic $\sqrt{- 2 \left( l(\theta_{0}) - l(\hat{\theta}) \right)}$ for the profile likelihood. The square root transformation allows us to quickly see if the log of the profile likelihood is approximately quadratic (see next section), which would result in a symmetrical "V" after transformation. 
+Pour chaque paramètre, le graphique montre la racine carrée du rapport de vraisemblance $\sqrt{- 2 \left( l(\theta_{0}) - l(\hat{\theta}) \right)}$ pour la vraisemblance profilée. La transformation racine carrée permet de voir rapidement si la log-vraisemblance profilée est approximativement quadratique (voir section suivante), ce qui résulterait en un "V" symétrique après transformation. 
 
-Different confidence intervals are superimposed on the graph; these intervals can also be obtained directly with the function `confint`.
+Différents intervalles de confiance sont superposés au graphique; on peut aussi obtenir directement ces intervalles avec la fonction `confint`.
 
 ```{r}
 confint(galap_pro, level = 0.95)
 ```
 
-## Quadratic approximation
+## Approximation quadratique
 
-Since calculating the profile likelihood for one parameter requires repeated fitting of the other parameters of the model, this method is very time consuming for a complex model.
+Puisque le calcul de la vraisemblance profilée d'un paramètre requiert un ajustement répété des autres paramètres du modèle, cette méthode prend beaucoup de temps pour un modèle complexe.
 
-A more approximate, but much faster, method is to assume that the log-likelihood follows a quadratic form. With only one parameter, this quadratic form is a parabola centered on the maximum likelihood: $- 2 \left( l(\theta_{0}) - l(\hat{\theta}) \right) = a (\theta_{0} - \hat{\theta})^2$. Here, the coefficient $a$ measures the curvature of the parabola. As we saw in the binomial example above, the more pronounced the curvature, the more precise the parameter estimate is. 
+Une méthode plus approximative, mais beaucoup plus rapide, est de supposer que la log-vraisemblance suit une forme quadratique. Avec un seul paramètre, cette forme quadratique est une parabole centrée sur le maximum de vraisemblance: $- 2 \left( l(\theta_{0}) - l(\hat{\theta}) \right) = a (\theta_{0} - \hat{\theta})^2$. Ici, le coefficient $a$ mesure la courbure de la parabole. Comme nous avons vu dans l'exemple binomial ci-dessus, plus cette courbure est prononcée, plus l'estimation du paramètre est précise. 
 
-In fact, if the quadratic approximation is good, the variance of $\hat{\theta}$ (thus the square of its standard error) is the inverse of the second derivative of $-l$, which measures the curvature at maximum.
+En fait, si l'approximation quadratique est bonne, la variance de $\hat{\theta}$ (donc le carré de son erreur-type) est l'inverse de la dérivée seconde de $-l$, qui mesure la courbure au maximum.
 
 $$\frac{\textrm{d}^2(-l)}{\textrm{d}\theta^2} = \frac{1}{\sigma_{\hat{\theta}}^2}$$
 
-With $m$ parameters, the curvature in $m$ dimensions around the maximum is represented by a $m \times m$ matrix of the second partial derivatives of $-l$, called the Fisher information matrix. By inverting this matrix, we obtain the variances and covariances of the estimates. Assuming that the quadratic approximation is correct, these variances and covariances are sufficient to obtain the desired confidence intervals for each parameter.
+Avec $m$ paramètres, la courbure en $m$ dimensions autour du maximum est représentée par une matrice $m \times m$ des dérivées partielles secondes de $-l$, qu'on appelle la matrice d'information de Fisher. En inversant cette matrice, on obtient les variances et covariances des estimés. En supposant que l'approximation quadratique est juste, ces variances et covariances sont suffisantes pour obtenir les intervalles de confiance voulus de chaque paramètre.
 
-In the *bbmle* package, one can calculate the confidence intervals according to the quadratic approximation by specifying `method = "quad"` in the `confint` function:
+Dans le package *bbmle*, on peut calculer les intervalles de confiance selon l'approximation quadratique en spécifiant `method = "quad"` dans la fonction `confint`:
 
 ```{r}
 confint(mle_galap, level = 0.95, method = "quad")
 ```
 
-Here we note that the estimates are close to those of the profile likelihood, except for $\theta$. By inspecting the profile likelihood graphs above, it is apparent that the profile for $\theta$ departs further from the quadratic form.
+On remarque ici que les estimés s'approchent de ceux de la vraisemblance profilée, sauf pour $\theta$. En inspectant les profils obtenus plus haut, il est apparent que celui de $\theta$ suit moins la forme quadratique.
 
 
-# Summary
+# Résumé
 
-- For a statistical model, the likelihood is a function that associates to each value of the parameters the probability of the observed data, conditional to this parameterization. According to the principle of maximum likelihood, the best estimate of the parameters is the one that maximizes the likelihood.
+- Pour un modèle statistique, la vraisemblance est une fonction qui associe à chaque valeur des paramètres la probabilité des données observées, conditionnelle à cette paramétrisation. Selon le principe du maximum de vraisemblance, le meilleur estimé des paramètres est celui qui maximise la vraisemblance.
 
-- In order to determine the maximum likelihood for a custom model in R, we must create a function that calculates the log-likelihood as a function of the parameters and then use an optimization algorithm to find the maximum.
+- Afin de déterminer le maximum de vraisemblance pour un modèle personnalisé dans R, il faut créer une fonction qui calcule la log-vraisemblance en fonction des paramètres, puis faire appel à un algorithme d'optimisation pour trouver le maximum.
 
-- The likelihood-ratio test is used to test a hypothesis about the value of a parameter estimated using the maximum likelihood, to obtain a confidence interval for that parameter, or to compare two nested models.
+- Le test du rapport de vraisemblance permet de tester une hypothèse sur la valeur d'un paramètre estimé au moyen du maximum de vraisemblance, d'obtenir un intervalle de confiance pour ce paramètre, ou de comparer deux modèles nichés.
 
-- To estimate the uncertainty of an estimate in a model with several adjustable parameters, we can either calculate the profile likelihood for this parameter or use the quadratic approximation.
+- Pour estimer l'incertitude d'un estimé dans un modèle avec plusieurs paramètres ajustables, nous pouvons soit calculer la vraisemblance profilée pour ce paramètre, soit avoir recours à l'approximation quadratique.
 
 
-# References
+# Références
+
+-Le contenu du cours est adapté à partir du cours ECL8202 - Analyses des données complexes donné en 2020 par Philippe Marchand, formellement professeur IRF-UQAT. vous pouvez ajouter cette information dans la référence.
+Marchand,Philippe (2020).  ECL8202 - Analyses des données complexes disponible à la page GitHub https://github.com/pmarchand1/ECL8202
 
 - Bolker, B.M. (2008) Ecological models and data in R. Princeton University Press, Princeton, New Jersey. (Chapitre 6 sur le maximum de vraisemblance)
 
-- Canham, C.D., LePage, P.T. and Coates, K.D. (2004) A neighborhood analysis of canopy tree competition: effects of shading versus crowding. Canadian Journal of Forest Research 34: 778--787.
+- Canham, C.D., LePage, P.T. et Coates, K.D. (2004) A neighborhood analysis of canopy tree competition: effects of shading versus crowding. Canadian Journal of Forest Research 34: 778--787.
 
-- Clark, J.S., Silman, M., Kern, R., Macklin, E. and HilleRisLambers, J. (1999) Seed dispersal near and far: Patterns across temperate and tropical forests. Ecology 80: 1475--1494.
+- Clark, J.S., Silman, M., Kern, R., Macklin, E. et HilleRisLambers, J. (1999) Seed dispersal near and far: Patterns across temperate and tropical forests. Ecology 80: 1475--1494.
