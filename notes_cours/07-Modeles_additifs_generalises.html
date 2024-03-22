@@ -13,25 +13,39 @@
 
 <title>Modèles additifs généralisés</title>
 
-<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="libs/header-attrs-2.23/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="libs/bootstrap-3.3.5/css/spacelab.min.css" rel="stylesheet" />
 <script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<script src="libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="libs/navigation-1.1/tabsets.js"></script>
 <link href="libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="libs/highlightjs-9.12.0/highlight.js"></script>
 
-<style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -44,32 +58,8 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
+
 
 
 
@@ -79,10 +69,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -99,6 +85,12 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
 </style>
 
 
@@ -111,13 +103,12 @@ summary {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -125,16 +116,9 @@ summary {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -237,7 +221,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -248,7 +232,7 @@ div.tocify {
 
 
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -259,25 +243,41 @@ div.tocify {
 
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>Les modèles additifs généralisés (ou GAM, pour <em>generalized additive models</em>) offrent une méthode flexible pour décrire une relation non-linéaire entre des prédicteurs et une variable réponse. Comme les modèles linéaires généralisés, les GAM peuvent être élargis pour inclure des effets aléatoires afin de représenter des données groupées.</p>
+<p>Les modèles additifs généralisés (ou GAM, pour <em>generalized
+additive models</em>) offrent une méthode flexible pour décrire une
+relation non-linéaire entre des prédicteurs et une variable réponse.
+Comme les modèles linéaires généralisés, les GAM peuvent être élargis
+pour inclure des effets aléatoires afin de représenter des données
+groupées.</p>
 </div>
 <div id="contenu-du-cours" class="section level1">
 <h1>Contenu du cours</h1>
 <p>Voici un aperçu des sujets présentés dans ce cours:</p>
 <ul>
-<li><p>les splines de lissage, qui constituent les composantes de base d’un GAM;</p></li>
-<li><p>comment ajuster des modèles additifs et vérifier leur ajustement;</p></li>
-<li><p>comment représenter des interactions entre une variable numérique et un facteur, ou entre deux variables numériques, dans un modèle additif;</p></li>
-<li><p>l’utilisation de modèles additifs généralisés pour les variables binaires ou de comptage;</p></li>
-<li><p>l’utilisation de modèles additifs à effets mixtes pour les données groupées.</p></li>
+<li><p>les splines de lissage, qui constituent les composantes de base
+d’un GAM;</p></li>
+<li><p>comment ajuster des modèles additifs et vérifier leur
+ajustement;</p></li>
+<li><p>comment représenter des interactions entre une variable numérique
+et un facteur, ou entre deux variables numériques, dans un modèle
+additif;</p></li>
+<li><p>l’utilisation de modèles additifs généralisés pour les variables
+binaires ou de comptage;</p></li>
+<li><p>l’utilisation de modèles additifs à effets mixtes pour les
+données groupées.</p></li>
 </ul>
 </div>
 <div id="splines-de-lissage" class="section level1">
 <h1>Splines de lissage</h1>
-<p>Les splines de lissage sont formées en combinant des fonctions simples pour approximer des formes fonctionnelles non-linéaires complexes.</p>
+<p>Les splines de lissage sont formées en combinant des fonctions
+simples pour approximer des formes fonctionnelles non-linéaires
+complexes.</p>
 <div id="exemple" class="section level2">
 <h2>Exemple</h2>
-<p>Le jeu de données <code>airquality</code> inclus avec R présente la concentration d’ozone de l’air mesurée à New York quotidiennement pendant cinq mois, en fonction de la radiation solaire, de la vitesse du vent et de la température.</p>
+<p>Le jeu de données <code>airquality</code> inclus avec R présente la
+concentration d’ozone de l’air mesurée à New York quotidiennement
+pendant cinq mois, en fonction de la radiation solaire, de la vitesse du
+vent et de la température.</p>
 <pre class="r"><code>data(airquality)
 str(airquality)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    153 obs. of  6 variables:
@@ -287,119 +287,415 @@ str(airquality)</code></pre>
 ##  $ Temp   : int  67 72 74 62 56 66 65 59 61 69 ...
 ##  $ Month  : int  5 5 5 5 5 5 5 5 5 5 ...
 ##  $ Day    : int  1 2 3 4 5 6 7 8 9 10 ...</code></pre>
-<p>Remarquons d’abord que la concentration d’ozone varie de façon non-linéaire avec la température.</p>
+<p>Remarquons d’abord que la concentration d’ozone varie de façon
+non-linéaire avec la température.</p>
 <pre class="r"><code>aq_temp0 &lt;- ggplot(airquality, aes(x = Temp, y = Ozone)) +
     geom_point()
 aq_temp0</code></pre>
 <p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<p>Une telle relation peut être modélisée dans un cadre de régression linéaire avec un polynôme, donc en incluant non seulement le prédicteur <span class="math inline">\(x\)</span>, mais aussi <span class="math inline">\(x^2\)</span>, <span class="math inline">\(x^3\)</span>, etc. dans la régression. Un des inconvénients de cette approche est qu’un polynôme de degré élevé (ex.: plus grand que 2) produit rarement un bon ajustement pour toutes les valeurs du prédicteur.</p>
-<p>Par exemple, voici l’ajustement de polynômes de degré 1 à 4 pour notre exemple de la concentration d’ozone en fonction de la température. Le polynôme de degré 4 semble bien s’ajuster jusqu’à une température d’environ 90 degrés F, où la courbe décroît en raison de la forme du polynôme même s’il ne s’agit pas nécessairement d’un effet réaliste ici.</p>
-<pre class="r"><code>aq_temp1 &lt;- aq_temp0 + geom_smooth(method = &quot;lm&quot;) + labs(title = &quot;y ~ x&quot;)
-aq_temp2 &lt;- aq_temp0 + geom_smooth(method = &quot;lm&quot;, formula = y ~ poly(x, 2)) +
-    labs(title = &quot;y ~ poly(x, 2)&quot;)
-aq_temp3 &lt;- aq_temp0 + geom_smooth(method = &quot;lm&quot;, formula = y ~ poly(x, 3)) +
-    labs(title = &quot;y ~ poly(x, 3)&quot;)
-aq_temp4 &lt;- aq_temp0 + geom_smooth(method = &quot;lm&quot;, formula = y ~ poly(x, 4)) +
-    labs(title = &quot;y ~ poly(x, 4)&quot;)
-plot_grid(aq_temp1, aq_temp2, aq_temp3, aq_temp4)</code></pre>
-<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p>Une telle relation peut être modélisée dans un cadre de régression
+linéaire avec un polynôme, donc en incluant non seulement le prédicteur
+<span class="math inline">\(x\)</span>, mais aussi <span
+class="math inline">\(x^2\)</span>, <span
+class="math inline">\(x^3\)</span>, etc. dans la régression. Un des
+inconvénients de cette approche est qu’un polynôme de degré élevé (ex.:
+plus grand que 2) produit rarement un bon ajustement pour toutes les
+valeurs du prédicteur.</p>
+<p>Par exemple, voici l’ajustement de polynômes de degré 1 à 4 pour
+notre exemple de la concentration d’ozone en fonction de la température.
+Le polynôme de degré 4 semble bien s’ajuster jusqu’à une température
+d’environ 90 degrés F, où la courbe décroît en raison de la forme du
+polynôme même s’il ne s’agit pas nécessairement d’un effet réaliste
+ici.</p>
+<pre class="r"><code>aq_temp &lt;- aq_temp0 + geom_smooth(method = &quot;lm&quot;,aes(color = &quot;y ~ x&quot;,fill=&quot;y ~ x&quot;),
+                                  show.legend = TRUE)+
+geom_smooth(method = &quot;lm&quot;, formula = y ~ poly(x, 2),
+            aes(color = &quot;Polynomial (degré 2)&quot;,fill=&quot;Polynomial (degré 2)&quot;),  show.legend = TRUE) +
+  geom_smooth(method = &quot;lm&quot;, formula = y ~ poly(x, 3),
+              aes(color = &quot;Polynomial (degré 3)&quot;,fill = &quot;Polynomial (degré 3)&quot;),  show.legend = TRUE)+
+  geom_smooth(method = &quot;lm&quot;, formula = y ~ poly(x, 4),
+              aes(color = &quot;Polynomial (degré 4)&quot;,fill = &quot;Polynomial (degré 4)&quot;),  show.legend = TRUE)+
+  scale_color_manual(values = c(&quot;red&quot;, &quot;blue&quot;,&quot;orange&quot;,&quot;black&quot;), guide = guide_legend(title = &quot;Modèle&quot;))+
+  scale_fill_manual(values = c(&quot;red&quot;, &quot;blue&quot;,&quot;orange&quot;,&quot;black&quot;), guide = guide_legend(title = &quot;Modèle&quot;)) 
+
+aq_temp</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
 <p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 </div>
 <div id="forme-dun-modèle-additif" class="section level2">
 <h2>Forme d’un modèle additif</h2>
-<p>Dans une régression linéaire, la réponse <span class="math inline">\(y\)</span> suit une distribution normale:</p>
+<p>Si vous voulez réaliser une régression polynomiale, vous allez
+utiliser la fonction lm. En effet, on peut obtenir une régression
+polynomiale semblable à celle qu’on obtenir avec la fonction geom_smooth
+si on écrit:</p>
+<pre class="r"><code>model_poly2 &lt;- lm(Ozone ~ poly(Temp,2),airquality)  
+
+summary(model_poly2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Ozone ~ poly(Temp, 2), data = airquality)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -37.619 -12.513  -2.736   9.676 123.909 
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)      42.145      2.086  20.204  &lt; 2e-16 ***
+## poly(Temp, 2)1  272.374     25.943  10.499  &lt; 2e-16 ***
+## poly(Temp, 2)2  102.801     27.465   3.743 0.000288 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 22.47 on 113 degrees of freedom
+##   (37 observations effacées parce que manquantes)
+## Multiple R-squared:  0.5442, Adjusted R-squared:  0.5362 
+## F-statistic: 67.46 on 2 and 113 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>L’utilisation de la fonction lm() pour ajuster des modèles
+polynomiaux est possible grâce au principe d’additivité des effets des
+variables. Dans un modèle linéaire, chaque terme dans la formule est
+considéré comme un prédicteur indépendant contribuant de manière
+additive à la variable réponse. Ainsi, l’effet de chaque terme
+polynomial sur la variable réponse peut être considéré comme linéaire et
+indépendant des autres termes polynomiaux. Cela permet à la fonction
+lm() d’ajuster ces modèles polynomiaux de manière simple et directe.</p>
+<p>Il existe une autre façon de spécifier sur R un effet polynomiale</p>
+<pre class="r"><code>model_poly2_alt &lt;- lm(Ozone ~ Temp + I(Temp^2),airquality)
+
+summary(model_poly2_alt)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Ozone ~ Temp + I(Temp^2), data = airquality)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -37.619 -12.513  -2.736   9.676 123.909 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 305.48577  122.12182   2.501 0.013800 *  
+## Temp         -9.55060    3.20805  -2.977 0.003561 ** 
+## I(Temp^2)     0.07807    0.02086   3.743 0.000288 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 22.47 on 113 degrees of freedom
+##   (37 observations effacées parce que manquantes)
+## Multiple R-squared:  0.5442, Adjusted R-squared:  0.5362 
+## F-statistic: 67.46 on 2 and 113 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p><em>Nota bene</em>: : Vous avez probablement remarqué que les deux
+spécifications ne donnent pas les mêmes résultats car elles utilisent
+différentes façons de représenter la relation entre la température et la
+variable de réponse.</p>
+<p>Avec poly(Temp, 2), le modèle inclut explicitement une variable pour
+la température et une pour sa transformation quadratique. Ces variables
+sont calculées de manière à minimiser la corrélation entre elles, ce qui
+peut aider à éviter des problèmes tels que la colinéarité dans le
+modèle. Cette approche peut être utile si l’on dispose de justifications
+théoriques préalables indiquant que la relation entre les variables est
+quadratique.</p>
+<p>Avec Temp + I(Temp^2), le modèle inclut simplement la température et
+sa transformation quadratique, sans prétraitement spécial pour réduire
+la corrélation entre elles. Cela signifie que le modèle suppose
+simplement une relation linéaire entre la température et la variable de
+réponse, ainsi qu’un effet quadratique supplémentaire, sans
+considération de la forme exacte de la relation. Cette approche peut
+être utile si l’on souhaite, par exemple, simplement tester la présence
+d’un effet quadratique tout en gardant le modèle plus facile à
+interpréter.</p>
+<p>En pratique, cela peut affecter les résultats du modèle, en
+particulier lorsque la relation entre les variables est complexe ou non
+linéaire. L’approche avec poly(Temp, 2) peut être plus robuste et
+précise dans la modélisation des relations non linéaires entre les
+variables, mais elle nécessite une interprétation plus complexe des
+coefficients du modèle.</p>
+<p>Plus en génerale, dans une régression linéaire, la réponse <span
+class="math inline">\(y\)</span> suit une distribution normale:</p>
 <p><span class="math display">\[y \sim N(\mu, \sigma^2)\]</span></p>
-<p>dont la moyenne dépend d’une combinaison linéaire des prédicteurs.</p>
-<p><span class="math display">\[\mu = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...\]</span></p>
-<p>Dans un modèle additif, <span class="math inline">\(y\)</span> suit toujours une distribution normale, mais sa moyenne n’est pas contrainte à varier linéairement avec chaque prédicteur. L’effet de chaque prédicteur est plutôt représenter par une fonction non-linéaire <span class="math inline">\(f(x_i)\)</span>.</p>
-<p><span class="math display">\[\mu = \beta_0 + f(x_1) + f(x_2) + ...\]</span></p>
-<p>Dans ce type de modèle, les <span class="math inline">\(f(x_i)\)</span> proviennent d’une classe de fonctions appelées splines de lissage (<em>smoothing splines</em>), que nous décrirons mathématiquement un peu plus loin.</p>
+<p>dont la moyenne dépend d’une combinaison linéaire des
+prédicteurs.</p>
+<p><span class="math display">\[\mu = \beta_0 + \beta_1 x_1 + \beta_2
+x_2 + ...\]</span></p>
+<p>Dans un modèle additif, <span class="math inline">\(y\)</span> suit
+toujours une distribution normale, mais sa moyenne n’est pas contrainte
+à varier linéairement avec chaque prédicteur. L’effet de chaque
+prédicteur est plutôt représenté par une fonction non-linéaire <span
+class="math inline">\(f(x_i)\)</span>.</p>
+<p><span class="math display">\[\mu = \beta_0 + f(x_1) + f(x_2) +
+...\]</span></p>
+<p>Dans ce type de modèle, les <span
+class="math inline">\(f(x_i)\)</span> proviennent d’une classe de
+fonctions appelées splines de lissage (<em>smoothing splines</em>), que
+nous décrirons mathématiquement un peu plus loin.</p>
 </div>
 <div id="modèle-additif-à-un-prédicteur" class="section level2">
 <h2>Modèle additif à un prédicteur</h2>
-<p>La fonction <code>gam</code> du package <em>mgcv</em> permet d’ajuster des modèles additifs. Dans l’exemple ci-dessous, nous spécifions un modèle où la concentration d’ozone est reliée à la température par une spline <code>s(Temp)</code>.</p>
+<p>La fonction <code>gam</code> du package <em>mgcv</em> permet
+d’ajuster des modèles additifs. Dans l’exemple ci-dessous, nous
+spécifions un modèle où la concentration d’ozone est reliée à la
+température par une spline <code>s(Temp)</code>.</p>
 <pre class="r"><code>library(mgcv)
-o3_t &lt;- gam(Ozone ~ s(Temp), data = airquality)</code></pre>
-<p>La fonction <code>plot</code> appliquée au résultat de <code>gam</code> affiche la courbe estimée avec un intervalle de confiance à 95%. Nous choisissons d’afficher les résidus (<code>residuals = TRUE</code>) avec des points ouverts (symbole <code>pch = 1</code>).</p>
-<pre class="r"><code>plot(o3_t, residuals = TRUE, pch = 1)</code></pre>
-<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+o3_t &lt;- gam(Ozone ~ s(Temp), data = airquality)
+
+summary(o3_t)</code></pre>
+<pre><code>## 
+## Family: gaussian 
+## Link function: identity 
+## 
+## Formula:
+## Ozone ~ s(Temp)
+## 
+## Parametric coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   42.129      2.044   20.61   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Approximate significance of smooth terms:
+##           edf Ref.df     F p-value    
+## s(Temp) 3.771  4.689 30.75  &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## R-sq.(adj) =  0.554   Deviance explained = 56.9%
+## GCV = 505.64  Scale est. = 484.84    n = 116</code></pre>
+<p>Avec la fonction plot nous pouvons obtenir une répresentation de la
+GAM telle qu’elle a étée ajustée par la fonction gam.</p>
+<pre class="r"><code>plot(o3_t)</code></pre>
+<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 <div id="choix-des-fonctions-de-base" class="section level2">
 <h2>Choix des fonctions de base</h2>
-<p>Une spline de lissage est une combinaison linéaire de fonctions de base <span class="math inline">\(b\)</span> (<em>basis functions</em>) avec des poids <span class="math inline">\(\beta\)</span> estimés en fonction des données. Dans l’équation ci-dessous, <span class="math inline">\(k\)</span> représente le nombre de bases utilisées pour former la spline.</p>
-<p><span class="math display">\[f(x_i) = \sum_{j=1}^k \beta_j b_j(x_i)\]</span></p>
-<p>Par défaut, <code>gam</code> utilise des splines en plaque mince (<em>thin plate regression spline</em>) comme fonctions de base, mais d’autres types de fonctions peuvent être spécifiés avec l’argument <code>bs</code>. Le graphique ci-dessous montre la forme de ces splines en plaque mince pour des valeurs de <span class="math inline">\(k\)</span> allant de 3 à 9. Remarquez que le nombre de fonctions de base et leur complexité augmente avec <span class="math inline">\(k\)</span>, ce qui permet de produire des splines de plus en plus complexes.</p>
-<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>Nous pouvons fixer le nombre de fonctions de base avec l’argument <code>k</code> de la fonction <code>s()</code>. Si nous ne spécifions pas <span class="math inline">\(k\)</span>, la fonction <code>gam</code> choisit <code>k = 10</code> par défaut. Dans notre exemple, la courbe estimée avec <code>k = 3</code> est plus simple, mais celles estimées avec <code>k = 5</code> et <code>k = 7</code> semblent équivalentes, ce qui montre que 5 fonctions de base sont suffisantes pour ce problème.</p>
-<pre class="r"><code>par(mfrow = c(1, 3), cex = 1)
-plot(gam(Ozone ~ s(Temp, k = 3), data = airquality), residuals = TRUE, main = &quot;k = 3&quot;)
-plot(gam(Ozone ~ s(Temp, k = 5), data = airquality), residuals = TRUE, main = &quot;k = 5&quot;)
-plot(gam(Ozone ~ s(Temp, k = 7), data = airquality), residuals = TRUE, main = &quot;k = 7&quot;)</code></pre>
-<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>Une spline de lissage est une combinaison linéaire de fonctions de
+base <span class="math inline">\(b\)</span> (<em>basis functions</em>)
+avec des poids <span class="math inline">\(\beta\)</span> estimés en
+fonction des données. Dans l’équation ci-dessous, <span
+class="math inline">\(k\)</span> représente le nombre de bases utilisées
+pour former la spline.</p>
+<p><span class="math display">\[f(x_i) = \sum_{j=1}^k \beta_j
+b_j(x_i)\]</span></p>
+<p>Par défaut, <code>gam</code> utilise des splines en plaque mince
+(<em>thin plate regression spline</em>) comme fonctions de base, mais
+d’autres types de fonctions peuvent être spécifiés avec l’argument
+<code>bs</code>. Le graphique ci-dessous montre la forme de ces splines
+en plaque mince pour des valeurs de <span
+class="math inline">\(k\)</span> allant de 3 à 9. Remarquez que le
+nombre de fonctions de base et leur complexité augmente avec <span
+class="math inline">\(k\)</span>, ce qui permet de produire des splines
+de plus en plus complexes.</p>
+<pre class="r"><code>aq_temp &lt;- aq_temp0 +
+  geom_smooth(method = &quot;gam&quot;, 
+              formula = y ~ s(x ,k = 3), aes(color = &quot;k=3&quot;,fill=&quot;k=3&quot;),show.legend= TRUE)+
+    geom_smooth(method = &quot;gam&quot;, 
+              formula = y ~ s(x ,k = 5), aes(color = &quot;k=5&quot;,fill=&quot;k=5&quot;),  show.legend = TRUE)+
+    geom_smooth(method = &quot;gam&quot;, 
+              formula = y ~ s(x ,k = 7), aes(color = &quot;k=7&quot;,fill=&quot;k=7&quot;),  show.legend = TRUE)+
+    geom_smooth(method = &quot;gam&quot;, 
+              formula = y ~ s(x ,k = 9), aes(color = &quot;k=9&quot;,fill=&quot;k=9&quot;),  show.legend = TRUE)+
+  scale_fill_manual(values = c(&quot;red&quot;, &quot;blue&quot;,&quot;orange&quot;,&quot;black&quot;), guide = guide_legend(title = &quot;Modèle&quot;))+
+  scale_color_manual(values = c(&quot;red&quot;, &quot;blue&quot;,&quot;orange&quot;,&quot;black&quot;), guide = guide_legend(title = &quot;Modèle&quot;))
+  aq_temp</code></pre>
+<pre><code>## Warning: Removed 37 rows containing non-finite outside the scale range
+## (`stat_smooth()`).
+## Removed 37 rows containing non-finite outside the scale range
+## (`stat_smooth()`).
+## Removed 37 rows containing non-finite outside the scale range
+## (`stat_smooth()`).
+## Removed 37 rows containing non-finite outside the scale range
+## (`stat_smooth()`).</code></pre>
+<pre><code>## Warning: Removed 37 rows containing missing values or values outside the scale range
+## (`geom_point()`).</code></pre>
+<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>Nous pouvons fixer le nombre de fonctions de base avec l’argument
+<code>k</code> de la fonction <code>s()</code>. Si nous ne spécifions
+pas <span class="math inline">\(k\)</span>, la fonction <code>gam</code>
+choisit <code>k = 10</code> par défaut. Dans notre exemple, la courbe
+estimée avec <code>k = 3</code> est plus simple, mais celles estimées
+avec <code>k = 5</code> et <code>k = 7</code> semblent équivalentes, ce
+qui montre que 5 fonctions de base sont suffisantes pour ce
+problème.</p>
+<pre class="r"><code>aq_temp &lt;- aq_temp0 +
+  geom_smooth(method = &quot;gam&quot;, 
+              formula = y ~ s(x ,k = 3), aes(color = &quot;k=3&quot;,fill=&quot;k=3&quot;),show.legend= TRUE)+
+  scale_color_manual(values = c(&quot;red&quot;), guide = guide_legend(title = &quot;Modèle&quot;))+
+    scale_fill_manual(values = c(&quot;red&quot;), guide = guide_legend(title = &quot;Modèle&quot;))
+
+aq_temp</code></pre>
+<pre><code>## Warning: Removed 37 rows containing non-finite outside the scale range
+## (`stat_smooth()`).</code></pre>
+<pre><code>## Warning: Removed 37 rows containing missing values or values outside the scale range
+## (`geom_point()`).</code></pre>
+<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>o3_t &lt;- gam(Ozone ~ s(Temp,k=3), data = airquality)
+
+summary(o3_t)</code></pre>
+<pre><code>## 
+## Family: gaussian 
+## Link function: identity 
+## 
+## Formula:
+## Ozone ~ s(Temp, k = 3)
+## 
+## Parametric coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   42.129      2.073   20.32   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Approximate significance of smooth terms:
+##           edf Ref.df     F p-value    
+## s(Temp) 1.936  1.996 66.73  &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## R-sq.(adj) =  0.542   Deviance explained =   55%
+## GCV = 511.37  Scale est. = 498.42    n = 116</code></pre>
 </div>
 <div id="paramètre-de-lissage" class="section level2">
 <h2>Paramètre de lissage</h2>
-<p>En pratique, il n’est pas optimal de contrôler la complexité de la courbe en variant <code>k</code>. Il est préférable de choisir un <code>k</code> plus grand que nécessaire, pour assurer que le nombre de fonctions de base ne soit pas le “facteur limitant” pour l’ajustement du modèle. Cela cause cependant un risque de surajustement si nous avons, par exemple, 10 paramètres ajustables pour chaque prédicteur du modèle.</p>
-<p>Pour éviter le surajustement, les paramètres des splines <span class="math inline">\(f(x_i)\)</span> sont estimés en maximisant une version modifiée de la log-vraisemblance <span class="math inline">\(l\)</span>, en ajoutant une pénalité proportionnelle à la “rugosité” de la spline, mesurée par sa dérivée seconde.</p>
-<p><span class="math display">\[2l - \sum_i \lambda_i \int f&#39;&#39;(x_i)^2 dx_i\]</span></p>
-<p>Le carré de la dérivée seconde de <span class="math inline">\(f(x_i)\)</span>, <span class="math inline">\(f&#39;&#39;(x_i)^2\)</span>, prend une valeur plus élevée aux points où la spline change rapidement de direction. L’intégrale dans l’équation ci-dessous calcule donc la “rugosité” moyenne de la spline. L’importance de cette pénalité est proportionnelle à un paramètre de lissage (<em>smoothing parameter</em>) <span class="math inline">\(\lambda_i\)</span> choisi séparément pour chaque spline composante le modèle.</p>
-<p>Comme on voit ci-dessous, plus <span class="math inline">\(\lambda_i\)</span> est élevé, plus la courbe résultante est lisse (proche d’une droite). Ce paramètre contrôle donc le compromis entre ajustement aux données et simplicité de la courbe estimée.</p>
-<pre class="r"><code>par(mfrow = c(1, 3), cex = 1)
-plot(gam(Ozone ~ s(Temp, sp = 0.001), data = airquality), residuals = TRUE, main = &quot;sp = 0.001&quot;)
-plot(gam(Ozone ~ s(Temp, sp = 0.1), data = airquality), residuals = TRUE, main = &quot;sp = 0.1&quot;)
-plot(gam(Ozone ~ s(Temp, sp = 10), data = airquality), residuals = TRUE, main = &quot;sp = 10&quot;)</code></pre>
-<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<p>Le choix d’une valeur optimale de <span class="math inline">\(\lambda\)</span> est réalisée par un des algorithmes implémentés par la fonction <code>gam</code>. Aujourd’hui, le maximum de vraisemblance restreint (<code>method = "REML"</code>) est l’algorithme le plus recommandé.</p>
-<pre class="r"><code>o3_t &lt;- gam(Ozone ~ s(Temp), data = airquality, method = &quot;REML&quot;)</code></pre>
-<p>Le REML était aussi l’algorithme utilisé pour estimer la variance des effets aléatoires dans un modèle mixte. Il existe en fait un lien entre les effets aléatoires et les modèles additifs. Sans entrer dans les détails mathématiques ici, notons que comme l’effet aléatoire fait un compromis entre un effet estimé indépendamment pour chaque groupe et un effet commun dans tous les groupes, la spline fait un compromis entre une droite et une fonction irrégulière qui passerait par tous les points.</p>
+<p>En pratique, il n’est pas optimal de contrôler la complexité de la
+courbe en variant <code>k</code>. Il est préférable de choisir un
+<code>k</code> plus grand que nécessaire, pour assurer que le nombre de
+fonctions de base ne soit pas le “facteur limitant” pour l’ajustement du
+modèle. Cela cause cependant un risque de surajustement si nous avons,
+par exemple, 10 paramètres ajustables pour chaque prédicteur du
+modèle.</p>
+<p>Pour éviter le surajustement, les paramètres des splines <span
+class="math inline">\(f(x_i)\)</span> sont estimés en maximisant une
+version modifiée de la log-vraisemblance <span
+class="math inline">\(l\)</span>, en ajoutant une pénalité
+proportionnelle à la “rugosité” de la spline, mesurée par sa dérivée
+seconde.</p>
+<p><span class="math display">\[2l - \sum_i \lambda_i \int
+f&#39;&#39;(x_i)^2 dx_i\]</span></p>
+<p>Le carré de la dérivée seconde de <span
+class="math inline">\(f(x_i)\)</span>, <span
+class="math inline">\(f&#39;&#39;(x_i)^2\)</span>, prend une valeur plus
+élevée aux points où la spline change rapidement de direction.
+L’intégrale dans l’équation ci-dessous calcule donc la “rugosité”
+moyenne de la spline. L’importance de cette pénalité est proportionnelle
+à un paramètre de lissage (<em>smoothing parameter</em>) <span
+class="math inline">\(\lambda_i\)</span> choisi séparément pour chaque
+spline composante le modèle.</p>
+<p>Comme on voit ci-dessous, plus <span
+class="math inline">\(\lambda_i\)</span> est élevé, plus la courbe
+résultante est lisse (proche d’une droite). Ce paramètre contrôle donc
+le compromis entre ajustement aux données et simplicité de la courbe
+estimée.</p>
+<pre class="r"><code>aq_temp &lt;- aq_temp0 +
+  geom_smooth(method = &quot;gam&quot;, 
+              formula = y ~ s(x ,k = 3, sp = 0.001), aes(color = &quot;k=3 sp= 0.001&quot;,fill=&quot;k=3 sp= 0.001&quot;),show.legend= TRUE)+
+  geom_smooth(method = &quot;gam&quot;, 
+              formula = y ~ s(x ,k = 3, sp = 10), aes(color = &quot;k=3 sp=10&quot;,
+                                                      fill=&quot;k=3 sp=10&quot;),show.legend= TRUE)+
+  scale_color_manual(values = c(&quot;red&quot;,&quot;blue&quot;), guide = guide_legend(title = &quot;Modèle&quot;))+
+    scale_fill_manual(values = c(&quot;red&quot;,&quot;blue&quot;), guide = guide_legend(title = &quot;Modèle&quot;))
+
+aq_temp</code></pre>
+<pre><code>## Warning: Removed 37 rows containing non-finite outside the scale range
+## (`stat_smooth()`).
+## Removed 37 rows containing non-finite outside the scale range
+## (`stat_smooth()`).</code></pre>
+<pre><code>## Warning: Removed 37 rows containing missing values or values outside the scale range
+## (`geom_point()`).</code></pre>
+<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>Le choix d’une valeur optimale de <span
+class="math inline">\(\lambda\)</span> est réalisée par un des
+algorithmes implémentés par la fonction <code>gam</code>. Aujourd’hui,
+le maximum de vraisemblance restreint (<code>method = "REML"</code>) est
+l’algorithme le plus recommandé.</p>
+<pre class="r"><code>o3_t &lt;- gam(Ozone ~ s(Temp), data = airquality, method = &quot;REML&quot;)
+
+
+plot(o3_t)</code></pre>
+<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>Le REML était aussi l’algorithme utilisé pour estimer la variance des
+effets aléatoires dans un modèle mixte. Il existe en fait un lien entre
+les effets aléatoires et les modèles additifs. Sans entrer dans les
+détails mathématiques ici, notons que comme l’effet aléatoire fait un
+compromis entre un effet estimé indépendamment pour chaque groupe et un
+effet commun dans tous les groupes, la spline fait un compromis entre
+une droite et une fonction irrégulière qui passerait par tous les
+points.</p>
 </div>
 <div id="pourquoi-un-modèle-additif" class="section level2">
 <h2>Pourquoi un modèle additif?</h2>
-<p>Les modèles additifs ont l’avantage d’offrir beaucoup de flexibilité dans la représentation du lien entre prédicteurs et variable réponse. Néanmoins, le fait que la réponse soit une fonction additive permet d’isoler l’effet de chacun de ces prédicteurs. En ce sens, les GAM sont plus facilement interprétables que d’autres modèles très flexibles (comme les forêts aléatoires).</p>
-<p>En contrepartie, comme la spline n’a pas d’équation paramétrique simple, seule une visualisation de la fonction permet de comprendre les effets estimés. Aussi, puisqu’on estime <span class="math inline">\(k\)</span> paramètres par prédicteur, les GAM demandent un temps de calcul important pour les modèles complexes.</p>
+<p>Les modèles additifs ont l’avantage d’offrir beaucoup de flexibilité
+dans la représentation du lien entre prédicteurs et variable réponse.
+Néanmoins, le fait que la réponse soit une fonction additive permet
+d’isoler l’effet de chacun de ces prédicteurs. En ce sens, les GAM sont
+plus facilement interprétables que d’autres modèles très flexibles
+(comme les forêts aléatoires).</p>
+<p>En contrepartie, comme la spline n’a pas d’équation paramétrique
+simple, seule une visualisation de la fonction permet de comprendre les
+effets estimés. Aussi, puisqu’on estime <span
+class="math inline">\(k\)</span> paramètres par prédicteur, les GAM
+demandent un temps de calcul important pour les modèles complexes.</p>
 </div>
 </div>
 <div id="ajustement-des-modèle-additifs" class="section level1">
 <h1>Ajustement des modèle additifs</h1>
-<p>Le modèle suivant inclut des splines pour les trois prédicteurs (température, vitesse du vent et radiation solaire).</p>
+<p>Le modèle suivant inclut des splines pour les trois prédicteurs
+(température, vitesse du vent et radiation solaire).</p>
 <pre class="r"><code>mod_o3 &lt;- gam(Ozone ~ s(Temp) + s(Wind) + s(Solar.R), 
               data = airquality, method = &quot;REML&quot;)</code></pre>
-<p><em>Note</em>: Si les effets de tous les prédicteurs sont représentés par des splines ici, on peut aussi combiner splines de lissage <code>s()</code> pour certains prédicteurs et effets linéaires pour d’autres dans un GAM.</p>
-<p>La commande <code>plot</code> produit maintenant un graphique pour chaque spline estimée. Les splines sont estimées avec une moyenne de zéro. Ainsi:</p>
+<p><em>Note</em>: Si les effets de tous les prédicteurs sont représentés
+par des splines ici, on peut aussi combiner splines de lissage
+<code>s()</code> pour certains prédicteurs et effets linéaires pour
+d’autres dans un GAM.</p>
+<p>La commande <code>plot</code> produit maintenant un graphique pour
+chaque spline estimée. Les splines sont estimées avec une moyenne de
+zéro. Ainsi:</p>
 <ul>
-<li><p>l’ordonnée à l’origine du modèle représente la valeur moyenne de la réponse;</p></li>
-<li><p>les effets représentés par chaque spline représentent la variation de la réponse par rapport à cette moyenne en fonction de la valeur du prédicteur.</p></li>
+<li><p>l’ordonnée à l’origine du modèle représente la valeur moyenne de
+la réponse;</p></li>
+<li><p>les effets représentés par chaque spline représentent la
+variation de la réponse par rapport à cette moyenne en fonction de la
+valeur du prédicteur.</p></li>
 </ul>
 <pre class="r"><code>par(mfrow = c(1, 3), cex = 1)
 plot(mod_o3, residuals = TRUE)</code></pre>
-<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<p>Nous pouvons aussi effectuer une translation de chaque spline égale à l’ordonnée à l’origine (<code>shift = coef(mod_o3)[1]</code>); dans ce cas, les graphiques montrent la moyenne de la réponse en fonction du prédicteur, plutôt qu’une différence par rapport à sa moyenne. Cette version peut être plus facile à interpréter.</p>
+<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>Nous pouvons aussi effectuer une translation de chaque spline égale à
+l’ordonnée à l’origine (<code>shift = coef(mod_o3)[1]</code>); dans ce
+cas, les graphiques montrent la moyenne de la réponse en fonction du
+prédicteur, plutôt qu’une différence par rapport à sa moyenne. Cette
+version peut être plus facile à interpréter.</p>
 <pre class="r"><code>par(mfrow = c(1, 3), cex = 1)
 plot(mod_o3, shift = coef(mod_o3)[1], seWithMean = TRUE, residuals = TRUE)</code></pre>
-<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<p>Aussi, l’argument <code>seWithMean = TRUE</code> inclut l’incertitude sur la réponse moyenne (l’ordonnée à l’origine) dans l’intervalle de confiance des splines. En comparant les deux graphiques, cela a pour effet d’élargir légèrement l’intervalle, surtout au milieu du graphique.</p>
-<p>Nous pouvons consulter les coefficients du modèle avec la fonction <code>coef</code>: ceux-ci incluent l’ordonnée à l’origine et 9 coefficients pour chaque spline.</p>
+<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>Aussi, l’argument <code>seWithMean = TRUE</code> inclut l’incertitude
+sur la réponse moyenne (l’ordonnée à l’origine) dans l’intervalle de
+confiance des splines. En comparant les deux graphiques, cela a pour
+effet d’élargir légèrement l’intervalle, surtout au milieu du
+graphique.</p>
+<p>Nous pouvons consulter les coefficients du modèle avec la fonction
+<code>coef</code>: ceux-ci incluent l’ordonnée à l’origine et 9
+coefficients pour chaque spline.</p>
 <pre class="r"><code>coef(mod_o3)</code></pre>
 <pre><code>##  (Intercept)    s(Temp).1    s(Temp).2    s(Temp).3    s(Temp).4    s(Temp).5 
-##  42.09909910 -12.08591563   8.40378528  -0.43034237   0.63812808  -0.05397508 
+##  42.09909910  12.08591563   8.40378528  -0.43034237   0.63812808  -0.05397508 
 ##    s(Temp).6    s(Temp).7    s(Temp).8    s(Temp).9    s(Wind).1    s(Wind).2 
-##  -0.64836948  -0.47596943  -3.94323347   2.55758901  -6.32106628  -5.34319449 
+##  -0.64836948   0.47596943  -3.94323347   2.55758901  -6.32106628  -5.34319449 
 ##    s(Wind).3    s(Wind).4    s(Wind).5    s(Wind).6    s(Wind).7    s(Wind).8 
 ##   2.43199369   5.31801099   1.28624165  -5.40270159  -0.55172226 -32.22412238 
 ##    s(Wind).9 s(Solar.R).1 s(Solar.R).2 s(Solar.R).3 s(Solar.R).4 s(Solar.R).5 
 ## -13.15942337   1.93993397  -0.74784376   0.28873326  -0.45574360   0.25027309 
 ## s(Solar.R).6 s(Solar.R).7 s(Solar.R).8 s(Solar.R).9 
 ##   0.62997910   0.01586162   2.86340308   4.00836972</code></pre>
-<p>Le paramètre de lissage pour chaque spline est contenu dans l’élément <code>sp</code> du résultat.</p>
+<p>Le paramètre de lissage pour chaque spline est contenu dans l’élément
+<code>sp</code> du résultat.</p>
 <pre class="r"><code>mod_o3$sp</code></pre>
 <pre><code>##    s(Temp)    s(Wind) s(Solar.R) 
 ##  0.2236120  0.2258963  4.5972792</code></pre>
 <div id="diagnostics-de-lajustement" class="section level2">
 <h2>Diagnostics de l’ajustement</h2>
-<p>La fonction <code>gam.check</code> produit les graphiques de diagnostic du modèle, ainsi que les résultats d’un test d’ajustement dont nous discuterons un peu plus loin.</p>
+<p>La fonction <code>gam.check</code> produit les graphiques de
+diagnostic du modèle, ainsi que les résultats d’un test d’ajustement
+dont nous discuterons un peu plus loin.</p>
 <pre class="r"><code>par(mfrow = c(2, 2))
 gam.check(mod_o3)</code></pre>
-<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <pre><code>## 
 ## Method: REML   Optimizer: outer newton
 ## full convergence after 5 iterations.
@@ -417,16 +713,41 @@ gam.check(mod_o3)</code></pre>
 ## s(Solar.R) 9.00 1.67    0.94    0.26    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Comme pour un modèle linéaire, le graphique des résidus vs. valeurs prédites (en haut à droite) ne devrait pas présenter de tendance, la variance des résidus devrait être homogène et le graphique quantile-quantile devrait s’approche d’une droite (normalité des résidus). Ici, nous observons quelques valeurs extrêmes à droite de la distribution. De plus, la variance des résidus semble augmenter avec la valeur prédite.</p>
-<p>Les résultats du test imprimé <code>Basis dimension (k) checking results</code> indiquent le nombre de degrés de liberté effectifs du modèle (<em>edf</em>) par rapport à la valeur choisie pour <span class="math inline">\(k\)</span>. Les degrés de liberté effectifs estiment la “complexité” de la spline: par exemple, la relation entre radiation solaire et concentration d’ozone se situe entre une droite (degré 1) et une courbe quadratique (degré 2), tandis que les deux autres splines ont un degré entre 3 et 4.</p>
-<p>La valeur <span class="math inline">\(p\)</span> dans la dernière colonne vise à détecter une répartition non-aléatoire des résidus. En général, une valeur significative peut signifier un sous-ajustement du modèle aux données, surtout si <em>edf</em> est près du nombre de fonctions de base <span class="math inline">\(k\)</span>. Dans ce cas, il est utile de répéter l’ajustement en augmentant <span class="math inline">\(k\)</span>.</p>
-<p>Ici, <em>edf</em> est bien en-dessous de <span class="math inline">\(k\)</span>, donc le mauvais ajustement peut être dû à la variance non-homogène des résidus remarquée sur les graphiques de diagnostic.</p>
-<p>En appliquant une transformation logarithmique à la concentration d’ozone, l’ajustement se trouve amélioré, même si la variance n’est pas tout à fait homogène; la transformation semble avoir “surcompensé” en produisant plus de valeurs extrêmes à gauche.</p>
+<p>Comme pour un modèle linéaire, le graphique des résidus vs. valeurs
+prédites (en haut à droite) ne devrait pas présenter de tendance, la
+variance des résidus devrait être homogène et le graphique
+quantile-quantile devrait s’approche d’une droite (normalité des
+résidus). Ici, nous observons quelques valeurs extrêmes à droite de la
+distribution. De plus, la variance des résidus semble augmenter avec la
+valeur prédite.</p>
+<p>Les résultats du test imprimé
+<code>Basis dimension (k) checking results</code> indiquent le nombre de
+degrés de liberté effectifs du modèle (<em>edf</em>) par rapport à la
+valeur choisie pour <span class="math inline">\(k\)</span>. Les degrés
+de liberté effectifs estiment la “complexité” de la spline: par exemple,
+la relation entre radiation solaire et concentration d’ozone se situe
+entre une droite (degré 1) et une courbe quadratique (degré 2), tandis
+que les deux autres splines ont un degré entre 3 et 4.</p>
+<p>La valeur <span class="math inline">\(p\)</span> dans la dernière
+colonne vise à détecter une répartition non-aléatoire des résidus. En
+général, une valeur significative peut signifier un sous-ajustement du
+modèle aux données, surtout si <em>edf</em> est près du nombre de
+fonctions de base <span class="math inline">\(k\)</span>. Dans ce cas,
+il est utile de répéter l’ajustement en augmentant <span
+class="math inline">\(k\)</span>.</p>
+<p>Ici, <em>edf</em> est bien en-dessous de <span
+class="math inline">\(k\)</span>, donc le mauvais ajustement peut être
+dû à la variance non-homogène des résidus remarquée sur les graphiques
+de diagnostic.</p>
+<p>En appliquant une transformation logarithmique à la concentration
+d’ozone, l’ajustement se trouve amélioré, même si la variance n’est pas
+tout à fait homogène; la transformation semble avoir “surcompensé” en
+produisant plus de valeurs extrêmes à gauche.</p>
 <pre class="r"><code>mod_lo3 &lt;- gam(log(Ozone) ~ s(Temp) + s(Wind) + s(Solar.R), 
                data = airquality, method = &quot;REML&quot;)
 par(mfrow = c(2, 2))
-gam.check(mod_lo3)</code></pre>
-<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+gam.check(mod_lo3,pch=1)</code></pre>
+<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <pre><code>## 
 ## Method: REML   Optimizer: outer newton
 ## full convergence after 5 iterations.
@@ -444,11 +765,22 @@ gam.check(mod_lo3)</code></pre>
 ## s(Solar.R) 9.00 2.16    1.01   0.535  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Voici les résultats du modèle pour <code>log(Ozone)</code>. Remarquez que le nombre de degrés de liberté effectifs est indiqué sur chaque axe des <span class="math inline">\(y\)</span> (ex.: <code>s(Temp, 1.95)</code>).</p>
+<p>Voici les résultats du modèle pour <code>log(Ozone)</code>. Remarquez
+que le nombre de degrés de liberté effectifs est indiqué sur chaque axe
+des <span class="math inline">\(y\)</span> (ex.:
+<code>s(Temp, 1.95)</code>).</p>
 <pre class="r"><code>par(mfrow = c(1, 3))
 plot(mod_lo3, residuals = TRUE)</code></pre>
-<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
-<p>Comme pour les autres types de modèles, la commande <code>summary</code> affiche un sommaire de l’ajustement. Les premières lignes indiquent qu’il s’agit d’un modèle avec distribution normale (<code>gaussian</code>) des résidus et aucune fonction de lien. Suivent les estimés des termes paramétriques du modèle, ici seulement l’ordonnée à l’origine, puis un tableau de la significativité de chaque spline. Brièvement, une spline est significative si on ne peut pas tracer une ligne horizontale à l’intérieur de son intervalle de confiance, qui représenterait l’absence d’effet du prédicteur.</p>
+<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p>Comme pour les autres types de modèles, la commande
+<code>summary</code> affiche un sommaire de l’ajustement. Les premières
+lignes indiquent qu’il s’agit d’un modèle avec distribution normale
+(<code>gaussian</code>) des résidus et aucune fonction de lien. Suivent
+les estimés des termes paramétriques du modèle, ici seulement l’ordonnée
+à l’origine, puis un tableau de la significativité de chaque spline.
+Brièvement, une spline est significative si on ne peut pas tracer une
+ligne horizontale à l’intérieur de son intervalle de confiance, qui
+représenterait l’absence d’effet du prédicteur.</p>
 <pre class="r"><code>summary(mod_lo3)</code></pre>
 <pre><code>## 
 ## Family: gaussian 
@@ -473,27 +805,52 @@ plot(mod_lo3, residuals = TRUE)</code></pre>
 ## 
 ## R-sq.(adj) =  0.688   Deviance explained = 70.7%
 ## -REML = 86.024  Scale est. = 0.23375   n = 111</code></pre>
-<p>Finalement, le modèle explique environ 69% de la variance de la réponse selon le <span class="math inline">\(R^2\)</span> ajusté. La déviance expliquée est un pseudo-<span class="math inline">\(R^2\)</span> qui peut être utilisée à la place du <span class="math inline">\(R^2\)</span> lorsqu’il s’agit d’un modèle additif généralisé.</p>
+<p>Finalement, le modèle explique environ 69% de la variance de la
+réponse selon le <span class="math inline">\(R^2\)</span> ajusté. La
+déviance expliquée est un pseudo-<span
+class="math inline">\(R^2\)</span> qui peut être utilisée à la place du
+<span class="math inline">\(R^2\)</span> lorsqu’il s’agit d’un modèle
+additif généralisé.</p>
 </div>
 <div id="concurvité" class="section level2">
 <h2>Concurvité</h2>
-<p>Dans une régression linéaire multiple, la collinéarité entre les prédicteurs (corrélation entre un prédicteur et une combinaison des autres) pouvait limiter notre capacité d’estimer séparément l’effet de chaque prédicteur. Pour un modèle additif, la concurvité mesure un problème similaire; en raison de l’ajustement de splines, une corrélation même non-linéaire pour mener à confondre les effets de deux prédicteurs.</p>
+<p>Dans une régression linéaire multiple, la collinéarité entre les
+prédicteurs (corrélation entre un prédicteur et une combinaison des
+autres) pouvait limiter notre capacité d’estimer séparément l’effet de
+chaque prédicteur. Pour un modèle additif, la concurvité mesure un
+problème similaire; en raison de l’ajustement de splines, une
+corrélation même non-linéaire pour mener à confondre les effets de deux
+prédicteurs.</p>
 <pre class="r"><code>concurvity(mod_lo3)</code></pre>
 <pre><code>##                  para   s(Temp)   s(Wind) s(Solar.R)
-## worst    2.213704e-24 0.5929964 0.5600026  0.3969107
-## observed 2.213704e-24 0.4607831 0.3684667  0.2880898
-## estimate 2.213704e-24 0.4507423 0.2971714  0.2507011</code></pre>
-<p>La fonction <code>concurvity</code> donne plusieurs estimés de la concurvité pour chaque prédicteur. Celle-ci est analogue au <span class="math inline">\(R^2\)</span> du modèle prédisant un prédicteur à partir des autres; ainsi, une valeur &gt;0.9 serait équivalente à un VIF &gt; 10 pour la collinéarité d’un modèle linéaire.</p>
-<p>Ici, la concurvité est inférieur à 0.6 dans le pire des cas, donc il n’y a pas de raison d’omettre un prédicteur. Notez que la corrélation la plus grande se situe entre température et vitesse du vent, comme nous pouvons voir sur le graphique ci-dessous.</p>
+## worst    2.733478e-24 0.5929964 0.5600026  0.3969107
+## observed 2.733478e-24 0.4607831 0.3684667  0.2880898
+## estimate 2.733478e-24 0.4507423 0.2971714  0.2507011</code></pre>
+<p>La fonction <code>concurvity</code> donne plusieurs estimés de la
+concurvité pour chaque prédicteur. Celle-ci est analogue au <span
+class="math inline">\(R^2\)</span> du modèle prédisant un prédicteur à
+partir des autres; ainsi, une valeur &gt;0.9 serait équivalente à un VIF
+&gt; 10 pour la collinéarité d’un modèle linéaire.</p>
+<p>Ici, la concurvité est inférieur à 0.6 dans le pire des cas, donc il
+n’y a pas de raison d’omettre un prédicteur. Notez que la corrélation la
+plus grande se situe entre température et vitesse du vent, comme nous
+pouvons voir sur le graphique ci-dessous.</p>
 <pre class="r"><code>ggplot(airquality, aes(x = Temp, y = Wind)) + 
   geom_point()</code></pre>
-<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 </div>
 </div>
 <div id="modéliser-les-interactions" class="section level1">
 <h1>Modéliser les interactions</h1>
-<p>Dans cette section, nous verrons commencer modéliser l’interaction entre un effet non-linéaire et un facteur (variable catégorielle), ou entre deux effets non-linéaires.</p>
-<p>Nous utiliserons le jeu de données <code>CanWeather</code> du package <em>gamair</em>, qui contient des mesures de température <em>T</em> à chaque jour (<em>time</em>) d’une année pour 35 villes canadiennes (<em>place</em>). La latitude de chaque ville est incluse et ces villes sont groupées en quatre régions (Arctique, Atlantique, Continentale et Pacifique).</p>
+<p>Dans cette section, nous verrons commencer modéliser l’interaction
+entre un effet non-linéaire et un facteur (variable catégorielle), ou
+entre deux effets non-linéaires.</p>
+<p>Nous utiliserons le jeu de données <code>CanWeather</code> du package
+<em>gamair</em>, qui contient des mesures de température <em>T</em> à
+chaque jour (<em>time</em>) d’une année pour 35 villes canadiennes
+(<em>place</em>). La latitude de chaque ville est incluse et ces villes
+sont groupées en quatre régions (Arctique, Atlantique, Continentale et
+Pacifique).</p>
 <pre class="r"><code>library(gamair)
 data(canWeather)
 str(CanWeather)</code></pre>
@@ -503,21 +860,40 @@ str(CanWeather)</code></pre>
 ##  $ region  : Factor w/ 4 levels &quot;Arctic&quot;,&quot;Atlantic&quot;,..: 2 2 2 2 2 2 2 2 2 2 ...
 ##  $ latitude: num  47.3 47.3 47.3 47.3 47.3 ...
 ##  $ place   : Factor w/ 35 levels &quot;Arvida&quot;,&quot;Bagottville&quot;,..: 24 24 24 24 24 24 24 24 24 24 ...</code></pre>
-<p>Le graphique suivant montre la courbe des températures observées pour chaque ville, codée en fonction de la latitude.</p>
+<p>Le graphique suivant montre la courbe des températures observées pour
+chaque ville, codée en fonction de la latitude.</p>
 <pre class="r"><code>ggplot(CanWeather, aes(x = time, y = T, color = latitude, group = place)) +
     geom_line(alpha = 0.5)</code></pre>
-<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
-<p>Nous ajustons d’abord un modèle sans interaction, où la température est prédite par l’addition d’une spline en fonction du jour de l’année et d’un effet constant de la région.</p>
+<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p>Nous ajustons d’abord un modèle sans interaction, où la température
+est prédite par l’addition d’une spline en fonction du jour de l’année
+et d’un effet constant de la région.</p>
 <pre class="r"><code>mod_t &lt;- gam(T ~ s(time, k = 20) + region, data = CanWeather, method = &quot;REML&quot;)</code></pre>
 <p><em>Notes</em>:</p>
 <ul>
-<li><p>Les variables catégorielles doivent être codées comme facteurs. Contrairement aux autres fonctions comme <code>lm</code>, <code>gam</code> ne convertit pas automatiquement les variables textuelles en facteurs.</p></li>
-<li><p>Ici, nous avons choisi <code>k = 20</code> pour <code>s(time)</code> après avoir obtenu un sous-ajustement avec la valeur de <span class="math inline">\(k\)</span> par défaut.</p></li>
+<li><p>Les variables catégorielles doivent être codées comme facteurs.
+Contrairement aux autres fonctions comme <code>lm</code>,
+<code>gam</code> ne convertit pas automatiquement les variables
+textuelles en facteurs.</p></li>
+<li><p>Ici, nous avons choisi <code>k = 20</code> pour
+<code>s(time)</code> après avoir obtenu un sous-ajustement avec la
+valeur de <span class="math inline">\(k\)</span> par défaut.</p></li>
 </ul>
-<p>Pour représenter à la fois les splines et les coefficients paramétriques, il faut spécifier <code>all.terms = TRUE</code> dans <code>plot</code>. L’argument <code>pages = 1</code> indique de combiner les graphiques en un seul graphique multi-panneau.</p>
+<p>Pour représenter à la fois les splines et les coefficients
+paramétriques, il faut spécifier <code>all.terms = TRUE</code> dans
+<code>plot</code>. L’argument <code>pages = 1</code> indique de combiner
+les graphiques en un seul graphique multi-panneau.</p>
 <pre class="r"><code>plot(mod_t, all.terms = TRUE, pages = 1, shift = coef(mod_t)[1])</code></pre>
-<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
-<p>Notez que les intervalles de confiance autant pour la spline que pour les effets régionaux sont très étroits, en raison du grand nombre de données. Ici, l’ordonnée à l’origine représente la température moyenne pour la région arctique. Puisque nous avons utilisé l’argument <code>shift</code>, la spline illustrée représente donc la prédiction de la température par jour de l’année pour l’arctique. Pour les autres régions, la prédiction serait égale à cette même spline décalée vers le haut en fonction du coefficient régional montré dans le graphique à droite.</p>
+<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p>Notez que les intervalles de confiance autant pour la spline que pour
+les effets régionaux sont très étroits, en raison du grand nombre de
+données. Ici, l’ordonnée à l’origine représente la température moyenne
+pour la région arctique. Puisque nous avons utilisé l’argument
+<code>shift</code>, la spline illustrée représente donc la prédiction de
+la température par jour de l’année pour l’arctique. Pour les autres
+régions, la prédiction serait égale à cette même spline décalée vers le
+haut en fonction du coefficient régional montré dans le graphique à
+droite.</p>
 <p>Voici le sommaire des résultats de ce modèle:</p>
 <pre class="r"><code>summary(mod_t)</code></pre>
 <pre><code>## 
@@ -547,11 +923,11 @@ str(CanWeather)</code></pre>
 <p>Voici les graphiques de diagnostic du modèle:</p>
 <pre class="r"><code>par(mfrow = c(2, 2))
 gam.check(mod_t)</code></pre>
-<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 <pre><code>## 
 ## Method: REML   Optimizer: outer newton
 ## full convergence after 8 iterations.
-## Gradient range [-5.649263e-05,5.186556e-05]
+## Gradient range [-5.649262e-05,5.186555e-05]
 ## (score 37641.65 &amp; scale 21.11364).
 ## Hessian positive definite, eigenvalue range [7.735162,6385.008].
 ## Model rank =  23 / 23 
@@ -561,17 +937,37 @@ gam.check(mod_t)</code></pre>
 ## 
 ##           k&#39;  edf k-index p-value
 ## s(time) 19.0 15.5    1.02    0.90</code></pre>
-<p>Même s’il n’y a pas de tendance trop forte au niveau des résidus, nous savons que la variation de température durant l’année n’est pas la même pour chaque région (ex.: les variations saisonnières de <span class="math inline">\(T\)</span> sont moins prononcées sur la côte Pacifique qu’au milieu du continent). Le modèle suivant tente de reproduire cet effet.</p>
+<p>Même s’il n’y a pas de tendance trop forte au niveau des résidus,
+nous savons que la variation de température durant l’année n’est pas la
+même pour chaque région (ex.: les variations saisonnières de <span
+class="math inline">\(T\)</span> sont moins prononcées sur la côte
+Pacifique qu’au milieu du continent). Le modèle suivant tente de
+reproduire cet effet.</p>
 <div id="interaction-entre-spline-et-facteur" class="section level2">
 <h2>Interaction entre spline et facteur</h2>
-<p>Dans le modèle ci-dessous, <code>s(time, by = region)</code> signifie qu’une spline de <span class="math inline">\(T\)</span> en fonction du temps doit être estimée séparément pour chacune des quatre régions. Il s’agit donc d’une interaction entre la région et le jour de l’année. Puisque chaque spline a une moyenne de 0, il faut tout de même inclure le terme séparé <code>+ region</code> pour représenter les différences de température moyenne entre les régions.</p>
-<p>Nous avons aussi remplacé la fonction <code>gam</code> par <code>bam</code>: celle-ci utilise un algorithme différent pour économiser de la mémoire et du temps de calcul lorsqu’on a un modèle complexe avec un grand jeu de données. Elle est toutefois moins efficace que <code>gam</code> pour un petit jeu de données.</p>
+<p>Dans le modèle ci-dessous, <code>s(time, by = region)</code> signifie
+qu’une spline de <span class="math inline">\(T\)</span> en fonction du
+temps doit être estimée séparément pour chacune des quatre régions. Il
+s’agit donc d’une interaction entre la région et le jour de l’année.
+Puisque chaque spline a une moyenne de 0, il faut tout de même inclure
+le terme séparé <code>+ region</code> pour représenter les différences
+de température moyenne entre les régions.</p>
+<p>Nous avons aussi remplacé la fonction <code>gam</code> par
+<code>bam</code>: celle-ci utilise un algorithme différent pour
+économiser de la mémoire et du temps de calcul lorsqu’on a un modèle
+complexe avec un grand jeu de données. Elle est toutefois moins efficace
+que <code>gam</code> pour un petit jeu de données.</p>
 <pre class="r"><code>mod_t_by &lt;- bam(T ~ s(time, k = 20, by = region) + region, 
                 data = CanWeather, method = &quot;REML&quot;)</code></pre>
-<p>Les splines résultantes montrent bien la différence entre la variabilité annuelle de température par région. Rappelons qu’excepté pour la région arctique, il faut ajouter l’effet constant de la région (dernier graphique) à chaque courbe pour obtenir les prédictions de température pour cette région.</p>
+<p>Les splines résultantes montrent bien la différence entre la
+variabilité annuelle de température par région. Rappelons qu’excepté
+pour la région arctique, il faut ajouter l’effet constant de la région
+(dernier graphique) à chaque courbe pour obtenir les prédictions de
+température pour cette région.</p>
 <pre class="r"><code>plot(mod_t_by, pages = 1, all.terms = TRUE, shift = coef(mod_t_by)[1])</code></pre>
-<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
-<p>Le modèle résultant explique maintenant 91% de la variabilité de <span class="math inline">\(T\)</span>.</p>
+<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p>Le modèle résultant explique maintenant 91% de la variabilité de
+<span class="math inline">\(T\)</span>.</p>
 <pre class="r"><code>summary(mod_t_by)</code></pre>
 <pre><code>## 
 ## Family: gaussian 
@@ -600,67 +996,127 @@ gam.check(mod_t)</code></pre>
 ## 
 ## R-sq.(adj) =  0.912   Deviance explained = 91.2%
 ## -REML =  35279  Scale est. = 14.441    n = 12775</code></pre>
-<p>Il existe un autre type d’interaction entre une spline et un facteur, appelée <em>factor-smooth interaction</em> (fs). Dans ce cas, <code>gam</code> estime une spline séparée pour chaque niveau du facteur, mais les splines doivent avoir le même paramètre de lissage. Chacune des splines peut aussi avoir une moyenne différente de 0, donc il n’est pas nécessaire d’ajouter un effet additif de la région.</p>
+<p>Il existe un autre type d’interaction entre une spline et un facteur,
+appelée <em>factor-smooth interaction</em> (fs). Dans ce cas,
+<code>gam</code> estime une spline séparée pour chaque niveau du
+facteur, mais les splines doivent avoir le même paramètre de lissage.
+Chacune des splines peut aussi avoir une moyenne différente de 0, donc
+il n’est pas nécessaire d’ajouter un effet additif de la région.</p>
 <pre class="r"><code>mod_t_fs &lt;- bam(T ~ s(time, region, bs = &quot;fs&quot;), data = CanWeather, method = &quot;REML&quot;)
 plot(mod_t_fs, shift = coef(mod_t_fs)[1])</code></pre>
-<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
-<p>Pour ce type d’interaction, la commande <code>plot</code> affiche toutes les splines sur un même graphique. Malheureusement, il n’est pas facile d’afficher une légende pour associer chaque spline à une valeur du facteur.</p>
-<p>L’utilisation de <code>bs = "fs"</code> par rapport à <code>by = ...</code> est surtout recommandée lorsque le facteur a plusieurs niveaux et qu’il n’y a peut-être pas assez de données par niveau pour estimer chaque paramètre de lissage de façon indépendante. Ici, les résultats sont à peu près les mêmes en raison du grand nombre de données et la version avec <code>by</code>, qui est un peu plus flexible, obtient un meilleur AIC.</p>
+<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<p>Pour ce type d’interaction, la commande <code>plot</code> affiche
+toutes les splines sur un même graphique. Malheureusement, il n’est pas
+facile d’afficher une légende pour associer chaque spline à une valeur
+du facteur.</p>
+<p>L’utilisation de <code>bs = "fs"</code> par rapport à
+<code>by = ...</code> est surtout recommandée lorsque le facteur a
+plusieurs niveaux et qu’il n’y a peut-être pas assez de données par
+niveau pour estimer chaque paramètre de lissage de façon indépendante.
+Ici, les résultats sont à peu près les mêmes en raison du grand nombre
+de données et la version avec <code>by</code>, qui est un peu plus
+flexible, obtient un meilleur AIC.</p>
 <pre class="r"><code>AIC(mod_t)</code></pre>
 <pre><code>## [1] 75238.21</code></pre>
 <pre class="r"><code>AIC(mod_t_by)</code></pre>
 <pre><code>## [1] 70424.59</code></pre>
 <pre class="r"><code>AIC(mod_t_fs)</code></pre>
-<pre><code>## [1] 70453.95</code></pre>
+<pre><code>## [1] 70453.87</code></pre>
 </div>
 <div id="interaction-entre-variables-numériques" class="section level2">
 <h2>Interaction entre variables numériques</h2>
-<p>Supposons maintenant que nous souhaitons modéliser comment la courbe de température en fonction du temps varie selon la latitude. La fonction <code>te</code> (<em>tensor product</em>) définit une spline en plusieurs dimensions, où le paramètre de lissage est choisi séparément pour chaque dimension.</p>
+<p>Supposons maintenant que nous souhaitons modéliser comment la courbe
+de température en fonction du temps varie selon la latitude. La fonction
+<code>te</code> (<em>tensor product</em>) définit une spline en
+plusieurs dimensions, où le paramètre de lissage est choisi séparément
+pour chaque dimension.</p>
 <pre class="r"><code>mod_t_lat &lt;- bam(T ~ te(time, latitude) + region, data = CanWeather, method = &quot;REML&quot;)</code></pre>
-<p><em>Note</em>: On peut aussi définir une spline en plusieurs dimensions avec <code>s(x1, x2)</code>, dans lequel cas le même paramètre de lissage est utilisé pour les deux dimensions. Cette version sert surtout aux cas où les deux variables sont exprimées dans les mêmes unités, comme les coordonnées X et Y dans la modélisation de données spatiales.</p>
-<p>Pour une spline en 2D, <code>plot</code> représente des courbes de niveau avec marge d’erreur (1 écart-type de part et d’autre).</p>
+<p><em>Note</em>: On peut aussi définir une spline en plusieurs
+dimensions avec <code>s(x1, x2)</code>, dans lequel cas le même
+paramètre de lissage est utilisé pour les deux dimensions. Cette version
+sert surtout aux cas où les deux variables sont exprimées dans les mêmes
+unités, comme les coordonnées X et Y dans la modélisation de données
+spatiales.</p>
+<p>Pour une spline en 2D, <code>plot</code> représente des courbes de
+niveau avec marge d’erreur (1 écart-type de part et d’autre).</p>
 <pre class="r"><code>plot(mod_t_lat)</code></pre>
-<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
-<p>D’autres options de visualisation sont possibles en modifiant l’argument <code>scheme</code>. Par exemple, <code>scheme = 2</code> ajoute des couleurs représentant la variable réponse (<em>heatmap</em>).</p>
+<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+<p>D’autres options de visualisation sont possibles en modifiant
+l’argument <code>scheme</code>. Par exemple, <code>scheme = 2</code>
+ajoute des couleurs représentant la variable réponse
+(<em>heatmap</em>).</p>
 <pre class="r"><code>plot(mod_t_lat, scheme = 2)</code></pre>
-<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
-<p>Les diagnostics du modèle semblent indiquer un sous-ajustement. Cependant, même si <em>edf</em> s’approche de <span class="math inline">\(k\)</span>, augmenter la valeur de <span class="math inline">\(k\)</span> prend beaucoup de temps de calcul sans vraiment régler le problème. En fait, le mauvais ajustement pourrait être dû au fait que la relation entre température et latitude varie par région. (Vancouver est plus “nordique” en latitude que Rouyn-Noranda!)</p>
+<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
+<p>En alternative, vous pouvez aussi visualiser les relation en trois
+dimensions:</p>
+<pre class="r"><code>vis.gam(mod_t_lat, theta = 50, n.grid = 50, lwd = 0.4)</code></pre>
+<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
+<p>Les diagnostics du modèle semblent indiquer un sous-ajustement.
+Cependant, même si <em>edf</em> s’approche de <span
+class="math inline">\(k\)</span>, augmenter la valeur de <span
+class="math inline">\(k\)</span> prend beaucoup de temps de calcul sans
+vraiment régler le problème. En fait, le mauvais ajustement pourrait
+être dû au fait que la relation entre température et latitude varie par
+région. (Vancouver est plus “nordique” en latitude que
+Rouyn-Noranda!)</p>
 <pre class="r"><code>par(mfrow = c(2, 2))
 gam.check(mod_t_lat)</code></pre>
-<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
 <pre><code>## 
 ## Method: REML   Optimizer: outer newton
-## full convergence after 7 iterations.
-## Gradient range [-0.001258148,0.001141736]
+## full convergence after 6 iterations.
+## Gradient range [-4.598966e-06,2.696073e-09]
 ## (score 33013.51 &amp; scale 10.17519).
-## Hessian positive definite, eigenvalue range [3.181735,6384.01].
+## Hessian positive definite, eigenvalue range [3.181775,6384.009].
 ## Model rank =  28 / 28 
 ## 
 ## Basis dimension (k) checking results. Low p-value (k-index&lt;1) may
 ## indicate that k is too low, especially if edf is close to k&#39;.
 ## 
 ##                     k&#39;  edf k-index p-value    
-## te(time,latitude) 24.0 23.6    0.22  &lt;2e-16 ***
+## te(time,latitude) 24.0 23.6    0.23  &lt;2e-16 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 </div>
 <div id="résumé-interactions" class="section level2">
 <h2>Résumé: Interactions</h2>
 <ul>
-<li><p><code>y ~ s(x, by = z) + z</code>: ajustement indépendant d’une spline de <span class="math inline">\(y\)</span> vs. <span class="math inline">\(x\)</span> pour chaque niveau du facteur <span class="math inline">\(z\)</span>.</p></li>
-<li><p><code>y ~ s(x, z, bs = "fs")</code>: ajustement d’une spline de <span class="math inline">\(y\)</span> vs. <span class="math inline">\(x\)</span> pour chaque niveau du facteur <span class="math inline">\(z\)</span>, avec un paramètre de lissage commun.</p></li>
-<li><p><code>y ~ s(x1, x2)</code>: spline en deux dimensions avec paramètre de lissage unique.</p></li>
-<li><p><code>y ~ te(x1, x2)</code>: spline en deux dimensions avec paramètre de lissage différent dans chaque dimension.</p></li>
+<li><p><code>y ~ s(x, by = z) + z</code>: ajustement indépendant d’une
+spline de <span class="math inline">\(y\)</span> vs. <span
+class="math inline">\(x\)</span> pour chaque niveau du facteur <span
+class="math inline">\(z\)</span>.</p></li>
+<li><p><code>y ~ s(x, z, bs = "fs")</code>: ajustement d’une spline de
+<span class="math inline">\(y\)</span> vs. <span
+class="math inline">\(x\)</span> pour chaque niveau du facteur <span
+class="math inline">\(z\)</span>, avec un paramètre de lissage
+commun.</p></li>
+<li><p><code>y ~ s(x1, x2)</code>: spline en deux dimensions avec
+paramètre de lissage unique.</p></li>
+<li><p><code>y ~ te(x1, x2)</code>: spline en deux dimensions avec
+paramètre de lissage différent dans chaque dimension.</p></li>
 </ul>
 </div>
 </div>
 <div id="modèles-additifs-généralisés" class="section level1">
 <h1>Modèles additifs généralisés</h1>
-<p>Comme les modèles linéaires, les modèles additifs peuvent être généralisés en modifiant la distribution de la réponse (ex.: binomiale, Poisson) et en reliant le prédicteur additif à la réponse moyenne par une fonction de lien <span class="math inline">\(g\)</span>.</p>
-<p><span class="math display">\[g(\mu) = \beta_0 + f(x_1) + f(x_2) + ...\]</span></p>
+<p>Comme les modèles linéaires, les modèles additifs peuvent être
+généralisés en modifiant la distribution de la réponse (ex.: binomiale,
+Poisson) et en reliant le prédicteur additif à la réponse moyenne par
+une fonction de lien <span class="math inline">\(g\)</span>.</p>
+<p><span class="math display">\[g(\mu) = \beta_0 + f(x_1) + f(x_2) +
+...\]</span></p>
 <div id="exemple-1" class="section level2">
 <h2>Exemple</h2>
-<p>Pour illuster ce type de modèle, nous utiliserons le jeu de données <code>Wells</code> du package <em>carData</em>, qui présente les données d’une étude menée auprès de 3020 ménages au Bangladesh. Les puits utilisés par ces ménages avaient une concentration d’arsenic (variable <code>arsenic</code>, en multiples de 100 <span class="math inline">\(\mu g/L\)</span>) supérieure au niveau jugé sûr. La réponse binaire <code>switch</code> indique si le ménage a changé de puits. En plus de la concentration d’arsenic, le tableau contient d’autres prédicteurs, dont la distance vers le puits sûr le plus près (<code>distance</code> en mètres).</p>
+<p>Pour illuster ce type de modèle, nous utiliserons le jeu de données
+<code>Wells</code> du package <em>carData</em>, qui présente les données
+d’une étude menée auprès de 3020 ménages au Bangladesh. Les puits
+utilisés par ces ménages avaient une concentration d’arsenic (variable
+<code>arsenic</code>, en multiples de 100 <span
+class="math inline">\(\mu g/L\)</span>) supérieure au niveau jugé sûr.
+La réponse binaire <code>switch</code> indique si le ménage a changé de
+puits. En plus de la concentration d’arsenic, le tableau contient
+d’autres prédicteurs, dont la distance vers le puits sûr le plus près
+(<code>distance</code> en mètres).</p>
 <pre class="r"><code>library(carData)
 data(Wells)
 str(Wells)</code></pre>
@@ -670,10 +1126,19 @@ str(Wells)</code></pre>
 ##  $ distance   : num  16.8 47.3 21 21.5 40.9 ...
 ##  $ education  : int  0 0 10 12 14 9 4 10 0 0 ...
 ##  $ association: Factor w/ 2 levels &quot;no&quot;,&quot;yes&quot;: 1 1 1 1 2 2 2 1 2 2 ...</code></pre>
-<p>Comme dans le cas des GLM, nous représentons une réponse binaire par une distribution binomiale avec lien logit. Le modèle suivant représente donc des effets non-linéaires et additifs de la concentration d’arsenic et de la distance sur <span class="math inline">\(\text{logit}(p) = \log \frac{p}{1-p}\)</span>, où <span class="math inline">\(p\)</span> est la probabilité de changer de puits.</p>
+<p>Comme dans le cas des GLM, nous représentons une réponse binaire par
+une distribution binomiale avec lien logit. Le modèle suivant représente
+donc des effets non-linéaires et additifs de la concentration d’arsenic
+et de la distance sur <span class="math inline">\(\text{logit}(p) = \log
+\frac{p}{1-p}\)</span>, où <span class="math inline">\(p\)</span> est la
+probabilité de changer de puits.</p>
 <pre class="r"><code>mod_wells &lt;- gam(switch ~ s(arsenic) + s(distance), data = Wells, 
                  family = binomial, method = &quot;REML&quot;)</code></pre>
-<p>Le sommaire des résultats indique des effets significatifs des deux prédicteurs, même si le pseudo-<span class="math inline">\(R^2\)</span> (% de la déviance expliquée) est très faible, ce qui indique que ces facteurs n’expliquent qu’une petite partie de la variabilité des décisions.</p>
+<p>Le sommaire des résultats indique des effets significatifs des deux
+prédicteurs, même si le pseudo-<span class="math inline">\(R^2\)</span>
+(% de la déviance expliquée) est très faible, ce qui indique que ces
+facteurs n’expliquent qu’une petite partie de la variabilité des
+décisions.</p>
 <pre class="r"><code>summary(mod_wells)</code></pre>
 <pre><code>## 
 ## Family: binomial 
@@ -697,17 +1162,29 @@ str(Wells)</code></pre>
 ## 
 ## R-sq.(adj) =  0.0699   Deviance explained = 5.41%
 ## -REML = 1961.4  Scale est. = 1         n = 3020</code></pre>
-<p>Les graphiques produits avec <code>plot</code> montrent l’effet des prédicteurs sur l’échelle du lien (sur le logit de <span class="math inline">\(p\)</span>). Nous verrons plus tard comment visualiser les prédictions pour <span class="math inline">\(p\)</span>.</p>
+<p>Les graphiques produits avec <code>plot</code> montrent l’effet des
+prédicteurs sur l’échelle du lien (sur le logit de <span
+class="math inline">\(p\)</span>). Nous verrons plus tard comment
+visualiser les prédictions pour <span
+class="math inline">\(p\)</span>.</p>
 <pre class="r"><code>plot(mod_wells, pages = 1)</code></pre>
-<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
-<p>Notez que l’incertitude des splines augmente beaucoup pour les grandes valeurs d’arsenic et de distance, en raison du manque de données à ces niveaux des prédicteurs. Les barres verticales en bas du graphique (appelées <em>rug plot</em>) montrent la position des observations sur l’échelle de chaque prédicteur. Ces observations deviennent rares pour arsenic &gt; 6 et distance &gt; 200.</p>
+<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+<p>Notez que l’incertitude des splines augmente beaucoup pour les
+grandes valeurs d’arsenic et de distance, en raison du manque de données
+à ces niveaux des prédicteurs. Les barres verticales en bas du graphique
+(appelées <em>rug plot</em>) montrent la position des observations sur
+l’échelle de chaque prédicteur. Ces observations deviennent rares pour
+arsenic &gt; 6 et distance &gt; 200.</p>
 </div>
 <div id="diagnostics" class="section level2">
 <h2>Diagnostics</h2>
-<p>Les graphiques de diagnostic habituels sont moins utiles pour une réponse binaire, car les résidus sont toujours en deux groupes: résidus négatifs si la réponse était de 1, résidus positifs si elle était de 0.</p>
+<p>Les graphiques de diagnostic habituels sont moins utiles pour une
+réponse binaire, car les résidus sont toujours en deux groupes: résidus
+négatifs si la réponse était de 1, résidus positifs si elle était de
+0.</p>
 <pre class="r"><code>par(mfrow = c(2, 2))
 gam.check(mod_wells)</code></pre>
-<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
 <pre><code>## 
 ## Method: REML   Optimizer: outer newton
 ## full convergence after 4 iterations.
@@ -724,21 +1201,49 @@ gam.check(mod_wells)</code></pre>
 ## s(distance) 9.00 2.17    0.97    0.08 .
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Dans ce cas, il est préférable d’évaluer l’ajustement du modèle en groupant les résidus. La fonction <code>binnedplot</code> du package <em>arm</em> ordonne les observations en ordre croissant de valeurs prédites, puis groupe les observations avec prédictions similaires. Elle produit ensuite un graphique du résidu moyen par groupe en fonction de la prédiction moyenne, avec intervalle de prédiction à 95%.</p>
+<p>Dans ce cas, il est préférable d’évaluer l’ajustement du modèle en
+groupant les résidus. La fonction <code>binnedplot</code> du package
+<em>arm</em> ordonne les observations en ordre croissant de valeurs
+prédites, puis groupe les observations avec prédictions similaires. Elle
+produit ensuite un graphique du résidu moyen par groupe en fonction de
+la prédiction moyenne, avec intervalle de prédiction à 95%.</p>
 <pre class="r"><code>library(arm)
 binnedplot(fitted(mod_wells), residuals(mod_wells, type = &quot;response&quot;))</code></pre>
-<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
-<p>Par exemple, si un groupe de ménages avait une prédiction moyenne de 60% et que 55% d’eux ont changer de puits, le résidu est de -0.05. Ici, nous ne percevons pas de tendance parmi les résidus groupés et 94% d’entre eux (48/51) se retrouvent dans l’intervalle de prédiction à 95%.</p>
+<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
+<p>Par exemple, si un groupe de ménages avait une prédiction moyenne de
+60% et que 55% d’eux ont changer de puits, le résidu est de -0.05. Ici,
+nous ne percevons pas de tendance parmi les résidus groupés et 94%
+d’entre eux (48/51) se retrouvent dans l’intervalle de prédiction à
+95%.</p>
 </div>
 <div id="visualiser-les-effets-avec-predict" class="section level2">
 <h2>Visualiser les effets avec <em>predict</em></h2>
-<p>En raison de la forme du lien logit, les effets additifs sur l’échelle du logit ne sont plus additifs sur l’échelle de la probabilité prédite <span class="math inline">\(p\)</span>. Dans ce cas, pour visualiser les effets des prédicteurs sur <span class="math inline">\(p\)</span>, il est préférable de créer une grille de valeurs et d’appliquer la fonction <code>predict</code>. Voici un aperçu de la méthode à suivre:</p>
+<p>En raison de la forme du lien logit, les effets additifs sur
+l’échelle du logit ne sont plus additifs sur l’échelle de la probabilité
+prédite <span class="math inline">\(p\)</span>. Dans ce cas, pour
+visualiser les effets des prédicteurs sur <span
+class="math inline">\(p\)</span>, il est préférable de créer une grille
+de valeurs et d’appliquer la fonction <code>predict</code>. Voici un
+aperçu de la méthode à suivre:</p>
 <ul>
-<li><p>Créer un jeu de données avec différentes combinaisons des valeurs des prédicteurs.</p></li>
-<li><p>Calculer pour chaque rangée de ce jeu de données les prédictions du modèle et leurs erreurs-types sur l’échelle du logit (<code>type = "link"</code>, l’option par défaut dans <code>predict</code>).</p></li>
-<li><p>Calculer l’intervalle de confiance à 95% sur l’échelle du logit, soit <span class="math inline">\(\pm 1.96\)</span> erreurs-type de part et d’autre de la prédiction moyenne, puis ramener les prédictions moyennes et les intervalles sur l’échelle de <span class="math inline">\(p\)</span> avec <code>plogis</code>.</p></li>
+<li><p>Créer un jeu de données avec différentes combinaisons des valeurs
+des prédicteurs.</p></li>
+<li><p>Calculer pour chaque rangée de ce jeu de données les prédictions
+du modèle et leurs erreurs-types sur l’échelle du logit
+(<code>type = "link"</code>, l’option par défaut dans
+<code>predict</code>).</p></li>
+<li><p>Calculer l’intervalle de confiance à 95% sur l’échelle du logit,
+soit <span class="math inline">\(\pm 1.96\)</span> erreurs-type de part
+et d’autre de la prédiction moyenne, puis ramener les prédictions
+moyennes et les intervalles sur l’échelle de <span
+class="math inline">\(p\)</span> avec <code>plogis</code>.</p></li>
 </ul>
-<p><em>Note</em>: La distribution des estimés s’approche davantage d’une distribution normale sur l’échelle du logit, plutôt que sur l’échelle de <span class="math inline">\(p\)</span>. C’est pourquoi il faut calculer les intervalles avant de transformer, plutôt que de calculer l’intervalle avec les résultats de <code>predict(... type = response)</code>.</p>
+<p><em>Note</em>: La distribution des estimés s’approche davantage d’une
+distribution normale sur l’échelle du logit, plutôt que sur l’échelle de
+<span class="math inline">\(p\)</span>. C’est pourquoi il faut calculer
+les intervalles avant de transformer, plutôt que de calculer
+l’intervalle avec les résultats de
+<code>predict(... type = response)</code>.</p>
 <pre class="r"><code># Création de la grille
 pred_df &lt;- expand.grid(arsenic = seq(0, 8, 0.5), distance = c(25, 50, 100, 200))
 # Prédictions avec erreur-type (se) sur l&#39;échlle du logit
@@ -747,22 +1252,35 @@ pred_se &lt;- predict(mod_wells, pred_df, se = TRUE)
 pred_df$pred &lt;- plogis(pred_se$fit)
 pred_df$lo &lt;- plogis(pred_se$fit - 1.96 * pred_se$se.fit) 
 pred_df$hi &lt;- plogis(pred_se$fit + 1.96 * pred_se$se.fit)</code></pre>
-<p>Le graphique suivant illustre les effets prédits avec leur intervalle de confiance. Notez encore une fois que l’incertitude augmente pour les valeurs élevées de distance ou de concentration d’arsenic.</p>
+<p>Le graphique suivant illustre les effets prédits avec leur intervalle
+de confiance. Notez encore une fois que l’incertitude augmente pour les
+valeurs élevées de distance ou de concentration d’arsenic.</p>
 <pre class="r"><code>ggplot(pred_df, aes(x = arsenic, y = pred, ymin = lo, ymax = hi)) +
   geom_ribbon(aes(fill = as.factor(distance)), alpha = 0.3) +
   geom_line(aes(color = as.factor(distance))) +
   scale_color_brewer(palette = &quot;Dark2&quot;) +
   scale_fill_brewer(palette = &quot;Dark2&quot;) +
   labs(y = &quot;p(switch)&quot;, color = &quot;distance&quot;, fill = &quot;distance&quot;)</code></pre>
-<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
+<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
 </div>
 </div>
 <div id="modèles-additifs-à-effets-mixtes" class="section level1">
 <h1>Modèles additifs à effets mixtes</h1>
-<p>Finalement, nous donnerons un bref exemple de l’ajout d’effets aléatoire à un modèle additif, pour produire un modèle additif généralisés à effets mixtes (GAMM). Pour plus d’informations et d’exemples à ce sujet, vous pouvez consulter l’excellent article de Pedersen et al. (2019) inclus dans les références à la fin de ces notes.</p>
+<p>Finalement, nous donnerons un bref exemple de l’ajout d’effets
+aléatoire à un modèle additif, pour produire un modèle additif
+généralisés à effets mixtes (GAMM). Pour plus d’informations et
+d’exemples à ce sujet, vous pouvez consulter l’excellent article de
+Pedersen et al. (2019) inclus dans les références à la fin de ces
+notes.</p>
 <div id="exemple-2" class="section level2">
 <h2>Exemple</h2>
-<p>Le jeu de données CO2 inclus dans R présente des données du taux d’absorption du CO2 (<em>uptake</em>) par différentes plantes en fonction de la concentration de CO2 ambiante (<em>conc</em>). Les plantes proviennent de deux provenances (<code>Type</code>, Québec ou Mississippi) et ont subi l’un de deux traitements (<code>Treatment</code> prenant la valeur “chilled” ou “nonchilled”).</p>
+<p>Le jeu de données CO2 inclus dans R présente des données du taux
+d’absorption du CO2 (<em>uptake</em>) par différentes plantes en
+fonction de la concentration de CO2 ambiante (<em>conc</em>). Les
+plantes proviennent de deux provenances (<code>Type</code>, Québec ou
+Mississippi) et ont subi l’un de deux traitements
+(<code>Treatment</code> prenant la valeur “chilled” ou
+“nonchilled”).</p>
 <pre class="r"><code>data(CO2)
 CO2$Plant &lt;- factor(CO2$Plant)
 head(CO2)</code></pre>
@@ -774,55 +1292,94 @@ head(CO2)</code></pre>
 ## 4   Qn1 Quebec nonchilled  350   37.2
 ## 5   Qn1 Quebec nonchilled  500   35.3
 ## 6   Qn1 Quebec nonchilled  675   39.2</code></pre>
-<p>Ajustons d’abord un modèle additif de l’effet (non-linéaire) de la concentration de CO2 sur l’absorption, plus un différence constante entre les traitements. Nous ignorons donc pour l’instant le fait que des mesures répétées ont été effectuées sur chaque plante.</p>
+<p>Ajustons d’abord un modèle additif de l’effet (non-linéaire) de la
+concentration de CO2 sur l’absorption, plus un différence constante
+entre les traitements. Nous ignorons donc pour l’instant le fait que des
+mesures répétées ont été effectuées sur chaque plante.</p>
 <pre class="r"><code>mod_co2 &lt;- gam(log(uptake) ~ s(log(conc), k = 5) + Treatment, 
                data = CO2, method = &quot;REML&quot;)</code></pre>
 <p><em>Note</em>:</p>
 <ul>
-<li><p>Après avoir testé les deux options, la concentration de CO2 et l’absorption ont été log-transformées pour obtenir une meilleure normalité et homogénéité des résidus.</p></li>
-<li><p>Nous réduisons le nombre de fonctions de base à 5 car la variable <em>conc</em> a seulement 7 niveaux et <span class="math inline">\(k\)</span> ne peut dépasser le nombre de valeurs distinctes du prédicteur.</p></li>
+<li><p>Après avoir testé les deux options, la concentration de CO2 et
+l’absorption ont été log-transformées pour obtenir une meilleure
+normalité et homogénéité des résidus.</p></li>
+<li><p>Nous réduisons le nombre de fonctions de base à 5 car la variable
+<em>conc</em> a seulement 7 niveaux et <span
+class="math inline">\(k\)</span> ne peut dépasser le nombre de valeurs
+distinctes du prédicteur.</p></li>
 </ul>
 <p>Voici le graphique des effets estimés pour ce modèle.</p>
 <pre class="r"><code>plot(mod_co2, all.terms = TRUE, pages = 1, residuals = TRUE, pch = 1,
      shift = coef(mod_co2)[1], seWithMean = TRUE)</code></pre>
-<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
+<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
 </div>
-<div id="effets-aléatoires-sur-lordonnée-à-lorigine" class="section level2">
+<div id="effets-aléatoires-sur-lordonnée-à-lorigine"
+class="section level2">
 <h2>Effets aléatoires sur l’ordonnée à l’origine</h2>
-<p>Pour inclure un effet aléatoire de l’identité de la plante sur l’ordonnée à l’origine, nous ajoutons un terme <code>s(Plant, bs = "re")</code>. Ici, “re” signifie <em>random effect</em>, donc il ne s’agit pas d’une spline, mais bien d’un effet aléatoire, équivalent à <code>(1 | Plant)</code> selon la syntaxe utilisée par le package <em>lme4</em>. Cet effet décale la courbe d’absorption vs. concentration d’une plante à l’autre, mais la forme de cette courbe ne change pas.</p>
+<p>Pour inclure un effet aléatoire de l’identité de la plante sur
+l’ordonnée à l’origine, nous ajoutons un terme
+<code>s(Plant, bs = "re")</code>. Ici, “re” signifie <em>random
+effect</em>, donc il ne s’agit pas d’une spline, mais bien d’un effet
+aléatoire, équivalent à <code>(1 | Plant)</code> selon la syntaxe
+utilisée par le package <em>lme4</em>. Cet effet décale la courbe
+d’absorption vs. concentration d’une plante à l’autre, mais la forme de
+cette courbe ne change pas.</p>
 <pre class="r"><code>mod_co2_re &lt;- gam(log(uptake) ~ s(log(conc), k = 5) + s(Plant, bs = &quot;re&quot;) + Treatment, 
                   data = CO2, method = &quot;REML&quot;)</code></pre>
-<p>Voici les graphiques des effets estimés. L’effet aléatoire des plantes est indiqué sur un diagramme quantile-quantile, ce qui nous permet en même temps de vérifier la normalité de ces effets aléatoires.</p>
+<p>Voici les graphiques des effets estimés. L’effet aléatoire des
+plantes est indiqué sur un diagramme quantile-quantile, ce qui nous
+permet en même temps de vérifier la normalité de ces effets
+aléatoires.</p>
 <pre class="r"><code>par(mfrow = c(1, 3))
 plot(mod_co2_re, all.terms = TRUE, residuals = TRUE, pch = 1, 
      shift = coef(mod_co2_re)[1], seWithMean = TRUE)</code></pre>
-<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
-<p>Notez que l’inclusion d’un effet aléatoire permet d’estimer plus précisément la courbe absoprtion vs. concentration. Aussi, la différence entre les traitements n’est plus significative (l’intervalle de confiance inclut 0), car le traitement est constant par plante et le modèle précédent ne tenait pas compte de la non-indépendance des mesures prises sur la même plante.</p>
+<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-51-1.png" width="672" /></p>
+<p>Notez que l’inclusion d’un effet aléatoire permet d’estimer plus
+précisément la courbe absoprtion vs. concentration. Aussi, la différence
+entre les traitements n’est plus significative (l’intervalle de
+confiance inclut 0), car le traitement est constant par plante et le
+modèle précédent ne tenait pas compte de la non-indépendance des mesures
+prises sur la même plante.</p>
 </div>
 </div>
-<div id="effets-aléatoires-sur-la-forme-dune-spline" class="section level1">
+<div id="effets-aléatoires-sur-la-forme-dune-spline"
+class="section level1">
 <h1>Effets aléatoires sur la forme d’une spline</h1>
-<p>L’interaction entre spline et facteur (<code>bs = "fs"</code>) constitue une façon de modéliser un effet aléatoire de groupe sur la forme d’une spline, tel que démontré ci-dessous.</p>
+<p>L’interaction entre spline et facteur (<code>bs = "fs"</code>)
+constitue une façon de modéliser un effet aléatoire de groupe sur la
+forme d’une spline, tel que démontré ci-dessous.</p>
 <pre class="r"><code>mod_co2_fs &lt;- gam(log(uptake) ~ s(log(conc), k = 5) + 
                     s(log(conc), Plant, k = 5, bs = &quot;fs&quot;) + 
                     Treatment, data = CO2, method = &quot;REML&quot;)</code></pre>
-<p>Ici, la première spline représente l’effet de <em>conc</em> sur la “plante moyenne”, tandis que la deuxième spline (avec <code>bs = "fs"</code>) représente les déviations de cette spline pour chaque plante. Ce deuxième terme est analogue à l’effet aléatoire d’un facteur sur une pente estimée dans un modèle linéaire mixte (i.e. <code>(1 + log(conc) | Plant</code>).</p>
-<p>Voici le graphique de ces effets aléatoires par rapport à la spline moyenne. Notez que l’argument <code>shift</code> a été omis ici, car il est plus facile d’interpréter les effets aléatoires (graphique du milieu) comme des déviations par rapport à la moyenne.</p>
+<p>Ici, la première spline représente l’effet de <em>conc</em> sur la
+“plante moyenne”, tandis que la deuxième spline (avec
+<code>bs = "fs"</code>) représente les déviations de cette spline pour
+chaque plante. Ce deuxième terme est analogue à l’effet aléatoire d’un
+facteur sur une pente estimée dans un modèle linéaire mixte
+(i.e. <code>(1 + log(conc) | Plant</code>).</p>
+<p>Voici le graphique de ces effets aléatoires par rapport à la spline
+moyenne. Notez que l’argument <code>shift</code> a été omis ici, car il
+est plus facile d’interpréter les effets aléatoires (graphique du
+milieu) comme des déviations par rapport à la moyenne.</p>
 <pre class="r"><code>par(mfrow = c(1, 3))
 plot(mod_co2_fs, all.terms = TRUE, residuals = TRUE, pch = 1)</code></pre>
-<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
-<p>Nous pouvons aussi utiliser <code>predict</code> pour visualiser les courbes estimées pour chaque plante.</p>
+<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
+<p>Nous pouvons aussi utiliser <code>predict</code> pour visualiser les
+courbes estimées pour chaque plante.</p>
 <pre class="r"><code>CO2_pred &lt;- mutate(CO2, pred = predict(mod_co2_fs))
 ggplot(CO2_pred, aes(x = log(conc), y = log(uptake), color = Plant)) +
   geom_point() +
   geom_line(aes(y = pred))</code></pre>
-<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-51-1.png" width="672" /></p>
+<p><img src="07-Modeles_additifs_generalises_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
 </div>
 <div id="références" class="section level1">
 <h1>Références</h1>
 <ul>
-<li><p>Pedersen, E.J. et al. (2019) Hierarchical generalized additive models in ecology: an introduction with mgcv. PeerJ 7:e6876.</p></li>
-<li><p>Cours de Noam Ross “GAMs in R” (<a href="https://noamross.github.io/gams-in-r-course/" class="uri">https://noamross.github.io/gams-in-r-course/</a>)</p></li>
+<li><p>Pedersen, E.J. et al. (2019) Hierarchical generalized additive
+models in ecology: an introduction with mgcv. PeerJ 7:e6876.</p></li>
+<li><p>Cours de Noam Ross “GAMs in R” (<a
+href="https://noamross.github.io/gams-in-r-course/"
+class="uri">https://noamross.github.io/gams-in-r-course/</a>)</p></li>
 </ul>
 </div>
 
@@ -837,7 +1394,7 @@ ggplot(CO2_pred, aes(x = log(conc), y = log(uptake), color = Plant)) +
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -855,7 +1412,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -864,6 +1421,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')
@@ -876,7 +1436,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0

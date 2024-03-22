@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Modèles d’équations structuraux</title>
+
+<script src="libs/header-attrs-2.23/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/spacelab.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<link href="libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Modèles d’équations structuraux</h1>
+
+</div>
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>Structural equation models belong to a family of models consisting of
+a set of mathematical equations and assumptions about a studied system.
+These assumptions stem from our prior knowledge or assumptions about how
+the system operates. In statistics, a system is a set of variables or
+phenomena that are studied within the framework of an analysis or study.
+These variables may be related by complex relationships. Our aim with
+the analysis is to understand how these variables interact with each
+other or how they influence a specific outcome or phenomenon.</p>
+</div>
+<div id="contenu-du-cours" class="section level1">
+<h1>Contenu du cours</h1>
+<p>-Types des variables et liens dans un modèle d’équation
+structurel;</p>
+<ul>
+<li>Du modèle théorique au modèle statistique;</li>
+</ul>
+<p>-Ajustement du modèle sur Lavaan.</p>
+</div>
+<div
+id="types-des-variables-et-liens-dans-un-modèle-déquation-structurel"
+class="section level1">
+<h1>Types des variables et liens dans un modèle d’équation
+structurel:</h1>
+<p>La structure théorique d’un modèle d’équations structurelles englobe
+plusieurs types de variables, définissant leurs caractéristiques et
+leurs rôles dans le modèle.</p>
+<p>Selon leur <strong>nature</strong>, les variables peuvent être
+classées en 1) <strong>variables latentes</strong> et 2)
+<strong>variables observées</strong>. Une <strong>variable
+latente</strong> est une variable qui n’est pas mesurée directement,
+mais qui représente des concepts ou des traits qui n’ont pas vraiment
+d’unité de mesure. Il s’agit d’un type de variable plus souvent utilisé
+en psychologie (l’intelligence, la satisfaction, etc.). Les
+<strong>variables observées</strong> sont des variables mesurées ou
+collectées avec des méthodes établies par la discipline. En écologie,
+nous travaillons souvent avec des variables observées.</p>
+<p>Selon le <strong>rôle</strong> des variables dans le modèle
+théorique, les variables peuvent être <strong>exogènes</strong> ou
+<strong>endogènes</strong>. Les <strong>variables exogènes</strong> sont
+des variables indépendantes qui influencent les autres variables dans
+les modèles, mais qui ne sont pas influencées par aucune autre variable
+en retour. Elles représentent les moteurs des changements dans notre
+système. Les <strong>variables endogènes</strong>, vice-versa, sont des
+variables qui sont influencées par les variables exogènes ou d’autres
+variables du modèle, et représentent normalement le noyau de notre
+système et les résultats des processus que nous sommes en train de
+décrire avec notre modèle.</p>
+<p>Selon la façon dont les variables sont conceptualisées dans le
+modèles, les variables peuvent avoir un statut de modérateur et de
+médiateur. Un <strong>modérateur</strong> est une variable qui influence
+la force et la direction du lien entre deux variables. Une variable
+modératrice n’explique pas les “causes” du lien, mais elle intervient
+seulement dans les aspects quantitatives de la relation étudiée entre
+deux variables. Un <strong>médiateur</strong> est une variable qui
+explique le lien entre une variable indépendante et une variable
+dépendante. Une variable agit comme variable médiatrice lorsque elle
+représente la cause du lien entre deux variables.</p>
+<div class="float">
+<img src="notes_cours/modmed.png"
+alt="Modèles pour une analyses de Médiation et une analyses des moderateurs" />
+<div class="figcaption">Modèles pour une analyses de Médiation et une
+analyses des moderateurs</div>
+</div>
+<p>Dans la figure, les fléchés représentent des <strong>chemin</strong>.
+Dans un modèle d’équations structurelles un chémin répresnete une
+relation qui relie deux variables, pouvant être directe ou indirecte, et
+pouvant inclure des effets médiatisés. Comme vous pouvez le voir dans
+l’image, les effets médiatisés se réfèrent à une situation où l’impact
+d’une variable indépendante sur une variable dépendante passe par une
+autre variable. Autrement dit, la variable médiatrice transmet ou médie
+l’effet de la variable indépendante sur la variable dépendante.</p>
+<p>Dans un modèle d’équations structurelles, l’analyse de médiation et e
+modération sont intégrées pour obtenir une compréhension plus profonde
+des relations entre nos variables, en tenant compte à la fois de
+processus médiatiques et des effets des modérateurs. Cependant, on peut
+réaliser des analyses des modérateurs et de médiateurs si on souhaite
+tester des les relations entres trois variables avec le package
+Psych:</p>
+<p>La fonction ‘mediate’ du package ‘psych’ vous permet de conduire une
+analyse de médiation avec la fonction ‘mediate’. La variable médiatrice
+doit être mise entre parenthèses afin d’informer la fonction de son rôle
+dans le modèle. Dans l’exemple que nous allons utiliser pour montrer la
+fonction, nous utilisons la fonction ‘mediate’ pour tester les effets
+directs et indirects de la température sur la largeur des cernes de
+croissance. En effet, dans l’hémisphère nord et dans des environnements
+froids où la température est un facteur limitant pour la croissance, la
+largeur des cernes de croissance augmente avec la température.
+Cependant, la largeur du cerne de croissance est étroitement liée au
+nombre de cellules du bois qui composent le cerne, et qui est, à son
+tour, reliée à la température. Ainsi, une partie de l’effet total de la
+température sur la largeur du cerne est en effet médiée par le nombre de
+cellules. Si l’effet direct de la température sur le nombre de cellules
+est plus grand par rapport à celui sur la largeur du cerne, les
+changements de température seront plus liés aux changements du nombre de
+cellules qu’à la largeur du cerne, et donc ces derniers seront plus
+facilement prédictibles.</p>
+<pre class="r"><code>require(psych)</code></pre>
+<pre><code>## Le chargement a nécessité le package : psych</code></pre>
+<pre><code>## Warning: le package &#39;psych&#39; a été compilé avec la version R 4.3.3</code></pre>
+<pre class="r"><code>ringdatacell &lt;- read.csv(&quot;C:/Users/buttoval/Documents/ECL8202_working_session/ringdatacell.CSV&quot;)
+
+
+medanalysys&lt;-mediate( ring_width ~ temperature + (cell_number) , data=ringdatacell )</code></pre>
+<p><img src="08E0new-sem_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p>Dans le schéma on voit très bien que l’effet totale de la température
+est c = 8.15, mais l’effet direct de la temperature sur le cerne de
+croissance c’= 0.56, est beaucoup plus petit.</p>
+<p><em>Nota bene</em> la fonction “mediate” nous donne les coefficients
+standardisées par defaut, ainsi que les moyennes centrées. pour éviter
+cela il faut utiliser les aurgments “zero=FALSE” et std=FALSE.</p>
+<pre class="r"><code>summary(medanalysys)</code></pre>
+<pre><code>## Call: mediate(y = ring_width ~ temperature + (cell_number), data = ringdatacell)
+## 
+## Direct effect estimates (traditional regression)    (c&#39;) X + M on Y 
+##             ring_width     se     t df     Prob
+## Intercept      -157.63 459.43 -0.34 97 7.32e-01
+## temperature     293.58  44.61  6.58 97 2.38e-09
+## cell_number       8.18  21.29  0.38 97 7.02e-01
+## 
+## R = 0.84 R2 = 0.7   F = 112.67 on 2 and 97 DF   p-value:  5.08e-26 
+## 
+##  Total effect estimates (c) (X on Y) 
+##             ring_width     se     t df     Prob
+## Intercept       -93.82 426.50 -0.22 98 8.26e-01
+## temperature     308.78  20.49 15.07 98 2.88e-27
+## 
+##  &#39;a&#39;  effect estimates (X on M) 
+##             cell_number   se     t df     Prob
+## Intercept          7.80 2.03  3.84 98 2.20e-04
+## temperature        1.86 0.10 19.04 98 1.06e-34
+## 
+##  &#39;b&#39;  effect estimates (M on Y controlling for X) 
+##             ring_width    se    t df  Prob
+## cell_number       8.18 21.29 0.38 97 0.702
+## 
+##  &#39;ab&#39;  effect estimates (through all  mediators)
+##             ring_width  boot   sd  lower upper
+## temperature      15.21 13.87 42.8 -70.96 96.72</code></pre>
+<p>Dans une analyse de modération, on examine comment l’effet d’une
+variable indépendante sur une variable dépendante peut être modifié par
+une autre variable, appelée modérateur. Pour évaluer cette interaction,
+on inclut généralement un terme d’interaction dans le modèle de
+régression multiple. Ce terme d’interaction permet de tester si l’effet
+de la variable indépendante sur la variable dépendante varie en fonction
+des niveaux du modérateur. En résumé, une analyse de modération est une
+régression multiple avec une interaction. On peut obtenir un modèle de
+modération en utilisant la fonction médiate, mais sans spécifier l’effet
+du modérateur.</p>
+<pre class="r"><code>medanalysys&lt;-mediate( ring_width ~   cell_number  + moisture + moisture*temperature, 
+                      data=ringdatacell,zero= FALSE,std=FALSE)</code></pre>
+<p><img src="08E0new-sem_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>summary(medanalysys)</code></pre>
+<pre><code>## Call: mediate(y = ring_width ~ cell_number + moisture + moisture * 
+##     temperature, data = ringdatacell, std = FALSE, zero = FALSE)
+## 
+## No mediator specified leads to traditional regression 
+##                      ring_width    se      t df      Prob
+## Intercept                  9.04 11.16   0.81 95  4.20e-01
+## cell_number                3.45  0.13  27.50 95  4.97e-47
+## moisture                  -0.08  0.22  -0.33 95  7.39e-01
+## temperature                1.02  0.66   1.55 95  1.25e-01
+## moisture*temperature       6.00  0.01 522.12 95 4.55e-166
+## 
+## R = 1 R2 = 1   F = 2400995 on 4 and 95 DF   p-value:  9.14e-237</code></pre>
+<div id="du-modèle-théorique-au-modèle-statistique"
+class="section level2">
+<h2>Du modèle théorique au modèle statistique:</h2>
+<p>Lorsqu’on décide de réaliser une SEM, une hypothèse bien définie
+représente le meilleur investissement pour valoriser cette analyse. Nous
+allons donc classer nos variables selon la typologie définie dans le
+paragraphe précédent, puis construire notre modèle <strong>a
+priori</strong>. Ce modèle représente notre compréhension du système
+basée sur les preuves scientifiques que nous avons recueillies dans
+notre étude, et contient nos hypothèses sous forme de liens entre les
+variables.</p>
+<p>Dans une SEM, on établit un modèle théorique basé sur des relations
+postulées entre les variables, puis on teste ce modèle avec des données
+réelles pour voir s’il correspond bien à ces données. L’objectif est de
+déterminer si le modèle théorique est statistiquement valide et peut
+être généralisé aux données réelles. La validation du modèle nécessite
+donc de ne pas rejeter l’hypothèse nulle selon laquelle les relations
+entre les variables telles qu’elles sont spécifiées dans le modèle
+théorique sont également présentes dans les données réelles, et que
+toute différence observée entre le modèle théorique et les données
+réelles est due au hasard ou à des erreurs de mesures.</p>
+<p>Dans un SEM, on peut utilier des symboles peuvent être utilisés pour
+représenter les liens et les variables dansun diagramme:</p>
+<div class="float">
+<img src="notes_cours/sem.png"
+alt="Symboles pour les diagrammes" />
+<div class="figcaption">Symboles pour les diagrammes</div>
+</div>
+<p>Il y a plusieurs packages qui peuvent vous permettre de réaliser un
+modèle SEM sur R. Ici nous allons utiliser Lavaan, qui utilise ça propre
+syntaxe pour définir les variables du modèle et leur liens.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Formule et définition</th>
+<th>operateur</th>
+<th>signification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>variable latente</td>
+<td>=~</td>
+<td>obtenue à partir de</td>
+</tr>
+<tr class="even">
+<td>Covariable</td>
+<td>~~</td>
+<td>est correlé avec</td>
+</tr>
+<tr class="odd">
+<td>intercepte</td>
+<td>~1</td>
+<td>intercepte</td>
+</tr>
+</tbody>
+</table>
+<p>Pour un exemple, nous allons utiliser un jeu de données simulées
+contenants les informations suivantes:</p>
+<p>Température : La température moyenne en degrés Celsius enregistrées
+pendant la saison de croissance. Humidité : Le pourcentage moyen
+d’humidité relatif enregistré pendant la saison de croissance. Taille de
+la tige : La taille moyenne de la tige de la plante, en cm nombre de
+cellules : le nombre total de cellules observées dans chaque cerne de
+croissance Largeur des cernes : La largeur moyenne des anneaux de
+croissance, une mesure de la croissance annuelle des arbres.</p>
+<pre class="r"><code>simulated_data&lt;-read.csv(&quot;C:/Users/buttoval/Documents/ECL8202_working_session/simulatedsemring.csv&quot;)</code></pre>
+<p>Un modèle théorique basé sur la littérature est proposé pour
+expliquer les liens entre nos variables et le processus sous-jacent de
+la croissance:</p>
+<div class="float">
+<img
+src="notes_cours/sem_exemple_2.png"
+alt="Relations entre les facteurs environnementaux et la croissance: chaque lien est appuyé par des source de litterature" />
+<div class="figcaption">Relations entre les facteurs environnementaux et
+la croissance: chaque lien est appuyé par des source de
+litterature</div>
+</div>
+<p>Sur lavaan, nous pouvons traduire le modèle avec la syntax
+suivante:</p>
+<pre class="r"><code>require(lavaan)</code></pre>
+<pre><code>## Le chargement a nécessité le package : lavaan</code></pre>
+<pre><code>## This is lavaan 0.6-15
+## lavaan is FREE software! Please report any bugs.</code></pre>
+<pre><code>## 
+## Attachement du package : &#39;lavaan&#39;</code></pre>
+<pre><code>## L&#39;objet suivant est masqué depuis &#39;package:psych&#39;:
+## 
+##     cor2cov</code></pre>
+<pre class="r"><code>myModel &lt;- &#39; 
+
+ # regressions
+   ring_width ~ temperature + humidity+ cell_number
+   cell_number ~  temperature + humidity 
+   cell_number ~ ~  stem_size 
+
+&#39;
+
+fit &lt;- sem(model = myModel, 
+           data = simulated_data)
+
+summary(fit)</code></pre>
+<pre><code>## lavaan 0.6.15 ended normally after 28 iterations
+## 
+##   Estimator                                         ML
+##   Optimization method                           NLMINB
+##   Number of model parameters                         9
+## 
+##   Number of observations                           200
+## 
+## Model Test User Model:
+##                                                       
+##   Test statistic                                 1.368
+##   Degrees of freedom                                 3
+##   P-value (Chi-square)                           0.713
+## 
+## Parameter Estimates:
+## 
+##   Standard errors                             Standard
+##   Information                                 Expected
+##   Information saturated (h1) model          Structured
+## 
+## Regressions:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)
+##   ring_width ~                                        
+##     temperature       0.343    0.187    1.832    0.067
+##     humidity          0.235    0.105    2.239    0.025
+##     cell_number       0.735    0.069   10.592    0.000
+##   cell_number ~                                       
+##     temperature       0.803    0.177    4.529    0.000
+##     humidity          0.724    0.091    7.934    0.000
+## 
+## Covariances:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)
+##  .cell_number ~~                                      
+##     stem_size        30.682    9.433    3.253    0.001
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)
+##    .ring_width      150.351   15.035   10.000    0.000
+##    .cell_number     156.311   15.631   10.000    0.000
+##     stem_size       107.827   10.783   10.000    0.000</code></pre>
+</div>
+</div>
+<div id="ajustement-du-modèle-sur-lavaan" class="section level1">
+<h1>Ajustement du modèle sur Lavaan</h1>
+<p>On considère qu’un SEM représente bien notre distribution de données
+et notre phénomène naturel lorsque le p-value (chi carré) du modèle
+n’est pas significatif. Cela arrive parce que nous souhaitons observer
+une correspondance entre les données observées et les prédictions de
+notre modèle, lesquelles ne doivent pas présenter de différences
+significatives. Dans ce cas, le p-value est de 0.713, ce qui nous
+rassure quant à la capacité du modèle à représenter notre phénomène.Il
+est également utile de vérifier d’autres mesures d’ajustement du modèle,
+pour obtenir une évaluation plus complète de l’adéquation du modèle.
+Voici les indicateurs plus courentment utilisés. Voici une synthèse
+présentée par Joreskog, K., &amp; Sorbom, D. (1993):</p>
+<div class="float">
+<img
+src="notes_cours/table1_index.PNG"
+alt="Ajoustement du modèle" />
+<div class="figcaption">Ajoustement du modèle</div>
+</div>
+<p>Il existe des standards pour nous naviguer dans la présentation de
+ces indicateurs:</p>
+<div class="float">
+<img
+src="notes_cours/table2_index.PNG"
+alt="Combinaisons d’indicateurs d’ajoustement" />
+<div class="figcaption">Combinaisons d’indicateurs d’ajoustement</div>
+</div>
+<p>Le résumé de la fonction sem nous fournit ainsi les coefficients de
+régression qui indiquent la force et la direction de la relation entre
+nos variables. Les coefficients de covariance mesurent également la
+force et la direction de la corrélation entre les variables. On peut
+interpréter ces coefficients comme n’importe quels coefficients d’une
+régression linéaire. Cependant, il peut être très utile de standardiser
+la valeur des coefficients si l’on souhaite comparer l’effet des
+différentes variables sur notre variable réponse.</p>
+<pre class="r"><code>summary(fit,standardized=TRUE)</code></pre>
+<pre><code>## lavaan 0.6.15 ended normally after 28 iterations
+## 
+##   Estimator                                         ML
+##   Optimization method                           NLMINB
+##   Number of model parameters                         9
+## 
+##   Number of observations                           200
+## 
+## Model Test User Model:
+##                                                       
+##   Test statistic                                 1.368
+##   Degrees of freedom                                 3
+##   P-value (Chi-square)                           0.713
+## 
+## Parameter Estimates:
+## 
+##   Standard errors                             Standard
+##   Information                                 Expected
+##   Information saturated (h1) model          Structured
+## 
+## Regressions:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+##   ring_width ~                                                          
+##     temperature       0.343    0.187    1.832    0.067    0.343    0.096
+##     humidity          0.235    0.105    2.239    0.025    0.235    0.128
+##     cell_number       0.735    0.069   10.592    0.000    0.735    0.618
+##   cell_number ~                                                         
+##     temperature       0.803    0.177    4.529    0.000    0.803    0.267
+##     humidity          0.724    0.091    7.934    0.000    0.724    0.467
+## 
+## Covariances:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+##  .cell_number ~~                                                        
+##     stem_size        30.682    9.433    3.253    0.001   30.682    0.236
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+##    .ring_width      150.351   15.035   10.000    0.000  150.351    0.497
+##    .cell_number     156.311   15.631   10.000    0.000  156.311    0.730
+##     stem_size       107.827   10.783   10.000    0.000  107.827    1.000</code></pre>
+<div id="réferences" class="section level2">
+<h2>Réferences</h2>
+<p>Revelle, 2024: How to use the psych package for regression and
+mediation analysis: <a
+href="https://cran.r-project.org/web/packages/psychTools/vignettes/mediation.pdf"
+class="uri">https://cran.r-project.org/web/packages/psychTools/vignettes/mediation.pdf</a></p>
+<p>Yves Rosseel (2012). lavaan: An R Package for Structural Equation
+Modeling. Journal of Statistical Software, 48(2), 1-36. URL <a
+href="http://www.jstatsoft.org/v48/i02/"
+class="uri">http://www.jstatsoft.org/v48/i02/</a> <a
+href="https://lavaan.ugent.be/"
+class="uri">https://lavaan.ugent.be/</a></p>
+<p>Joreskog, K., &amp; Sorbom, D. (1993). Structural equation modelling:
+Guidelines for determining model fit. NY: University Press of
+America.</p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

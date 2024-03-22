@@ -1,0 +1,189 @@
+---
+title: "Modèles d'équations structuraux"
+output:
+  pdf_document:
+    toc: yes
+  html_document:
+    self_contained: no
+    lib_dir: libs
+    theme: spacelab
+    toc: yes
+    toc_float: yes
+---
+
+# Introduction
+
+Structural equation models belong to a family of models consisting of a set of mathematical equations and assumptions about a studied system. These assumptions stem from our prior knowledge or assumptions about how the system operates. In statistics, a system is a set of variables or phenomena that are studied within the framework of an analysis or study. These variables may be related by complex relationships. Our aim with the analysis is to understand how these variables interact with each other or how they influence a specific outcome or phenomenon.
+
+
+# Contenu du cours
+
+- Types de variables et relations dans un modèle d'équations structurelles ;
+
+- Du modèle théorique au modèle statistique ;
+
+- Ajustement du modèle dans lavaan.
+
+# Types of variables and relationships in a structural equation model:
+
+
+The theoretical structure of a structural equation model encompasses several types of variables, defining their characteristics and roles within the model.
+
+Based on their nature, variables can be classified into 1) latent variables and 2) observed variables. A latent variable is a variable that is not directly measured but represents concepts or traits that do not have a clear unit of measurement. This type of variable is often used in psychology (intelligence, satisfaction, etc.). Observed variables are measured or collected using established methods within the discipline. In ecology, we often work with observed variables.
+
+Based on the role of variables in the theoretical model, variables can be exogenous or endogenous. Exogenous variables are independent variables that influence other variables in the model but are not influenced by any other variable in return. They represent the drivers of changes in our system. Endogenous variables, on the other hand, are variables influenced by exogenous variables or other variables in the model, and typically represent the core of our system and the outcomes of the processes we are describing with our model.
+
+Depending on how variables are conceptualized in the model, variables may have moderator and mediator status. A moderator is a variable that influences the strength and direction of the relationship between two variables. A moderator does not explain the "causes" of the relationship but only intervenes in the quantitative aspects of the relationship between two variables. A mediator is a variable that explains the relationship between an independent variable and a dependent variable. A variable acts as a mediator when it represents the causal mechanism linking two variables.
+
+
+![Models for mediation analysis and moderator analysis](C:/Users/buttoval/Documents/ECL8202/notes_cours/modmed.png)
+
+In the figure, the arrows represent paths. In a structural equation model, a path represents a relationship that connects two variables, which can be either direct or indirect, and may include mediated effects. As you can see in the image, mediated effects refer to a situation where the impact of an independent variable on a dependent variable passes through another variable. In other words, the mediating variable transmits or mediates the effect of the independent variable on the dependent variable.
+
+In a structural equation model, mediation and moderation analysis are integrated to gain a deeper understanding of the relationships between our variables, considering both mediating processes and the effects of moderators. However, mediation and moderation analyses can be conducted separately if we want to test relationships among three variables using the Psych package:
+
+The 'mediate' function in the 'psych' package allows you to conduct a mediation analysis with the 'mediate' function. The mediating variable must be enclosed in parentheses to inform the function of its role in the model. In the example we will use to illustrate the function, we use the 'mediate' function to test the direct and indirect effects of temperature on the width of growth rings. Indeed, in the northern hemisphere and in cold environments where temperature is a limiting factor for growth, the width of growth rings increases with temperature. However, the width of the growth ring is closely related to the number of wood cells that make up the ring, which is, in turn, related to temperature. Thus, a portion of the total effect of temperature on the width of the ring is indeed mediated by the number of cells. If the direct effect of temperature on the number of cells is greater than that on the width of the ring, temperature changes will be more related to changes in the number of cells than to the width of the ring, and therefore the latter will be more easily predictable.
+
+```{r}
+
+require(psych)
+
+ringdatacell <- read.csv("C:/Users/buttoval/Documents/ECL8202/donnees/ringdatacell.CSV")
+
+
+medanalysys<-mediate( ring_width ~ temperature + (cell_number) , data=ringdatacell )
+
+```
+
+
+"In the diagram, it is clear that the total effect of temperature is c = 8.15, but the direct effect of temperature on growth ring is much smaller, c' = 0.56.
+
+Nota bene: The 'mediate' function provides standardized coefficients and centered means by default. To avoid this, use the 'zero=FALSE' and 'std=FALSE' arguments."
+
+
+```{r}
+
+summary(medanalysys)
+
+
+```
+
+
+In a moderation analysis, we examine how the effect of an independent variable on a dependent variable may be modified by another variable, known as a moderator. To assess this interaction, we typically include an interaction term in the multiple regression model. This interaction term allows us to test whether the effect of the independent variable on the dependent variable varies depending on the levels of the moderator. In summary, a moderation analysis is a multiple regression with an interaction. We can obtain a moderation model using the 'mediate' function, but without specifying the effect of the moderator
+
+```{r}
+
+
+medanalysys<-mediate( ring_width ~   cell_number  + moisture + moisture*temperature, 
+                      data=ringdatacell,zero= FALSE,std=FALSE)
+summary(medanalysys)
+
+```
+
+## From theoretical model to statistical model:
+
+When deciding to conduct a SEM, a well-defined hypothesis represents the best investment to leverage this analysis. Therefore, we will classify our variables according to the typology defined in the previous paragraph, and then construct our a priori model. This model represents our understanding of the system based on the scientific evidence we have gathered in our study and contains our hypotheses in the form of links between variables.
+
+In a SEM, we establish a theoretical model based on postulated relationships between variables, and then test this model with real data to see if it fits these data well. The objective is to determine if the theoretical model is statistically valid and can be generalized to real data. Model validation thus requires not rejecting the null hypothesis that the relationships between variables as specified in the theoretical model are also present in the real data, and that any observed difference between the theoretical model and real data is due to chance or measurement errors.
+
+In a SEM, symbols can be used to represent links and variables in a diagram:
+
+![Symbols and diagrams](C:/Users/buttoval/Documents/ECL8202/notes_cours/sem.png)
+
+There are several packages available in R that allow you to perform a SEM. Here, we will use Lavaan, which has its own syntax for defining the variables of the model and their links.
+
+
+| Formula and Definition	           | Operator |  Meaning|
+| -----------          | ----------| -----------|
+| Latent variable	   |     =~   | is obtained from       |
+| Covariate           | ~~        | is correlated with|
+| intercept           | ~1        | intercept |
+
+For an example, we will use a simulated dataset containing the following information:
+
+Temperature: The average temperature in degrees Celsius recorded during the growing season.
+Humidity: The average percentage of relative humidity recorded during the growing season.
+Stem Size: The average stem size of the plant, in cm.
+Cell Number: The total number of cells observed in each growth ring.
+Ring Width: The average width of growth rings, a measure of annual tree growth. 
+```{r}
+
+simulated_data <- read.csv("C:/Users/buttoval/Documents/ECL8202/donnees/simulatedsemring.csv")
+
+```
+
+
+Before adjusting a SEM model it is often useful to visualize a correlation matrix between the variables: 
+
+
+```{r, warning=FALSE}
+
+library(PerformanceAnalytics)
+
+chart.Correlation(simulated_data, histogram = TRUE, method = "pearson")
+
+
+```
+
+The correlation matrix displays high correlations between most of our variables, but it does not tell us anything about the relationships among them.
+
+
+A theoretical model based on the literature is proposed to explain the relationships between our variables and the underlying process of growth:
+
+![Relationship between environmental factors and growth: each link is supported by literature sources](C:/Users/buttoval/Documents/ECL8202/notes_cours/sem_exemple_2.png)
+
+On lavaan, we can translate the model using the following syntax:
+
+```{r}
+
+require(lavaan)
+
+myModel <- ' 
+
+ # regressions
+   ring_width ~ temperature + humidity+ cell_number
+   cell_number ~  temperature + humidity 
+   cell_number ~ ~  stem_size 
+
+'
+
+fit <- sem(model = myModel, 
+           data = simulated_data)
+
+summary(fit)
+
+```
+
+
+# Model Fitting in Lavaan
+
+We consider a SEM to adequately represent our data distribution and natural phenomenon when the p-value (chi-square) of the model is not significant. This is because we aim to observe a correspondence between the observed data and the predictions of our model, which should not exhibit significant differences. In this case, the p-value is 0.713, which reassures us about the model's ability to represent our phenomenon. It is also useful to check other model fit measures for a more comprehensive evaluation of model adequacy. Here are the commonly used indicators, as summarized by Joreskog, K., & Sorbom, D. (1993):
+
+
+
+![Model adjustment](C:/Users/buttoval/Documents/ECL8202/notes_cours/table1_index.PNG)
+
+Il existe des standards pour nous naviguer dans la présentation de ces indicateurs: 
+
+![Acceptable combinations of diagnostic indicators](C:/Users/buttoval/Documents/ECL8202/notes_cours/table2_index.PNG)
+
+
+
+The summary of the sem function provides us with regression coefficients that indicate the strength and direction of the relationship between our variables. Covariance coefficients also measure the strength and direction of the correlation between variables. These coefficients can be interpreted like any coefficients in a linear regression. However, it can be very useful to standardize the coefficients if we want to compare the effect of different variables on our response variable.
+
+
+
+```{r}
+
+summary(fit,standardized=TRUE)
+
+```
+
+
+## References 
+
+Revelle, 2024: How to use the psych package for regression and mediation analysis:  https://cran.r-project.org/web/packages/psychTools/vignettes/mediation.pdf
+
+Yves Rosseel (2012). lavaan: An R Package for Structural Equation Modeling. Journal of Statistical Software, 48(2), 1-36. URL http://www.jstatsoft.org/v48/i02/ https://lavaan.ugent.be/ 
+
+Joreskog, K., & Sorbom, D. (1993). Structural equation modelling: Guidelines for determining model fit. NY: University Press of America.

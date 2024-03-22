@@ -1,12 +1,14 @@
 ---
 title: "Modèles additifs généralisés"
 output:
-    html_document:
-        self_contained: false
-        lib_dir: libs
-        theme: spacelab
-        toc: true
-        toc_float: true
+  html_document:
+    self_contained: no
+    lib_dir: libs
+    theme: spacelab
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
 ---
     
 ```{r setup, include=FALSE}
@@ -62,19 +64,64 @@ Une telle relation peut être modélisée dans un cadre de régression linéaire
 Par exemple, voici l'ajustement de polynômes de degré 1 à 4 pour notre exemple de la concentration d'ozone en fonction de la température. Le polynôme de degré 4 semble bien s'ajuster jusqu'à une température d'environ 90 degrés F, où la courbe décroît en raison de la forme du polynôme même s'il ne s'agit pas nécessairement d'un effet réaliste ici.
 
 ```{r, warning = FALSE}
-aq_temp1 <- aq_temp0 + geom_smooth(method = "lm") + labs(title = "y ~ x")
-aq_temp2 <- aq_temp0 + geom_smooth(method = "lm", formula = y ~ poly(x, 2)) +
-    labs(title = "y ~ poly(x, 2)")
-aq_temp3 <- aq_temp0 + geom_smooth(method = "lm", formula = y ~ poly(x, 3)) +
-    labs(title = "y ~ poly(x, 3)")
-aq_temp4 <- aq_temp0 + geom_smooth(method = "lm", formula = y ~ poly(x, 4)) +
-    labs(title = "y ~ poly(x, 4)")
-plot_grid(aq_temp1, aq_temp2, aq_temp3, aq_temp4)
+aq_temp <- aq_temp0 + geom_smooth(method = "lm",aes(color = "y ~ x",fill="y ~ x"),
+                                  show.legend = TRUE)+
+geom_smooth(method = "lm", formula = y ~ poly(x, 2),
+            aes(color = "Polynomial (degré 2)",fill="Polynomial (degré 2)"),  show.legend = TRUE) +
+  geom_smooth(method = "lm", formula = y ~ poly(x, 3),
+              aes(color = "Polynomial (degré 3)",fill = "Polynomial (degré 3)"),  show.legend = TRUE)+
+  geom_smooth(method = "lm", formula = y ~ poly(x, 4),
+              aes(color = "Polynomial (degré 4)",fill = "Polynomial (degré 4)"),  show.legend = TRUE)+
+  scale_color_manual(values = c("red", "blue","orange","black"), guide = guide_legend(title = "Modèle"))+
+  scale_fill_manual(values = c("red", "blue","orange","black"), guide = guide_legend(title = "Modèle")) 
+
+aq_temp
+
 ```
 
 ## Forme d'un modèle additif
 
-Dans une régression linéaire, la réponse $y$ suit une distribution normale:
+Si vous voulez réaliser une régression polynomiale, vous allez utiliser la fonction lm. En effet, on peut obtenir une régression polynomiale semblable à celle qu'on obtenir avec la fonction geom_smooth si on écrit: 
+
+
+```{r}
+
+
+model_poly2 <- lm(Ozone ~ poly(Temp,2),airquality)  
+
+summary(model_poly2)
+
+```
+
+
+
+L'utilisation de la fonction lm() pour ajuster des modèles polynomiaux est possible grâce au principe d'additivité des effets des variables. Dans un modèle linéaire, chaque terme dans la formule est considéré comme un prédicteur indépendant contribuant de manière additive à la variable réponse. Ainsi, l'effet de chaque terme polynomial sur la variable réponse peut être considéré comme linéaire et indépendant des autres termes polynomiaux. Cela permet à la fonction lm() d'ajuster ces modèles polynomiaux de manière simple et directe.
+
+
+Il existe une autre façon de spécifier sur R un effet polynomiale 
+
+```{r}
+
+
+
+model_poly2_alt <- lm(Ozone ~ Temp + I(Temp^2),airquality)
+
+summary(model_poly2_alt)
+
+
+```
+*Nota bene*: : Vous avez probablement remarqué que les deux spécifications ne donnent pas les mêmes résultats car elles utilisent différentes façons de représenter la relation entre la température et la variable de réponse.
+
+Avec poly(Temp, 2), le modèle inclut explicitement une variable pour la température et une pour sa transformation quadratique. Ces variables sont calculées de manière à minimiser la corrélation entre elles, ce qui peut aider à éviter des problèmes tels que la colinéarité dans le modèle. Cette approche peut être utile si l'on dispose de justifications théoriques préalables indiquant que la relation entre les variables est quadratique.
+
+
+Avec Temp + I(Temp^2), le modèle inclut simplement la température et sa transformation quadratique, sans prétraitement spécial pour réduire la corrélation entre elles. Cela signifie que le modèle suppose simplement une relation linéaire entre la température et la variable de réponse, ainsi qu'un effet quadratique supplémentaire, sans considération de la forme exacte de la relation. Cette approche peut être utile si l'on souhaite, par exemple, simplement tester la présence d'un effet quadratique tout en gardant le modèle plus facile à interpréter.
+
+
+En pratique, cela peut affecter les résultats du modèle, en particulier lorsque la relation entre les variables est complexe ou non linéaire. L'approche avec poly(Temp, 2) peut être plus robuste et précise dans la modélisation des relations non linéaires entre les variables, mais elle nécessite une interprétation plus complexe des coefficients du modèle.
+
+
+Plus en génerale, dans une régression linéaire, la réponse $y$ suit une distribution normale:
 
 $$y \sim N(\mu, \sigma^2)$$
 
@@ -82,7 +129,7 @@ dont la moyenne dépend d'une combinaison linéaire des prédicteurs.
 
 $$\mu = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...$$
 
-Dans un modèle additif, $y$ suit toujours une distribution normale, mais sa moyenne n'est pas contrainte à varier linéairement avec chaque prédicteur. L'effet de chaque prédicteur est plutôt représenter par une fonction non-linéaire $f(x_i)$.
+Dans un modèle additif, $y$ suit toujours une distribution normale, mais sa moyenne n'est pas contrainte à varier linéairement avec chaque prédicteur. L'effet de chaque prédicteur est plutôt représenté  par une fonction non-linéaire $f(x_i)$.
 
 $$\mu = \beta_0 + f(x_1) + f(x_2) + ...$$
 
@@ -95,12 +142,14 @@ La fonction `gam` du package *mgcv* permet d'ajuster des modèles additifs. Dans
 ```{r, message = FALSE, warning = FALSE}
 library(mgcv)
 o3_t <- gam(Ozone ~ s(Temp), data = airquality)
+
+summary(o3_t)
+
 ```
-
-La fonction `plot` appliquée au résultat de `gam` affiche la courbe estimée avec un intervalle de confiance à 95%. Nous choisissons d'afficher les résidus (`residuals = TRUE`) avec des points ouverts (symbole `pch = 1`).
-
+Avec la fonction plot nous pouvons obtenir une répresentation de la GAM telle qu'elle a étée ajustée par la fonction gam. 
 ```{r}
-plot(o3_t, residuals = TRUE, pch = 1)
+
+plot(o3_t)
 ```
 
 ## Choix des fonctions de base
@@ -111,25 +160,43 @@ $$f(x_i) = \sum_{j=1}^k \beta_j b_j(x_i)$$
 
 Par défaut, `gam` utilise des splines en plaque mince (*thin plate regression spline*) comme fonctions de base, mais d'autres types de fonctions peuvent être spécifiés avec l'argument `bs`. Le graphique ci-dessous montre la forme de ces splines en plaque mince pour des valeurs de $k$ allant de 3 à 9. Remarquez que le nombre de fonctions de base et leur complexité augmente avec $k$, ce qui permet de produire des splines de plus en plus complexes.
 
-```{r, echo = FALSE, message = FALSE, warning = FALSE}
-library(gratia)
-b3 <- draw(basis(s(Temp, k = 3), data = airquality))
-b5 <- draw(basis(s(Temp, k = 5), data = airquality))
-b7 <- draw(basis(s(Temp, k = 7), data = airquality))
-b9 <- draw(basis(s(Temp, k = 9), data = airquality))
-plot_grid(b3, b5, b7, b9)
+
+```{r}
+
+aq_temp <- aq_temp0 +
+  geom_smooth(method = "gam", 
+              formula = y ~ s(x ,k = 3), aes(color = "k=3",fill="k=3"),show.legend= TRUE)+
+    geom_smooth(method = "gam", 
+              formula = y ~ s(x ,k = 5), aes(color = "k=5",fill="k=5"),  show.legend = TRUE)+
+    geom_smooth(method = "gam", 
+              formula = y ~ s(x ,k = 7), aes(color = "k=7",fill="k=7"),  show.legend = TRUE)+
+    geom_smooth(method = "gam", 
+              formula = y ~ s(x ,k = 9), aes(color = "k=9",fill="k=9"),  show.legend = TRUE)+
+  scale_fill_manual(values = c("red", "blue","orange","black"), guide = guide_legend(title = "Modèle"))+
+  scale_color_manual(values = c("red", "blue","orange","black"), guide = guide_legend(title = "Modèle"))
+  aq_temp
+
 ```
 
 Nous pouvons fixer le nombre de fonctions de base avec l'argument `k` de la fonction `s()`. 
 Si nous ne spécifions pas $k$, la fonction `gam` choisit `k = 10` par défaut. Dans notre exemple, la courbe estimée avec `k = 3` est plus simple, mais celles estimées avec `k = 5` et `k = 7` semblent équivalentes, ce qui montre que 5 fonctions de base sont suffisantes pour ce problème.
 
 ```{r}
-par(mfrow = c(1, 3), cex = 1)
-plot(gam(Ozone ~ s(Temp, k = 3), data = airquality), residuals = TRUE, main = "k = 3")
-plot(gam(Ozone ~ s(Temp, k = 5), data = airquality), residuals = TRUE, main = "k = 5")
-plot(gam(Ozone ~ s(Temp, k = 7), data = airquality), residuals = TRUE, main = "k = 7")
-```
 
+aq_temp <- aq_temp0 +
+  geom_smooth(method = "gam", 
+              formula = y ~ s(x ,k = 3), aes(color = "k=3",fill="k=3"),show.legend= TRUE)+
+  scale_color_manual(values = c("red"), guide = guide_legend(title = "Modèle"))+
+    scale_fill_manual(values = c("red"), guide = guide_legend(title = "Modèle"))
+
+aq_temp
+
+
+o3_t <- gam(Ozone ~ s(Temp,k=3), data = airquality)
+
+summary(o3_t)
+
+```
 ## Paramètre de lissage
 
 En pratique, il n'est pas optimal de contrôler la complexité de la courbe en variant `k`. Il est préférable de choisir un `k` plus grand que nécessaire, pour assurer que le nombre de fonctions de base ne soit pas le "facteur limitant" pour l'ajustement du modèle. Cela cause cependant un risque de surajustement si nous avons, par exemple, 10 paramètres ajustables pour chaque prédicteur du modèle.
@@ -143,10 +210,20 @@ Le carré de la dérivée seconde de $f(x_i)$, $f''(x_i)^2$, prend une valeur pl
 Comme on voit ci-dessous, plus $\lambda_i$ est élevé, plus la courbe résultante est lisse (proche d'une droite). Ce paramètre contrôle donc le compromis entre ajustement aux données et simplicité de la courbe estimée.
 
 ```{r}
-par(mfrow = c(1, 3), cex = 1)
-plot(gam(Ozone ~ s(Temp, sp = 0.001), data = airquality), residuals = TRUE, main = "sp = 0.001")
-plot(gam(Ozone ~ s(Temp, sp = 0.1), data = airquality), residuals = TRUE, main = "sp = 0.1")
-plot(gam(Ozone ~ s(Temp, sp = 10), data = airquality), residuals = TRUE, main = "sp = 10")
+
+aq_temp <- aq_temp0 +
+  geom_smooth(method = "gam", 
+              formula = y ~ s(x ,k = 3, sp = 0.001), aes(color = "k=3 sp= 0.001",fill="k=3 sp= 0.001"),show.legend= TRUE)+
+  geom_smooth(method = "gam", 
+              formula = y ~ s(x ,k = 3, sp = 10), aes(color = "k=3 sp=10",
+                                                      fill="k=3 sp=10"),show.legend= TRUE)+
+  scale_color_manual(values = c("red","blue"), guide = guide_legend(title = "Modèle"))+
+    scale_fill_manual(values = c("red","blue"), guide = guide_legend(title = "Modèle"))
+
+aq_temp
+
+
+
 ```
 
 
@@ -154,6 +231,9 @@ Le choix d'une valeur optimale de $\lambda$ est réalisée par un des algorithme
 
 ```{r}
 o3_t <- gam(Ozone ~ s(Temp), data = airquality, method = "REML")
+
+
+plot(o3_t)
 ```
 
 Le REML était aussi l'algorithme utilisé pour estimer la variance des effets aléatoires dans un modèle mixte. Il existe en fait un lien entre les effets aléatoires et les modèles additifs. Sans entrer dans les détails mathématiques ici, notons que comme l'effet aléatoire fait un compromis entre un effet estimé indépendamment pour chaque groupe et un effet commun dans tous les groupes, la spline fait un compromis entre une droite et une fonction irrégulière qui passerait par tous les points.
@@ -231,7 +311,7 @@ En appliquant une transformation logarithmique à la concentration d'ozone, l'aj
 mod_lo3 <- gam(log(Ozone) ~ s(Temp) + s(Wind) + s(Solar.R), 
                data = airquality, method = "REML")
 par(mfrow = c(2, 2))
-gam.check(mod_lo3)
+gam.check(mod_lo3,pch=1)
 ```
 
 Voici les résultats du modèle pour `log(Ozone)`. Remarquez que le nombre de degrés de liberté effectifs est indiqué sur chaque axe des $y$ (ex.: `s(Temp, 1.95)`).
@@ -381,6 +461,15 @@ D'autres options de visualisation sont possibles en modifiant l'argument `scheme
 
 ```{r}
 plot(mod_t_lat, scheme = 2)
+
+
+```
+
+En alternative, vous pouvez aussi visualiser les relation en trois dimensions: 
+
+```{r}
+
+vis.gam(mod_t_lat, theta = 50, n.grid = 50, lwd = 0.4)
 ```
 
 Les diagnostics du modèle semblent indiquer un sous-ajustement. Cependant, même si *edf* s'approche de $k$, augmenter la valeur de $k$ prend beaucoup de temps de calcul sans vraiment régler le problème. En fait, le mauvais ajustement pourrait être dû au fait que la relation entre température et latitude varie par région. (Vancouver est plus "nordique" en latitude que Rouyn-Noranda!)
