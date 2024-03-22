@@ -1,14 +1,14 @@
 ---
 title: "Modèles d'équations structuraux"
 output:
+  pdf_document:
+    toc: yes
   html_document:
     self_contained: no
     lib_dir: libs
     theme: spacelab
     toc: yes
     toc_float: yes
-  pdf_document:
-    toc: yes
 ---
 
 # Introduction
@@ -17,6 +17,14 @@ Les modèles d'équations structurelles appartiennent à une famille de modèles
 
 
 # Contenu du cours
+
+- Types de variables et relations dans un modèle d'équations structurelles ;
+
+
+- Du modèle théorique au modèle statistique ;
+
+
+- Ajustement du modèle dans lavaan.
 
 # Types des variables et liens dans un modèle d'équation structurel:
 
@@ -145,6 +153,7 @@ summary(fit)
 
 ```
 
+Le résumé de la fonction sem nous fournit ainsi les coefficients de régression qui indiquent la force et la direction de la relation entre nos variables. Les coefficients de covariance mesurent également la force et la direction de la corrélation entre les variables. On peut interpréter ces coefficients comme n'importe quels coefficients d'une régression linéaire. Cependant, il peut être très utile de standardiser la valeur des coefficients si l'on souhaite comparer l'effet des différentes variables sur notre variable réponse.
 
 # Ajustement du modèle sur Lavaan
 
@@ -154,13 +163,24 @@ On considère qu'un SEM représente bien notre distribution de données et notre
 
 ![Ajoustement du modèle](C:/Users/buttoval/Documents/ECL8202/notes_cours/table1_index.PNG)
 
+
+il est possible de trouver ces metriques d'ajoustement pour notre modèle grace à la fonction: fitMeasures() 
+
+
+
+```{r}
+
+fitMeasures(fit, c("chisq", "df", "pvalue", "cfi", "rmsea"))
+
+```
+
+
 Il existe des standards pour nous naviguer dans la présentation de ces indicateurs: 
 
 ![Combinaisons d'indicateurs d'ajoustement](C:/Users/buttoval/Documents/ECL8202/notes_cours/table2_index.PNG)
 
 
 
-Le résumé de la fonction sem nous fournit ainsi les coefficients de régression qui indiquent la force et la direction de la relation entre nos variables. Les coefficients de covariance mesurent également la force et la direction de la corrélation entre les variables. On peut interpréter ces coefficients comme n'importe quels coefficients d'une régression linéaire. Cependant, il peut être très utile de standardiser la valeur des coefficients si l'on souhaite comparer l'effet des différentes variables sur notre variable réponse.
 
 ```{r}
 

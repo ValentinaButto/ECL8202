@@ -18,11 +18,11 @@ Structural equation models belong to a family of models consisting of a set of m
 
 # Contenu du cours
 
-- Types de variables et relations dans un modèle d'équations structurelles ;
+- Types of variables and relationships in a structural equation model;
 
-- Du modèle théorique au modèle statistique ;
+- From theoretical model to statistical model;
 
-- Ajustement du modèle dans lavaan.
+- Model fitting in lavaan.
 
 # Types of variables and relationships in a structural equation model:
 
@@ -154,6 +154,7 @@ summary(fit)
 
 ```
 
+The summary of the sem function provides us with regression coefficients that indicate the strength and direction of the relationship between our variables. Covariance coefficients also measure the strength and direction of the correlation between variables. These coefficients can be interpreted like any coefficients in a linear regression. However, it can be very useful to standardize the coefficients if we want to compare the effect of different variables on our response variable.
 
 # Model Fitting in Lavaan
 
@@ -163,13 +164,21 @@ We consider a SEM to adequately represent our data distribution and natural phen
 
 ![Model adjustment](C:/Users/buttoval/Documents/ECL8202/notes_cours/table1_index.PNG)
 
-Il existe des standards pour nous naviguer dans la présentation de ces indicateurs: 
+
+it is possible to compute some of these metrics with the function fitMeasures()
+
+```{r}
+
+fitMeasures(fit, c("chisq", "df", "pvalue", "cfi", "rmsea"))
+
+```
+
+A combination of these metrics can be used to validate the model: 
 
 ![Acceptable combinations of diagnostic indicators](C:/Users/buttoval/Documents/ECL8202/notes_cours/table2_index.PNG)
 
 
 
-The summary of the sem function provides us with regression coefficients that indicate the strength and direction of the relationship between our variables. Covariance coefficients also measure the strength and direction of the correlation between variables. These coefficients can be interpreted like any coefficients in a linear regression. However, it can be very useful to standardize the coefficients if we want to compare the effect of different variables on our response variable.
 
 
 
