@@ -1,0 +1,31 @@
+---
+title: "Structural equation models"
+output:
+    html_document:
+        self_contained: false
+        lib_dir: libs
+        theme: spacelab
+        toc: true
+        toc_float: true
+    pdf_document:
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+The data for this lab were generated to model the relationships between temperature, humidity, stem size, soil fertility, cell count, and ring width in a hypothetical context. These data were generated based on certain assumptions: Relationships between variables are modeled linearly.
+
+Direct and Indirect Effects: The simulations suggest that temperature, humidity, stem size, and soil fertility have direct effects on cell count and ring width. Additionally, there may be indirect effects; for example, temperature and humidity affect cell count, which in turn influences ring width.
+
+1. Hypothetical Model and Analysis Preparation
+a) Based on your knowledge of tree growth, draw a hypothetical model representing the relationships between the variables. Justify each link based on the underlying processes of each relationship.
+
+b) Transcribe your model using lavaan programming code. How many regressions do you notice in the model? How many covariances?
+
+2. Diagnosis and Model Results
+a) Run the model in lavaan. In case the model is significant, use a correlation matrix to ensure no explanatory variables have been overlooked in your model.
+
+b) Use diagnostic indicators to validate the model following the tables provided in class. Comment on coefficients with the most significant values.
+
+c) Review the hypotheses and compare the hypothetical model with the obtained model. A graph using graph_sem can be created to facilitate comparison.

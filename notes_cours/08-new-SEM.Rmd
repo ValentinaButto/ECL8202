@@ -52,20 +52,21 @@ La fonction 'mediate' du package 'psych' vous permet de conduire une analyse de 
 
 require(psych)
 
-ringdatacell <- read.csv("C:/Users/buttoval/Documents/ECL8202/donnees//ringdatacell.CSV")
+ringdatacell <- read.csv("C:/Users/buttoval/Documents/ECL8202/donnees//simulatedsemring.csv")
 
 
-medanalysys<-mediate( ring_width ~ temperature + (cell_number) , data=ringdatacell )
+medanalysys<-mediate( ring_width ~ temperature + (cell_number) , data=ringdatacell)
 
 ```
 
-Dans le schéma on voit très bien que l'effet totale de la température est c = 8.15, mais l'effet direct de la temperature sur le cerne de croissance c'= 0.56, est beaucoup plus petit.  
 
 *Nota bene* la fonction "mediate" nous donne les coefficients standardisées par defaut, ainsi que les moyennes centrées. pour éviter cela il faut utiliser les aurgments "zero=FALSE" et std=FALSE. 
 
+
+
 ```{r}
 
-summary(medanalysys)
+medanalysys<-mediate( ring_width ~ temperature + (cell_number) , std=TRUE, data=ringdatacell)
 
 
 ```
@@ -74,12 +75,14 @@ summary(medanalysys)
 Dans une analyse de modération, on examine comment l'effet d'une variable indépendante sur une variable dépendante peut être modifié par une autre variable, appelée modérateur. Pour évaluer cette interaction, on inclut généralement un terme d'interaction dans le modèle de régression multiple. Ce terme d'interaction permet de tester si l'effet de la variable indépendante sur la variable dépendante varie en fonction des niveaux du modérateur. En résumé, une analyse de modération est une régression multiple avec une interaction. On peut obtenir un modèle de modération en utilisant la fonction médiate, mais sans spécifier l'effet du modérateur. 
 
 
+
+
 ```{r}
 
 
-medanalysys<-mediate( ring_width ~   cell_number  + moisture + moisture*temperature, 
-                      data=ringdatacell,zero= FALSE,std=FALSE)
-summary(medanalysys)
+mod_analysis<-mediate( cell_number ~   humidity + humidity*temperature + temperature, 
+                      data=ringdatacell,std=TRUE)
+summary(mod_analysis)
 
 ```
 
@@ -112,7 +115,7 @@ nombre de cellules :  le nombre total de cellules observées dans chaque cerne d
 Largeur des cernes : La largeur moyenne des anneaux de croissance, une mesure de la croissance annuelle des arbres.
 ```{r}
 
-simulated_data <- read.csv("C:/Users/buttoval/Documents/ECL8202/donnees/simulatedsemring.csv")
+simulated_data1 <- read.csv("C:/Users/buttoval/Documents/ECL8202/donnees/simulatedsemring1.csv")
 
 ```
 
@@ -123,7 +126,7 @@ Avant d'ajuster un modèle SEM, il est souvent utile de visualiser une matrice d
 
 library(PerformanceAnalytics)
 
-chart.Correlation(simulated_data, histogram = TRUE, method = "pearson")
+chart.Correlation(simulated_data1, histogram = TRUE, method = "pearson")
 
 
 ```
@@ -142,12 +145,12 @@ myModel <- '
  # regressions
    ring_width ~ temperature + humidity+ cell_number
    cell_number ~  temperature + humidity 
-   cell_number ~ ~  stem_size 
+   ring_width ~ ~  stem_size 
 
 '
 
 fit <- sem(model = myModel, 
-           data = simulated_data)
+           data = simulated_data1)
 
 summary(fit)
 
@@ -180,13 +183,28 @@ Il existe des standards pour nous naviguer dans la présentation de ces indicate
 ![Combinaisons d'indicateurs d'ajoustement](C:/Users/buttoval/Documents/ECL8202/notes_cours/table2_index.PNG)
 
 
-
-
+Il est possible de visualiser les coefficients standardisés pour les relations : très utiles si l'on veut éviter l'effet taille, ainsi que les coefficients de détermination de chaque régression, très importants pour interpréter l'ajustement du modèle sur chaque variable.
 ```{r}
 
-summary(fit,standardized=TRUE)
+summary(fit,standardized=TRUE, rsquare=TRUE)
 
 ```
+
+Avec tidySEM, il est possible d'obtenir une représentation graphique de notre modèle. Dans ce cas, il est important de faire attention à la manière dont nous interprétons les différents éléments car la fonction graph_sem utilise son propre code pour identifier les éléments du modèle. Par exemple, la ligne pointillée représente ici des covariances, tandis que le petit cercle avec des flèches représente les variances résiduelles de chaque variable. Vous avez peut-être déjà rencontré ce terme dans le résumé de lavaan avec l'erreur d'estimation et les valeurs p. Des variances significatives indiquent que la variable a une influence significative sur les résultats du modèle
+
+```{r}
+require(tidySEM)
+graph_sem(fit)
+
+
+```
+```{r}
+require(tidySEM)
+graph_sem(fit)
+
+
+```
+
 
 
 ## Réferences 

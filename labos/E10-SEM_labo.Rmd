@@ -1,0 +1,40 @@
+---
+title: "Modèles d'equations structurelles"
+output:
+    html_document:
+        self_contained: false
+        lib_dir: libs
+        theme: spacelab
+        toc: true
+        toc_float: true
+    pdf_document:
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Données
+
+Les données pour ce laboratoire ont été générées dans le but de modéliser les relations entre la température, l'humidité, la taille de la tige, la fertilité du sol, le nombre de cellules et la largeur des anneaux dans un contexte hypothétique.
+Ces données ont était générées en suivants certaines hypothèses: Les relations entre les variables sont modélisées de manière linéaires. 
+Effets directs et indirects : Les simulations suggèrent que la température, l'humidité, la taille de la tige et la fertilité du sol ont des effets directs sur le nombre de cellules et la largeur des anneaux. De plus, il peut y avoir des effets indirects, par exemple, la température et l'humidité affectent le nombre de cellules, qui à son tour influence la largeur des anneaux.
+
+
+## 1. Modèle hypothétique et préparation de l'analyses 
+
+a) Sur la base de vos connaissances sur la croissance des arbres, dessinez un modèle hypothétique qui représente les relations entre les variables. Justifiez chaque lien sur la base des processus sous-jacents à chaque relation.
+
+b) Retranscrire votre modèle avec le code de programmation lavaan. Combien de régressions remarquez-vous dans le modèle ? Combien de covariances ?
+
+## 2 Diagnostic et résultats du modèle :
+
+a) Faire tourner le modèle sur lavaan. Dans le cas où le modèle est significatif, aidez-vous avec une matrice de corrélation pour vous assurer de ne pas avoir oublié des variables explicatives dans votre modèle.
+
+b) Utiliser les indicateurs de diagnostic pour valider le modèle en suivant les tableaux donnés en cours. Commenter les coefficients avec les valeurs les plus importantes.
+
+c) Faire un retour sur les hypothèses et comparer le modèle hypothétique avec le modèle obtenu. Un graphique avec graph_sem peut être réalisé pour faciliter la comparaison.
+
+
+
