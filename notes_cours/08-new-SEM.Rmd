@@ -57,6 +57,7 @@ ringdatacell <- read.csv("C:/Users/buttoval/Documents/ECL8202/donnees//simulated
 
 medanalysys<-mediate( ring_width ~ temperature + (cell_number) , data=ringdatacell)
 
+summary(medanalysys)
 ```
 
 
@@ -170,7 +171,6 @@ On considère qu'un SEM représente bien notre distribution de données et notre
 il est possible de trouver ces metriques d'ajoustement pour notre modèle grace à la fonction: fitMeasures() 
 
 
-
 ```{r}
 
 fitMeasures(fit, c("chisq", "df", "pvalue", "cfi", "rmsea"))
@@ -180,7 +180,7 @@ fitMeasures(fit, c("chisq", "df", "pvalue", "cfi", "rmsea"))
 
 Il existe des standards pour nous naviguer dans la présentation de ces indicateurs: 
 
-![Combinaisons d'indicateurs d'ajoustement](C:/Users/buttoval/Documents/ECL8202/notes_cours/table2_index.PNG)
+![Combinaisons d'indicateurs d'ajoustement](C:/Users/buttoval/Documents/ECL8202/notes_cours/table2_index.PNG)   
 
 
 Il est possible de visualiser les coefficients standardisés pour les relations : très utiles si l'on veut éviter l'effet taille, ainsi que les coefficients de détermination de chaque régression, très importants pour interpréter l'ajustement du modèle sur chaque variable.
@@ -194,12 +194,7 @@ Avec tidySEM, il est possible d'obtenir une représentation graphique de notre m
 
 ```{r}
 require(tidySEM)
-graph_sem(fit)
 
-
-```
-```{r}
-require(tidySEM)
 graph_sem(fit)
 
 

@@ -1,18 +1,12 @@
 ---
 title: "Séries temporelles"
 date: "ECL8202 - Hiver 2020"
-output: 
-  xaringan::moon_reader:
-    css: ["default", "metropolis", "metropolis-fonts", "styles-xar8202.css"]
-    lib_dir: libs
-    nature:
-      ratio: "16:9"
-      highlightStyle: github
-      highlightLines: true
-      countIncrementalSlides: false
+output:
+  powerpoint_presentation: 
 ---
 
 ```{r setup, include=FALSE}
+
 knitr::opts_chunk$set(echo = TRUE, message = FALSE,
                       fig.dim = c(8, 5))
 library(tidyverse)
@@ -82,7 +76,6 @@ Si les variables externes sont incluses dans un modèle pour $y$, les résidus d
 
 ---
 
-# Dépendance induite ou intrinsèque
 
 Dépendance intrinsèque: due à une dépendance temporelle ou spatiale au niveau de la variable $y$ elle-même.
 
@@ -201,7 +194,7 @@ autoplot(pelt, vars(Hare, Lynx)) +
 # Exemple: Couverture de glace en Arctique
 
 ```{r}
-ice <- read.table("../donnees/sea_ice.txt")
+ice <- read.table("C:/Users/buttoval/Documents/ECL8202//donnees/sea_ice.txt")
 colnames(ice) <- c("year", "month", "day", "ice_km2")
 head(ice)
 ```
@@ -796,6 +789,7 @@ ggplot(vic_elec, aes(x = Date, y = residuals(elec_lm), color = Workday)) +
 .code60[
 ```{r}
 elec_arima <- model(vic_elec, ARIMA(Demand ~ Tmean + I(Tmean^2) + Workday + PDQ(0,0,0)))
+
 ```
 ]
 
@@ -919,7 +913,8 @@ class: inverse, center, middle
 ```{r, echo = FALSE}
 library(tidyr)
 
-wa <- read.csv("../donnees/dendro_wa082.csv")
+wa <- read.csv("C:/Users/buttoval/Documents/ECL8202/donnees/dendro_wa082.csv")
+
 wa <- pivot_longer(wa, cols = -year, names_to = "id_arbre",
                    values_to = "cst", values_drop_na = TRUE)
 wa <- arrange(wa, id_arbre, year) %>%

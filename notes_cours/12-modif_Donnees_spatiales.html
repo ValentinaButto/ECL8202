@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Données spatiales</title>
+
+<script src="libs/header-attrs-2.23/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/spacelab.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<link href="libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Données spatiales</h1>
+
+</div>
+
+
+<div id="introduction-aux-statistiques-spatiales"
+class="section level1">
+<h1>Introduction aux statistiques spatiales</h1>
+<p>Comme toute analyse, les analyses spatiales commencent par
+l’exploration des données. La présence d’un patron spatial dans les
+données dépend très souvent de notre échantillonnage, mais elle peut
+aussi être le résultat de circonstances que nous n’avons pas pu
+contrôler. Que ce soit l’un ou l’autre, il existe des façons de vérifier
+si des patrons spatiaux sont présents dans nos modèles et si nos mesures
+sont sujettes à une autocorrélation spatiale. Nous allons donc utiliser
+des indices pour vérifier la présence de ces patrons:</p>
+<div id="indice-de-moran" class="section level2">
+<h2>Indice de Moran</h2>
+<p>L’indice <span class="math inline">\(I\)</span> de Moran, ou Moran
+Global permet de tester si une corrélation significative est présente
+entre régions voisines.</p>
+<p>L’indice de Moran est un coefficient d’autocorrélation spatiale des
+<span class="math inline">\(z\)</span>, pondéré par les poids <span
+class="math inline">\(w_{ij}\)</span>. Il prend donc des valeurs entre
+-1 et 1.</p>
+<p><span class="math display">\[I = \frac{N}{\sum_i \sum_j w_{ij}}
+\frac{\sum_i \sum_j w_{ij} (z_i - \bar{z}) (z_j - \bar{z})}{\sum_i (z_i
+- \bar{z})^2}\]</span></p>
+<p>Dans cette équation, nous reconnaissons l’expression d’une
+corrélation, soit le produit des écarts à la moyenne de deux variables
+<span class="math inline">\(z_i\)</span> et <span
+class="math inline">\(z_j\)</span>, divisé par le produit de leurs
+écarts-types (qui est le même, donc on obtient la variance). La
+contribution de chaque paire <span class="math inline">\((i, j)\)</span>
+est multipliée par son poids <span class="math inline">\(w_{ij}\)</span>
+et le terme à gauche (le nombre de régions <span
+class="math inline">\(N\)</span> divisé par la somme des poids) assure
+que le résultat soit borné entre -1 et 1. L’auto-corrélation spatiale
+positive indique que les éléments ou les valeurs sont regroupés dans
+l’espace, et les emplacements voisins ont tendance à avoir des valeurs
+ou des caractéristiques similaires. L’auto-corrélation spatiale
+négative, en revanche, indique que les éléments ou les valeurs sont
+dispersés dans l’espace, et les emplacements voisins ont tendance à
+avoir des valeurs ou des caractéristiques différentes. Puisque la
+distribution de <span class="math inline">\(I\)</span> est connue en
+l’absence d’auto-corrélation spatiale, cette statistique permet de
+tester l’hypothèse nulle selon laquelle il n’y a pas de corrélation
+spatiale entre régions voisines.</p>
+<p>Afficher les données sur une carte est fort utile pour planifier
+l’analyses. Il y a plusieurs façon de réaliser des cartes sur R. Parmi
+les packages qui vont vous permettre d’afficher des cartes, vous
+trouverez rnaturalearth. Pour s’entrainer, nous allons utiliser un jeu
+de données où le débourrement (budbre),un phase phénologique qui
+déterminent le début de la saison de croissance chez les arbres. Chaque
+point indique les coordonnées d’un peuplement où la date du débourrement
+a été observé. La date est indiqué en jour juliens (DOY-Day of the
+year).</p>
+<p>Pour commencer, nous importons les données accompagnées de leurs
+coordonnées. Lors de cette étape, nous allons produire un shapefile avec
+la fonction st_as_sf du package sf. A cette étape, il est crucial de
+spécifier le système de référence géodésique (CRS - Coordinate Reference
+System) utilisé pour positionner les points dans l’espace. Le CRS ne se
+limite pas seulement à fournir des informations sur l’unité de mesure
+(angles, distances) et la projection utilisée, mais il englobe également
+des détails essentiels tels que le sphéroïde de référence (la forme
+approximative de la terre : conique, cylindrique, ou planaire) et un
+datum (fournissant des informations sur l’orientation du sphéroïde par
+rapport à la terre). Ces détails sont cruciaux pour garantir la
+précision des calculs effectués sur les données spatiales. Par exemple,
+lorsque nous calculons les distances entre les points, l’unité de mesure
+de la distance dépend du CRS utilisé. De plus, comprendre les paramètres
+du CRS permet de projeter correctement les données dans d’autres
+systèmes de coordonnées si nécessaire, assurant ainsi la cohérence des
+analyses géospatiales. Vous pouvez explorer et vérifier les informations
+relatives au CRS sur des sites spécialisés tels que <a
+href="https://epsg.io/" class="uri">https://epsg.io/</a>. Le CRS le plus
+couramment utilisé est généralement le WGS84, qui est également celui
+employé dans les systèmes de positionnement par satellite GPS (<a
+href="https://epsg.io/4326" class="uri">https://epsg.io/4326</a>).s</p>
+<pre class="r"><code>require(rnaturalearth)</code></pre>
+<pre><code>## Le chargement a nécessité le package : rnaturalearth</code></pre>
+<pre><code>## Warning: le package &#39;rnaturalearth&#39; a été compilé avec la version R 4.3.2</code></pre>
+<pre><code>## The legacy packages maptools, rgdal, and rgeos, underpinning the sp package,
+## which was just loaded, will retire in October 2023.
+## Please refer to R-spatial evolution reports for details, especially
+## https://r-spatial.org/r/2023/05/15/evolution4.html.
+## It may be desirable to make the sf package available;
+## package maintainers should consider adding sf to Suggests:.
+## The sp package is now running under evolution status 2
+##      (status 2 uses the sf package in place of rgdal)</code></pre>
+<pre><code>## Support for Spatial objects (`sp`) will be deprecated in {rnaturalearth} and will be removed in a future release of the package. Please use `sf` objects with {rnaturalearth}. For example: `ne_download(returnclass = &#39;sf&#39;)`</code></pre>
+<pre class="r"><code>require(sp)</code></pre>
+<pre><code>## Le chargement a nécessité le package : sp</code></pre>
+<pre class="r"><code>require(sf)</code></pre>
+<pre><code>## Le chargement a nécessité le package : sf</code></pre>
+<pre><code>## Linking to GEOS 3.11.2, GDAL 3.6.2, PROJ 9.2.0; sf_use_s2() is TRUE</code></pre>
+<pre class="r"><code>P1phasespatialtraining1 &lt;-  P1phasespatialtraining1 &lt;-
+read.csv(&quot;C:/Users/buttoval/Documents/ECL8202/donnees/P1phasespatialtraining1.csv&quot;,
+    sep = &quot;;&quot;)
+
+
+P1phasespatialtraining1_shapefile &lt;- st_as_sf(P1phasespatialtraining1,
+    coords = c(&quot;x_long&quot;, &quot;y_lat&quot;), crs = &quot;WGS84&quot;)</code></pre>
+<p>Une fois produit le shapefile, il est utiliser la fonction
+ne_countries pour telesharger une carte du pays où nous avons pris les
+données. Les donneées sont associé à un catalogue de cartes publiques:
+Natural Earth Data (<a href="https://www.naturalearthdata.com/"
+class="uri">https://www.naturalearthdata.com/</a>). Les cartes peuvent
+aussi être télécharge par le site et sont proposé dans différentes
+échelles:large (1:10 m), medium (1:50 m) et small (1:110 m) selon le
+niveau de détail souhaité.</p>
+<p>On peut télécharger les cartes directement à partir de R avec la
+fonction ne_download. Voici une prémiere carte du monde, à laquelle in
+peut sur-poser des courches avec les lacs et les océans</p>
+<p><a
+href="https://cran.r-project.org/web/packages/rnaturalearth/vignettes/rnaturalearth.html"
+class="uri">https://cran.r-project.org/web/packages/rnaturalearth/vignettes/rnaturalearth.html</a></p>
+<pre class="r"><code>sfdf_world &lt;- ne_download(scale = 10, type = &quot;countries&quot;, returnclass = &quot;sf&quot;)
+
+sfdf_lakes &lt;- ne_download(scale = 10, type = &quot;lakes_north_america&quot;,
+    category = &quot;physical&quot;, returnclass = &quot;sf&quot;)
+
+sfdf_oceans &lt;- ne_download(scale = 10, type = &quot;ocean&quot;, category = &quot;physical&quot;,
+    returnclass = &quot;sf&quot;)
+
+sfdf_riverslake &lt;- ne_download(scale = 10, type = &quot;rivers_lake_centerlines&quot;,
+    category = &quot;physical&quot;, returnclass = &quot;sf&quot;)
+
+
+ggplot(data = sfdf_world) + geom_sf(data = sfdf_oceans, col = &quot;royalblue2&quot;,
+    fill = &quot;royalblue2&quot;, alpha = 0.5) + geom_sf() + geom_sf(data = sfdf_lakes,
+    col = &quot;royalblue2&quot;, alpha = 0.5) + geom_sf(data = sfdf_riverslake,
+    col = &quot;royalblue2&quot;, alpha = 0.5)</code></pre>
+<p><img src="12-modif_Donnees_spatiales_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>Afin de mieux visualiser nos points, il est maintenant utile de
+restreindre la carte à notre zone d’intérêt, qui est le nord de
+l’Amérique. Nous pouvons utiliser geom_rect pour afficher uniquement
+cette zone. Si nécessaire, nous pouvons également créer un carré
+englobant nos coordonnées en utilisant geom_rect. Les coordonnées du
+carré peuvent être obtenues à l’aide de la fonction st_box. Le CRS par
+défaut des objects obtenus par rnaturalearth est WGS84, nous n’anvons
+donc pas besoin de le transformer mais on aurait pu utiliser rajouter le
+code “shapefile %&gt;% st_transform( notre CRS )” pour une
+reprojection.</p>
+<pre class="r"><code>coordbox &lt;- as.data.frame(st_bbox(P1phasespatialtraining1_shapefile))
+
+ggplot(data = sfdf_world) + geom_sf(data = sfdf_oceans, col = &quot;royalblue2&quot;,
+    fill = &quot;royalblue2&quot;, alpha = 0.5) + geom_sf() + geom_sf(data = sfdf_lakes,
+    col = &quot;royalblue2&quot;, alpha = 0.5) + geom_sf(data = sfdf_riverslake,
+    col = &quot;royalblue2&quot;, alpha = 0.5) + geom_point(P1phasespatialtraining1,
+    mapping = aes(x_long, y_lat, color = DOY)) + scale_color_gradient(name = &quot;Budbreak (DOY)&quot;,
+    low = &quot;white&quot;, high = &quot;darkgreen&quot;) + coord_sf(xlim = c(-95,
+    -57.1), ylim = c(40, 62.62)) + geom_rect(xmin = coordbox$x[1],
+    ymin = coordbox$x[2], xmax = coordbox$x[3], ymax = coordbox$x[4],
+    fill = NA, colour = &quot;black&quot;, size = 1)</code></pre>
+<pre><code>## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+## ℹ Please use `linewidth` instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.</code></pre>
+<p><img src="12-modif_Donnees_spatiales_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>On observe déjà une tendance à un débourrement (budbreak) plus
+précoce vers le sud-ouest et plus tardif vers le nord-est. Mais comment
+valider ces patrons?</p>
+<p>On peut commencer par calculer l’indice <span
+class="math inline">\(I\)</span> de Moran. On va faire ça en différentes
+étapes:</p>
+<p>On commence par la création de la matrice de coordonnées : Nous
+commençons par créer une matrice contenant les coordonnées latitudinales
+et longitudinales de chaque point d’observation. Cela nous permettra de
+représenter spatialement nos données.</p>
+<pre class="r"><code>require(spdep)</code></pre>
+<pre><code>## Le chargement a nécessité le package : spdep</code></pre>
+<pre><code>## Warning: le package &#39;spdep&#39; a été compilé avec la version R 4.3.2</code></pre>
+<pre><code>## Le chargement a nécessité le package : spData</code></pre>
+<pre><code>## To access larger datasets in this package, install the spDataLarge
+## package with: `install.packages(&#39;spDataLarge&#39;,
+## repos=&#39;https://nowosad.github.io/drat/&#39;, type=&#39;source&#39;)`</code></pre>
+<pre class="r"><code>latlon = cbind(P1phasespatialtraining1$x_long, P1phasespatialtraining1$y_lat)</code></pre>
+<p>Conversion en objet spatial : Ensuite, nous convertissons cette
+matrice en un objet spatial afin de pouvoir effectuer des analyses
+spatiales.</p>
+<pre class="r"><code>latlon&lt;-coordinates(latlon)</code></pre>
+<p>Création des identifiants : Nous générons des identifiants uniques
+pour chaque point, ce qui sera utile pour la création de la liste de
+voisins.</p>
+<pre class="r"><code>IDs &lt;- row.names(as.data.frame(x = P1phasespatialtraining1$x_long,
+    y = P1phasespatialtraining1$y_lat))</code></pre>
+<p>Création de la liste de voisins : Nous utilisons l’algorithme des k
+plus proches voisins pour créer une liste de voisins pour chaque point.
+Ici, nous utilisons k=1 pour considérer uniquement les liens directs
+entre les points les plus proches. Cette ligne crée une liste de voisins
+basée sur le plus proche voisin (k=1) en utilisant les coordonnées
+latitudinales et longitudinales. Cela signifie que chaque point est lié
+à son voisin le plus proche. étant donnée que k=1 alprs chaque
+observation a un voisin. On souhaite évaluer l’autocorrélation spatiale
+en considérant uniquement les liens directs entre les points les plus
+proches. Cela peut être approprié dans certains cas, notamment lorsque
+l’on suppose que l’influence spatiale décroît rapidement avec la
+distance et que les valeurs sont fortement influencées par leur
+voisinage immédiat.</p>
+<pre class="r"><code>Neigh_nb &lt;- knn2nb(knearneigh(latlon, k = 1, longlat = TRUE),
+    row.names = IDs)</code></pre>
+<p>Standardisation des poids : Nous standardisons les poids de la liste
+de voisins de manière à ce que la somme des poids pour chaque unité
+spatiale soit égale à 1. Cela permet une comparaison appropriée des
+poids entre différentes unités spatiales.Ici, style = “W” indique que
+les poids pour chaque unité spatiale sont standardisés de manière à ce
+que leur somme soit égale à 1 (ceci est appelé standardisation par
+ligne).</p>
+<pre class="r"><code>Neigh_nb_moran&lt;-nb2listw(Neigh_nb,style=&quot;W&quot;)</code></pre>
+<p>Test de Moran : Enfin, nous appliquons le test de Moran sur nos
+données. Cela nous permet d’évaluer l’autocorrélation spatiale de notre
+variable d’intérêt (dans ce cas, le jour de l’année du débourrement des
+plantes) en utilisant la liste de voisins standardisée que nous avons
+créée précédemment.</p>
+<pre class="r"><code>Moran_I &lt;- moran.test(P1phasespatialtraining1$DOY, listw = Neigh_nb_moran)
+
+Moran_I</code></pre>
+<pre><code>## 
+##  Moran I test under randomisation
+## 
+## data:  P1phasespatialtraining1$DOY  
+## weights: Neigh_nb_moran    
+## 
+## Moran I statistic standard deviate = 12.302, p-value &lt; 2.2e-16
+## alternative hypothesis: greater
+## sample estimates:
+## Moran I statistic       Expectation          Variance 
+##       0.557497347      -0.001297017       0.002063322</code></pre>
+<p>Dans le tableau, nous trouvons les valeurs de l’écart-type standard
+de la statistique de Moran I (Moran I statistic standard deviate). Cela
+indique la déviation standardisée de la statistique de Moran I par
+rapport à sa moyenne sous l’hypothèse nulle d’absence d’autocorrélation
+spatiale. Lorsque la déviation standardisée de la statistique de Moran I
+s’écarte de zéro vers des valeurs positives élevées, cela suggère une
+forte autocorrélation spatiale positive, ce qui signifie que les valeurs
+similaires ont tendance à être regroupées dans l’espace. Dans notre cas,
+nous avons obtenu une valeur de 12.302, ce qui est plutôt élevée.</p>
+<p>La statistique de Moran I est de 0.6, ce qui indique une
+autocorrélation spatiale positive. Cela signifie qu’il existe une
+tendance pour les valeurs similaires à se regrouper dans l’espace</p>
+<p>La valeur p associée à la statistique de Moran I est inférieure à
+0,05, ce qui suggère un rejet de l’hypothèse nulle. Dans ce cas,
+l’hypothèse nulle serait l’absence d’autocorrélation spatiale.</p>
+<p>Dans l’ensemble ces résultats suggèrent une forte autocorrélation
+spatiale (statistique Moran I élevée) avec une très faible probabilité
+que cela soit dû au hasard (p-value très faible), et l’hypothèse
+alternative est que l’autocorrélation spatiale est plus grande que prévu
+par le hasard.</p>
+<p>“Expectation” fait référence à la valeur attendue de la statistique
+de Moran I sous l’hypothèse nulle d’absence d’autocorrélation spatiale.
+Plus précisément, c’est la moyenne théorique de la statistique de Moran
+I calculée sur de nombreuses répétitions aléatoires de l’échantillon
+dans lequel la distribution spatiale des valeurs est aléatoire.Si la
+statistique de Moran I observée diffère considérablement de cette valeur
+attendue, cela suggère une autocorrélation spatiale significative dans
+vos données.</p>
+</div>
+<div id="indice-de-moran-local" class="section level2">
+<h2>Indice de Moran Local:</h2>
+<p>Si l’autocorrelation spaciale est significatif, il est possible de
+calculer le Moran Local qui évalue l’autocorrélation spatiale pour
+chaque unité spatiale individuelle (points, zones etc..). Cet indicateur
+identifie les zones spécifiques où l’autocorrélation spatiale est
+significativement différente de celle attendue par hasard.</p>
+<p>Pour calculer l’indice de Moran sur R il est possible</p>
+<p><span class="math display">\[I_i = \frac{(z_i - \bar{z})}{S^2}
+\sum_{j} w_{ij} (z_j - \bar{z})\]</span></p>
+<p>où <span class="math inline">\(z_i\)</span> est la valeur de la
+variable pour l’unité spatiale <span
+class="math inline">\(i\)</span>,<span
+class="math inline">\(\bar{z}\)</span> est la moyenne des valeurs de la
+variable pour toutes les unités spatiales.<span
+class="math inline">\(z_{ij}\)</span> est le poids entre les unités
+spatiales <span class="math inline">\(i\)</span> et <span
+class="math inline">\(j\)</span>, <span
+class="math inline">\(z_j\)</span> est la valeur de la variable pour
+l’unité spatiale <span class="math inline">\(j\)</span>; S est la
+variance de la variable <span class="math inline">\(S^2\)</span></p>
+<p>Pour calculer l’indice de Moran Local on commence par le calcul des
+distances entre les voisins les plus proches :</p>
+<pre class="r"><code>dstsP1 &lt;- unlist(nbdists(Neigh_nb, latlon))</code></pre>
+<p>On Calcul ensuite la distance maximale entre les voisins les plus
+proches et on crée différentes structures de voisinage basées sur la
+distance :</p>
+<pre class="r"><code>max_1nnP1 &lt;- max(dstsP1)
+
+Neigh_kd2P1 &lt;- dnearneigh(latlon, d1 = 0, d2 = 2 * max_1nnP1,
+    row.names = IDs)
+
+# neighbors within 2X maximum distance</code></pre>
+<p>Création de poids pour la structure de voisinage et Calcul de
+l’indice de Moran local. Nous pouvons choisir le style B (binaire) pour
+le création de poids de la structure de voisinage. Nous choisissons
+d’utiliser le Style de pondération binaire (B) car chaque paire d’unités
+spatiales est considérée comme soit connectée (1) soit non connectée
+(0). Ceci facilitera l’identification des clusters spatiaux, ce qui est
+en fin de compte l’objectif principal de l’analyse de Moran local.</p>
+<pre class="r"><code>weightsP1 &lt;- nb2listw(Neigh_kd2P1, style = &quot;B&quot;)
+
+# row standardized binary weights, using minimum distance
+# for one neighbor
+
+weightsP1</code></pre>
+<pre><code>## Characteristics of weights list object:
+## Neighbour list object:
+## Number of regions: 772 
+## Number of nonzero links: 182720 
+## Percentage nonzero weights: 30.65854 
+## Average number of links: 236.6839 
+## 2 disjoint connected subgraphs
+## 
+## Weights style: B 
+## Weights constants summary:
+##     n     nn     S0     S1        S2
+## B 772 595984 182720 365440 187478256</code></pre>
+<pre class="r"><code>localP1 &lt;- localmoran(x = P1phasespatialtraining1$DOY, listw = nb2listw(Neigh_kd2P1,
+    style = &quot;B&quot;))
+
+head(localP1)</code></pre>
+<pre><code>##           Ii         E.Ii     Var.Ii       Z.Ii Pr(z != E(Ii))
+## 1 -62.134967 -0.067335093  30.035740 -11.325203   9.845025e-30
+## 2  49.310064 -0.111485688  46.483906   7.248782   4.205357e-13
+## 3 148.952876 -0.760734852 465.290603   6.940634   3.903441e-12
+## 4   2.430195 -0.004170537   2.115739   1.673612   9.420693e-02
+## 5 -47.977739 -0.737517583 359.903025  -2.490114   1.277022e-02
+## 6  95.099477 -0.230898178 139.861426   8.060878   7.574863e-16</code></pre>
+<p>Dans l’objet crée par la fonction localmoran, nous pouvons trouver:
+-L’indice de Moran local pour l’unité spatiale <span
+class="math inline">\(i\)</span> Ii: une mesure l’autocorrélation
+spatiale locale pour cette unité spatiale en prenant en compte les
+valeurs de ses voisins locaux. -L’espérance de l’indice de Moran local
+(E.Ii): la valeur moyenne de l’indice de Moran local dans un ensemble
+d’échantillons aléatoires, sous l’hypothèse nulle d’absence
+d’autocorrélation spatiale. -La variance de l’indice de Moran local
+(Var.Ii): la dispersion des valeurs de l’indice de Moran local autour de
+son espérance. Une variance élevée suggère une grande variabilité dans
+les valeurs de l’indice de Moran local. - Le score <span
+class="math inline">\(Z\)</span> de l’indice de Moran local (Z.Ii): le
+nombre d’écarts-types par rapport à l’espérance dans l’indice de Moran
+local observé - Pr(z != E(Ii)): La probabilité que le score Z de
+l’indice de Moran local diffère de l’espérance. Si cette probabilité est
+inférieure à un seuil alpha spécifié (généralement 0.05), on rejette
+l’hypothèse nulle d’absence d’autocorrélation spatiale locale en faveur
+de l’hypothèse alternative d’autocorrélation spatiale locale
+significative.</p>
+<p>Avec les valeurs de Z, il est possible de séparer les observations en
+groupes basés sur l’indice de Moran local et d’identifier les zones où
+l’agrégation spatiale est significative.Ces catégories sont basées sur
+les seuils de significativité des scores Z pour l’indice de Moran local.
+Ils sont utilisés pour identifier les clusters spatiaux significatifs à
+différents niveaux de confiance statistique (par exemple, 90%, 95% et
+99%). La catégorie “4-random” est utilisée pour les unités spatiales où
+l’autocorrélation spatiale n’est pas significative.</p>
+<pre class="r"><code>moran.mapP1 &lt;- cbind(P1phasespatialtraining1_shapefile,
+    localP1)
+
+
+moran.mapP1$groups_class &lt;- with(moran.mapP1, ifelse(Z.Ii &gt;=
+    -24 &amp; Z.Ii &lt; -2.58, &quot;CI99&quot;, ifelse(Z.Ii &gt;= -2.58 &amp;
+    Z.Ii &lt; -1.96, &quot;CI95&quot;, ifelse(Z.Ii &gt;= -1.96 &amp; Z.Ii &lt;
+    -1.65, &quot;CI90&quot;, ifelse(Z.Ii &gt;= -1.65 &amp; Z.Ii &lt; 1.65,
+    &quot;random&quot;, ifelse(Z.Ii &gt;= 1.65 &amp; Z.Ii &lt; 1.96, &quot;CI90&quot;,
+        ifelse(Z.Ii &gt;= 1.96 &amp; Z.Ii &lt; 2.58, &quot;CI95&quot;,
+            &quot;CI99&quot;)))))))</code></pre>
+<pre class="r"><code>ggplot() + geom_sf(data = moran.mapP1, aes(color = groups_class)) +
+    scale_color_manual(values = c(CI99 = &quot;#ff0000&quot;, CI95 = &quot;#ffa500&quot;,
+        CI90 = &quot;#ffff00&quot;, random = &quot;#00ff00&quot;), name = &quot;Groups&quot;) +
+    labs(title = &quot;Moran Local Groups&quot;) + theme_minimal()</code></pre>
+<p><img src="12-modif_Donnees_spatiales_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>La plus part des valeurs tombent dans le CI99 (intervalle de
+confiance à 99%). Les valeurs de la variable étudiée, le jour de
+débourrement (DOY), sont fortement regroupées dans l’espace, formant des
+clusters spatiaux significatifs.</p>
+<p>Si nous sommes intéressés par l’investigation des clusters spatiaux
+significatifs, il serait possible de réaliser une analyse des points
+chauds et des points froids (hotspot-coldspot) pour déterminer si les
+valeurs très élevées et celles qui sont plus petites ont tendance à
+s’agglomérer dans des parties différentes de la carte. Pour ce faire,
+nous avons besoin de calculer un autre indice, le Getis-Ord G <span
+class="math inline">\(G_i*\)</span> qui indique la concentration
+spatiale et qui évalue si les valeurs d’une variable sont réparties de
+manière aléatoire dans l’espace ou si elles présentent une tendance à la
+concentration spatiale, c’est-à-dire des clusters de valeurs élevées ou
+faibles. <span class="math inline">\(G_i*\)</span> calcule des
+statistiques z pour chaque unité spatiale et peut être utilisé pour
+identifier les hotspots (valeurs élevées entourées de valeurs élevées)
+et les coldspots (valeurs faibles entourées de valeurs faibles). Encore
+une fois, la fonction localG_perm du package spdep nous aide à calculer
+<span class="math inline">\(G_i*\)</span> à partir de la matrice de
+pondération spatiale que nous avons utilisée avant:</p>
+<pre class="r"><code>local_gpermP1 &lt;- localG_perm(P1phasespatialtraining1_shapefile$DOY,
+    weightsP1)
+
+P1phasesta_shape &lt;- cbind(P1phasespatialtraining1_shapefile,
+    gstat = as.matrix(local_gpermP1))</code></pre>
+<p>Également, il est possible de séparer les groupes sur la base des
+valeurs de Z pour identifier les points chauds (Z positifs) et les
+points froids (Z négatifs). Les hotspots sont associés à des valeurs de
+Z positives, ce qui signifie que les valeurs dans ces zones sont plus
+élevées que prévu par rapport à la répartition spatiale globale des
+données. Les coldspots sont associés à des valeurs de Z négatives, ce
+qui signifie que les valeurs dans ces zones sont plus faibles que prévu
+par rapport à la répartition spatiale globale des données.</p>
+<pre class="r"><code>P1phasesta_shape$groups_class &lt;- with(P1phasesta_shape,
+    ifelse(gstat &gt;= min(P1phasesta_shape$gstat) &amp; gstat &lt;
+        -2.58, &quot;1-CI99&quot;, ifelse(gstat &gt;= -2.58 &amp; gstat &lt;
+        -1.96, &quot;2-CI95&quot;, ifelse(gstat &gt;= -1.96 &amp; gstat &lt;
+        -1.65, &quot;3-CI90&quot;, ifelse(gstat &gt;= -1.65 &amp; gstat &lt;
+        1.65, &quot;4-random&quot;, ifelse(gstat &gt;= 1.65 &amp; gstat &lt;
+        1.96, &quot;5-CI90&quot;, ifelse(gstat &gt;= 1.96 &amp; gstat &lt;
+        2.58, &quot;6-CI95&quot;, &quot;7-CI99&quot;)))))))
+
+P1phasesta_shape$groups_classlabelled &lt;- as.factor(P1phasesta_shape$groups_class)
+
+levels(P1phasesta_shape$groups_classlabelled) &lt;- list(`Cold spot - 99% CI` = &quot;1-CI99&quot;,
+    `Cold spot - 95% CI` = &quot;2-CI95&quot;, `Cold spot - 90% CI` = &quot;3-CI90&quot;,
+    `Not significant` = &quot;4-random&quot;, `Hot spot - 90% CI` = &quot;5-CI90&quot;,
+    `Hot spot - 95% CI` = &quot;6-CI95&quot;, `Hot spot - 99% CI` = &quot;7-CI99&quot;)
+
+
+
+
+
+ggplot() + geom_sf(data = P1phasesta_shape, aes(color = groups_classlabelled)) +
+    scale_color_manual(&quot;&quot;, values = c(&quot;#4575b4&quot;, &quot;#74add1&quot;,
+        &quot;#abd9e9&quot;, &quot;#fee090&quot;, &quot;#fdae61&quot;, &quot;#f46d43&quot;,
+        &quot;#d73027&quot;)) + labs(title = &quot;Hot spot-Cold spot analysis&quot;) +
+    theme_minimal()</code></pre>
+<p><img src="12-modif_Donnees_spatiales_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

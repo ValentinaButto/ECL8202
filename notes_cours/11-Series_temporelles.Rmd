@@ -184,7 +184,7 @@ Nous pouvons maintenant présenter de façon plus formelle les différentes comp
 
 - La **saisonnalité** réfère aux fluctuations répétées avec une période fixe et connue, souvent associée au calendrier (annuelle, hebdomadaire, journalière, etc.)
 
-- Un **cycle**, dans le contexte des séries temporelles, réfère à des fluctuations qui se répètent, mais pas selon une période fixée par un élément du calendrier. Par exemple, les fluctuations des populations du lynx et du lièvre dans l'exemple précédent n'ont pas une amplitude ou une fréqunce tout à fait régulière. Les cycles économiques (périodes de croissance et de récession) sont un autre exemple de comportement cyclique généré par la dynamique d'un système. Ces cycles sont généralement à une échelle de plusieurs années et ne sont pas aussi prévisibles que les fluctuations saisonnières.
+- Un **cycle**, dans le contexte des séries temporelles, réfère à des fluctuations qui se répètent, mais pas selon une période fixée par un élément du calendrier. Par exemple, les fluctuations des populations du lynx et du lièvre dans l'exemple précédent n'ont pas une amplitude ou une fréquence tout à fait régulière. Les cycles économiques (périodes de croissance et de récession) sont un autre exemple de comportement cyclique généré par la dynamique d'un système. Ces cycles sont généralement à une échelle de plusieurs années et ne sont pas aussi prévisibles que les fluctuations saisonnières.
 
 - Finalement, une fois que les tendances, cycles et variations saisonnières ont été soustraites d'un série temporelle, il reste un **résidu** aussi nommé **bruit**.
 
@@ -529,7 +529,7 @@ vic_elec <- mutate(vic_elec, Demand = Demand / 1000)
 En représentant la demande en fonction de la température moyenne et du statut de jour ouvrable, nous voyons qu'elle suit une fonction à peu près quadratique de la température (minimum autour de 18 degrés C et augmentation pour les températures plus froides et plus chaudes) et qu'il y a une diminution presque constante pour les jours fériés et fins de semaine.
 
 ```{r}
-ggplot(vic_elec, aes(x = Tmean, y = Demand, color = Workday)) +
+  ggplot(vic_elec, aes(x = Tmean, y = Demand, color = Workday)) +
   geom_point() +
   scale_color_brewer(palette = "Dark2")
 ```
